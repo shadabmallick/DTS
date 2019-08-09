@@ -1,0 +1,39 @@
+<resources>
+    <string-array name="listname">
+        <item>30 Sec</item>
+        <item>1 Min</item>
+        <item>3 Min</item>
+    </string-array>
+
+    <string-array name="listValues">
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+    </string-array>
+
+
+    <string-array name="schedulingname">
+        <item>Real Time</item>
+        <item>Every 5 media files</item>
+        <item>Every 10 media files</item>
+    </string-array>
+
+    <string-array name="schedulingvalue">
+        <item>1003</item>
+        <item>1004</item>
+        <item>1005</item>
+    </string-array>
+
+
+    <string-array name="methodname">
+        <item>Media file counter in Widget</item>
+        <item>Preview of image will appear in a circle</item>
+    </string-array>
+
+    <string-array name="methodvalue">
+        <item>1008</item>
+        <item>1009</item>
+    </string-array>
+
+
+</resources>

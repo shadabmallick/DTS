@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="17dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:text="Notification"
+        android:textColor="@android:color/black"
+        android:textSize="19dp"
+        android:textStyle="bold" />
+
+    <CheckedTextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="?android:attr/listChoiceIndicatorSingle"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:paddingEnd="7dip"
+        android:paddingStart="12dip"
+        android:text="Sending a notification when receiving new media"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="?android:attr/textColorAlertDialogListItem"
+        android:textSize="14dp" />
+
+    <CheckedTextView
+        android:id="@+id/text2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="?android:attr/listChoiceIndicatorSingle"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:paddingEnd="7dip"
+        android:paddingStart="12dip"
+        android:text="Sending new media files notification after every 3 days"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="?android:attr/textColorAlertDialogListItem"
+        android:textSize="14dp" />
+
+
+    <CheckedTextView
+        android:id="@+id/text3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="?android:attr/listChoiceIndicatorSingle"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight"
+        android:paddingEnd="7dip"
+        android:paddingStart="12dip"
+        android:text="None"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="?android:attr/textColorAlertDialogListItem"
+        android:textSize="14dp" />
+
+
+    <TextView
+        android:id="@+id/cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="12dp"
+        android:gravity="right"
+        android:paddingRight="10dp"
+        android:text="CANCEL"
+        android:textColor="#22A8F1" />
+
+
+</LinearLayout>

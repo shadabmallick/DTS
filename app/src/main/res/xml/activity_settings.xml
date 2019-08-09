@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <PreferenceCategory android:title="General">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:icon="@mipmap/ic_auto_launch"
+            android:key="autolaunch"
+            android:summary="This option if selected will allow to disable scheduler on device reboot."
+            android:title="Auto Launch" />
+
+        <Preference
+            android:icon="@mipmap/ic_notification"
+            android:key="notification"
+            android:summary="This option if selected will allow the application to show the optimized notification."
+            android:title="Notification" />
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="Widget Properties">
+
+        <Preference
+            android:icon="@mipmap/ic_widget_location"
+            android:key="widgetlocation"
+            android:summary="Set widget location"
+            android:title="Widget Location" />
+
+        <Preference
+            android:icon="@mipmap/ic_widget_size"
+            android:key="widgetsize"
+            android:summary="Set widget size"
+            android:title="Widget Size" />
+
+
+        <ListPreference
+            android:defaultValue="1003"
+            android:entries="@array/schedulingname"
+            android:entryValues="@array/schedulingvalue"
+            android:icon="@mipmap/ic_frequency"
+            android:key="scheduling"
+            android:summary="Scheduling frequency"
+            android:title="Widget Scheduling" />
+
+
+        <ListPreference
+            android:defaultValue="1008"
+            android:entries="@array/methodname"
+            android:entryValues="@array/methodvalue"
+            android:icon="@mipmap/ic_widget"
+            android:key="method"
+            android:summary="Set Widget method"
+            android:title="Method" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Others">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:icon="@mipmap/ic_confirm_delete"
+            android:key="confirmdelete"
+            android:summary="This option if selected will allow to confirm delete dialog."
+            android:title="Confirm delete" />
+
+       <!-- <ListPreference
+            android:defaultValue="en"
+            android:entries="@array/languagename"
+            android:entryValues="@array/languagecode"
+            android:icon="@mipmap/language"
+            android:key="@string/setLanguage"
+            android:summary="Select Language"
+            android:title="Language" />-->
+
+        <Preference
+            android:icon="@mipmap/about"
+            android:key="aboutus"
+            android:summary="About us information"
+            android:title="About"
+
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

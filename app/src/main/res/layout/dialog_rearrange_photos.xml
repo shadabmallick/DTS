@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/tab_color2"
+    android:padding="@dimen/padding_medium">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/iv_cross"
+        android:layout_marginBottom="@dimen/padding_medium"
+        android:text="@string/rearrange_image"
+        android:textColor="@color/white"
+        android:textSize="@dimen/large_text_size" />
+
+    <ImageView
+        android:id="@+id/iv_cross"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:padding="@dimen/padding_medium"
+        android:src="@mipmap/ic_close" />
+
+    <LinearLayout
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_cross"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+
+            >
+
+            <RadioButton
+                android:id="@+id/radioButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/padding_small"
+                android:buttonTint="@color/white"
+                android:checked="false"
+                android:text="1 Image"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/medium_text_size" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/padding_small"
+                android:buttonTint="@color/white"
+                android:checked="false"
+                android:text="2 Image"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/medium_text_size" />
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="@dimen/padding_small"
+                android:buttonTint="@color/white"
+                android:checked="false"
+                android:text="3 Image"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/medium_text_size" />
+        </RadioGroup>
+
+    </LinearLayout>
+</RelativeLayout>

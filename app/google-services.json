@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "736818435851",
+    "firebase_url": "https://dtsapp-c037e.firebaseio.com",
+    "project_id": "dtsapp-c037e",
+    "storage_bucket": "dtsapp-c037e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736818435851:android:9ec81724bc63bd35",
+        "android_client_info": {
+          "package_name": "com.mobile.dts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736818435851-uunls37glnl0liv5g2siaohnlje6rfa3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb4puTEQgzfrc4esBy0M-US7YwZlUwc_s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

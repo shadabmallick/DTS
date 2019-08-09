@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.mobile.dts.helper.photoview.PhotoView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:rotation="180"
+        android:scaleType="fitCenter" />
+
+
+    <ImageView
+        android:id="@+id/iv_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/playbackground"
+        android:paddingBottom="14dp"
+        android:paddingEnd="14dp"
+        android:paddingStart="12dp"
+        android:paddingTop="14dp"
+        android:rotation="180"
+        android:src="@android:drawable/ic_media_play"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/deletedmediatxt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="Media deleted"
+        android:textSize="21sp"
+        android:visibility="gone" />
+
+
+</RelativeLayout>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.mobile.dts">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
+
+    <application
+        android:name=".activity.MainApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/FullScreenTheme">
+        <!--
+         <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".activity.SplashActivity"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme" />
+        <activity
+            android:name=".activity.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.DtsGalleryActivity"
+            android:label="@string/title_activity_dts_gallery"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme" />
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="Settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme" />
+        <activity
+            android:name=".activity.WidgetLocationActivity"
+            android:label="Widget Location setting"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
+            android:name=".activity.WidgetSizeDialog"
+            android:label="Widget Size setting"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name=".activity.ImageViewerActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"/>
+
+        <receiver android:name=".helper.BootBroadCastReciever">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".helper.Scheduler">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".helper.NotificationBroadcastReceiver" />
+
+        <service android:name=".helper.DtsWidget">
+            <intent-filter>
+                <action android:name="android.intent.action.CONFIGURATION_CHANGED" />
+            </intent-filter>
+        </service>
+        <service android:name=".helper.LocationWidget" />
+        <service
+            android:name=".saveImageEvent.ImageJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service android:name=".saveImageEvent.RestartProcessService">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".saveImageEvent.CameraBroadcastReceiver">
+            <intent-filter>
+                <action android:name="com.android.camera.NEW_PICTURE" />
+                <action android:name="android.hardware.action.NEW_PICTURE" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".activity.TermPageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.TalkWithUsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme" /> <!-- <meta-data -->
+        <!-- android:name="io.fabric.ApiKey" -->
+        <!-- android:value="611e1c71ef1aca7deb2a537e542ad32531410247" -->
+        <!-- /> -->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="1a995e1a9380853466a34f7a61864a8a2daeaafc" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name=".activity.AboutUsActivity"
+            android:label="@string/title_activity_about_us"
+            android:theme="@style/FullScreenTheme" />
+        <activity
+            android:name=".activity.SafPromptActivity"
+            android:label="@string/title_activity_saf_prompt"
+            android:theme="@style/FullScreenTheme" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="@string/file_provider_authority"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
+
+        <activity android:name=".activity.ImageViewLoadingActivity" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

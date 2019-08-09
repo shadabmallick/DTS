@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/tab_color2">
+
+            <RelativeLayout
+                android:id="@+id/rl_restore_photos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ripple_bg"
+                android:clickable="true">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:id="@+id/iv_restore_photos"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="@dimen/padding_medium"
+                        android:background="@drawable/rounded_circle"
+                        android:padding="@dimen/padding_large"
+                        android:src="@mipmap/ic_restore_image" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_restore_photos"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/restore_photos"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/ultra_large_size"
+
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/tab_color1">
+
+            <RelativeLayout
+                android:id="@+id/rl_gallery"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ripple_bg"
+                android:clickable="true">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+
+                    <ImageView
+                        android:id="@+id/iv_gallary"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_margin="@dimen/padding_medium"
+                        android:background="@drawable/rounded_circle"
+                        android:padding="@dimen/padding_extra_large"
+                        android:src="@mipmap/ic_gallery" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_gallary"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/dts_gallery"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/ultra_large_size"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/tab_color1">
+
+            <RelativeLayout
+                android:id="@+id/rl_talk_with_us"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ripple_bg"
+                android:clickable="true">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:id="@+id/iv_talk_with_us"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_margin="@dimen/padding_medium"
+                        android:background="@drawable/rounded_circle"
+                        android:padding="@dimen/padding_extra_large"
+                        android:src="@mipmap/ic_talk" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_talk_with_us"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/talk_with_us"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/ultra_large_size"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/tab_color2">
+
+            <RelativeLayout
+                android:id="@+id/rl_settings"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ripple_bg"
+                android:clickable="true">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <ImageView
+                        android:id="@+id/iv_settings"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_margin="@dimen/padding_medium"
+                        android:background="@drawable/rounded_circle"
+                        android:padding="@dimen/padding_extra_large"
+                        android:src="@mipmap/ic_setting" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/iv_settings"
+                        android:layout_centerHorizontal="true"
+                        android:text="@string/settings"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/ultra_large_size"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Thinksys software pvt Ltd" />
+</LinearLayout>
