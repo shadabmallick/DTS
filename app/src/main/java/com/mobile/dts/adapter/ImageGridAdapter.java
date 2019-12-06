@@ -63,6 +63,10 @@ public class ImageGridAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ImageBean imageBean = imagePathList.get(position);
         if (imageBean.getViewType() == CHILD) {
+            ((ViewHolder) holder).iv_image_name.setVisibility(View.GONE);
+              ((ViewHolder) holder).imgSize.setVisibility(View.GONE);
+            ((ViewHolder) holder).tv_time.setVisibility(View.GONE);
+            ((ViewHolder) holder).tv_date.setVisibility(View.GONE);
             GlideApp.with(context).load("file://" + imageBean.getImagePath())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(((ViewHolder) holder).iv_folder_thumbnail);
@@ -83,6 +87,9 @@ public class ImageGridAdapter extends RecyclerView.Adapter {
             }
             if (imageBean.isSaved24() || imageBean.isDeleted()) {
                 ((ViewHolder) holder).iv_image_name.setVisibility(View.VISIBLE);
+               ((ViewHolder) holder).imgSize.setVisibility(View.VISIBLE);
+                ((ViewHolder) holder).tv_time.setVisibility(View.GONE);
+                ((ViewHolder) holder).tv_date.setVisibility(View.GONE);
                 ((ViewHolder) holder).iv_image_name.setText(context.getResources().getString(R.string.remaining));
                 int seconds = (int) (imageBean.getRemainingTime() / 1000);
                 int hours = seconds / (60 * 60);
@@ -120,7 +127,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter {
                 ((ViewHolder) holder).tv_time.setText(imageBean.getCreatedTime());
             }
             if (imageBean.isNew()) {
-                ((ViewHolder) holder).imgRecent.setVisibility(View.VISIBLE);
+                ((ViewHolder) holder).imgRecent.setVisibility(View.GONE);
             } else {
                 ((ViewHolder) holder).imgRecent.setVisibility(View.GONE);
             }

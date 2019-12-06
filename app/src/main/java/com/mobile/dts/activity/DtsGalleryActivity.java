@@ -12,8 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -93,8 +91,9 @@ import static com.mobile.dts.utills.Utils.getMonthName;
 /*Used to show Dts gallery and Restore gallery screen*/
 public class DtsGalleryActivity extends AppCompatActivity implements ImageClickListner, View.OnClickListener,
         AdapterView.OnItemClickListener, OnMenuItemClickListener, ImageMovedListener {
-
+      public static String  TAG="DtsGalleryActivity";
     public static final int PICK_PHOTOS_REQUEST_CODE = 1005;
+    int length,tempLength;
     public static final String PICK_PHOTOS = "PICK_PHOTOS";
     public static ArrayList<ImageBean> imageArrayList = new ArrayList();
     private final Long[] KEEP_TO_LIST_ITEMS_TIME = new Long[]{Long.valueOf((24 * 60 * 60 * 1000)), Long.valueOf((7 * 24 * 60 * 60 * 1000)),
@@ -108,10 +107,12 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
     private LinearLayout ll_actions_layout, ll_save_actions, select_all;
     private SharedPreferences sharedpreferences, settingsPref;
     private int noOfCollumns;
-    private TextView nophotosfound, tv_heading, progressbartext;
+    private TextView nophotosfound, tv_heading, progressbartext,tv_erase,tv_top;
     private String setTime;
     private SqlLiteHelper dtsDataBase;
-    private boolean isRestoreScreen = false, isSortByTime;
+    TextView tv_badge;
+    private boolean isRestoreScreen = false;
+      private boolean      isSortByTime=false;
     private BroadcastReceiver deletedImagebroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -119,6 +120,8 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 ArrayList<PhotoDetailBean> deletedImageList = dtsDataBase.getRestoreImageList();
                 imageArrayList = getRestoreGalleryData(deletedImageList);
                 imageGridAdapter.updateReceiptsList(imageArrayList);
+                length=imageArrayList.size();
+                Log.d(TAG, "onReceive: "+length);
             } catch (Exception e) {
             }
         }
@@ -131,7 +134,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
     private FragmentManager fragmentManager;
     private ToolTipRelativeLayout mToolTipFrameLayout;
     private ToolTipView mTipView;
-    private RelativeLayout progress_rl, ll_delete, ll_save, ll_restore, ll_keep_to, ll_share, ll_dtscancel;
+    private RelativeLayout rel_fourth_bottom,rel_second_bottom,rel_first_bottom, rel_middle,rel_bottom,progress_rl, ll_delete, ll_save, ll_restore, ll_keep_to, ll_share, ll_dtscancel;
     private int selectedMenu = 1;
     private ArrayList<String> selectedPhotoList;
     private boolean pick_photos;
@@ -145,6 +148,9 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
         initClickListner();
         configureAlarm();
         initMenuFragment();
+        tempLength=imageArrayList.size();
+        Log.d("TAG", "onCreate: "+tempLength);
+
         pick_photos = getIntent().getAction() != null && getIntent().getAction().equals(PICK_PHOTOS);
     }
 
@@ -160,11 +166,47 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
         nophotosfound = findViewById(R.id.nophotosfound);
         ll_restore = findViewById(R.id.ll_restore);
         ll_dtscancel = findViewById(R.id.ll_dtscancel);
+        rel_fourth_bottom = findViewById(R.id.rel_fourth_bottom);
         tv_heading = findViewById(R.id.tv_heading);
         icon_home = findViewById(R.id.icon_home);
         icon_filter = findViewById(R.id.icon_filter);
         progress_rl = findViewById(R.id.progress_rl);
         progressbartext = findViewById(R.id.progressbartext);
+        rel_middle = findViewById(R.id.rel_middle);
+        rel_bottom=findViewById(R.id.rel_bottom);
+        rel_first_bottom=findViewById(R.id.rel_first_bottom);
+        tv_erase=findViewById(R.id.tv_erase);
+        tv_top=findViewById(R.id.tv_top);
+        tv_badge = findViewById(R.id.tv_badge1);
+        rel_second_bottom = findViewById(R.id.rel_second_bottom);
+    //    tv_badge.setText(length);
+       // rel_first_bottom.setClickable(true);
+
+        rel_first_bottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rel_first_bottom.setClickable(false);
+                rel_first_bottom.setEnabled(false);
+                moveRestoreImageGallery();
+
+            }
+        });
+        rel_second_bottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent store=new Intent(getApplicationContext(),KeepSafeMultiple.class);
+        store.putExtra("images",imageArrayList);
+       // Log.d(TAG, "savedButtonClick: "+imageBean.getImagePath());
+        startActivity(store);
+            }
+        });
+        rel_fourth_bottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent store=new Intent(getApplicationContext(),SettingsActivity.class);
+                startActivity(store);
+            }
+        });
     }
 
     private void initObjects() {
@@ -213,35 +255,41 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
         menuParams.setClosableOutside(false);
         menuParams.setAnimationDuration(50);
         menuParams.setAnimationDelay(50);
+
         mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
         mMenuDialogFragment.setItemClickListener(DtsGalleryActivity.this);
     }
 
     private List<MenuObject> getMenuObjects() {
         List<MenuObject> menuObjects = new ArrayList<>();
+
         MenuObject close = new MenuObject();
+
         close.setResource(R.mipmap.icon_cancel);
         MenuObject time = new MenuObject(getResources().getString(R.string.sortbytime));
-        time.setResource(R.mipmap.icon_time);
         MenuObject size = new MenuObject(getResources().getString(R.string.sortbysize));
-        Bitmap b = BitmapFactory.decodeResource(getResources(), R.mipmap.icon_size);
-        size.setBitmap(b);
+
+
+
+        //size.setBitmap(b);
         menuObjects.add(close);
         menuObjects.add(time);
         menuObjects.add(size);
+
+
         MenuObject time24h = null;
         MenuObject time1wk = null;
         MenuObject time2wk = null;
         MenuObject time1mo = null;
         if (isRestoreScreen) {
             time24h = new MenuObject(getResources().getString(R.string.sortby24));
-            time24h.setResource(R.mipmap.ic_24hsort);
+           // time24h.setResource(R.mipmap.ic_24hsort);
             time1wk = new MenuObject(getResources().getString(R.string.sortby1w));
-            time1wk.setResource(R.mipmap.ic_1wksort);
+          //  time1wk.setResource(R.mipmap.ic_1wksort);
             time2wk = new MenuObject(getResources().getString(R.string.sortby2w));
-            time2wk.setResource(R.mipmap.ic_2wsort);
+           // time2wk.setResource(R.mipmap.ic_2wsort);
             time1mo = new MenuObject(getResources().getString(R.string.sortby1m));
-            time1mo.setResource(R.mipmap.ic_1mosort);
+          //  time1mo.setResource(R.mipmap.ic_1mosort);
             menuObjects.add(time24h);
             menuObjects.add(time1wk);
             menuObjects.add(time2wk);
@@ -305,7 +353,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
     protected void onResume() {
         super.onResume();
         if (!isRestoreScreen) {
-            setScreenNameFirebaseAnalytics("Dts Gallery Screen");
+            setScreenNameFirebaseAnalytics("KeepToo Gallery Screen");
         } else {
             setScreenNameFirebaseAnalytics("Restore Media Screen");
         }
@@ -322,7 +370,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                         REQUEST_PERMISSIONS);
             } else {
                 Toast.makeText(this,
-                        "Please take Storage permission to run dts properly", Toast.LENGTH_LONG).show();
+                        "Please take Storage permission to run keepToo properly", Toast.LENGTH_LONG).show();
                 nophotosfound.setVisibility(View.VISIBLE);
             }
         } else {
@@ -354,8 +402,14 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
 
     private void toggleToolbarText() {
         if (!isRestoreScreen) {
+          //  tv_badge.setText(length);
             tv_heading.setText(getResources().getString(R.string.gallery));
+            tv_erase.setVisibility(View.GONE);
+            tv_top.setVisibility(View.VISIBLE);
         } else {
+            tv_erase.setVisibility(View.VISIBLE);
+            tv_top.setVisibility(View.GONE);
+
             tv_heading.setText(getResources().getString(R.string.restore_images));
         }
     }
@@ -596,7 +650,8 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
             isAllCheched = false;
             clearChecked();
         } else {
-            homeScreen();
+
+           finish();
         }
     }
 
@@ -726,7 +781,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 }
                 selectedMenu = 1;
                 initMenuFragment();
-                icon_filter.setColorFilter(Color.argb(255, 255, 255, 255));
+                icon_filter.setColorFilter(Color.argb(11,193,224,1));
             } else {
                 new KeepToAsyncTask().execute(KEEP_TO_LIST_ITEMS_TIME[0]);
             }
@@ -742,7 +797,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 }
                 selectedMenu = 1;
                 initMenuFragment();
-                icon_filter.setColorFilter(Color.argb(255, 255, 255, 255));
+                icon_filter.setColorFilter(Color.argb(11,193,224,1));
             } else {
                 new KeepToAsyncTask().execute(KEEP_TO_LIST_ITEMS_TIME[2]);
             }
@@ -758,7 +813,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 }
                 selectedMenu = 1;
                 initMenuFragment();
-                icon_filter.setColorFilter(Color.argb(255, 255, 255, 255));
+                icon_filter.setColorFilter(Color.argb(11,193,224,1));
             } else {
                 new KeepToAsyncTask().execute(KEEP_TO_LIST_ITEMS_TIME[1]);
             }
@@ -774,7 +829,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 }
                 selectedMenu = 1;
                 initMenuFragment();
-                icon_filter.setColorFilter(Color.argb(255, 255, 255, 255));
+                icon_filter.setColorFilter(Color.argb(11,193,224,1));
             } else {
                 new KeepToAsyncTask().execute(KEEP_TO_LIST_ITEMS_TIME[3]);
             }
@@ -798,7 +853,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
     }
 
     private void homeScreen() {
-        Intent intent = new Intent(DtsGalleryActivity.this, HomeActivity.class);
+        Intent intent = new Intent(DtsGalleryActivity.this, TemproryFile.class);
         startActivity(intent);
         finish();
     }
@@ -868,6 +923,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 if (imageBean.getViewType() == HEADER) {
                     if (tempNum + 1 == i) {
                         imageArrayList.remove(imageArrayList.get(tempNum));
+                        Log.d(TAG, "deleteRestoreButtonClick: "+tempNum);
                     }
                     tempNum = i;
                 }
@@ -888,7 +944,11 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
         }
         if (imageArrayList.size() > 0) {
             nophotosfound.setVisibility(View.GONE);
+            length=imageArrayList.size();
+            Log.d("TAG", "deleteRestoreButtonClick: "+length);
         } else {
+             length=imageArrayList.size();
+            Log.d("TAG", "deleteRestoreButtonClick: ");
             nophotosfound.setVisibility(View.VISIBLE);
         }
     }
@@ -966,7 +1026,14 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 }
             }
             getPhotoImageArraylist.add(imageBean);
+
+
+
         }
+        /*Intent store=new Intent(getApplicationContext(),KeepSafeMultiple.class);
+        store.putExtra("images",imageArrayList);
+       // Log.d(TAG, "savedButtonClick: "+imageBean.getImagePath());
+        startActivity(store);*/
         imageArrayList.clear();
         imageArrayList = getPhotoImageArraylist;
         showHideActionButton(false);
@@ -999,9 +1066,17 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
             if (isShow) {
                 ll_save_actions.setVisibility(View.VISIBLE);
                 ll_actions_layout.setVisibility(View.VISIBLE);
+                ll_share.setVisibility(View.VISIBLE);
+                rel_bottom.setVisibility(View.GONE);
+                rel_middle.setVisibility(View.GONE);
+               ;
             } else {
                 ll_save_actions.setVisibility(View.GONE);
                 ll_actions_layout.setVisibility(View.GONE);
+                ll_share.setVisibility(View.GONE);
+                rel_bottom.setVisibility(View.VISIBLE);
+                rel_middle.setVisibility(View.VISIBLE);
+
                 selectedPhotoList.clear();
             }
         } else {
@@ -1010,10 +1085,16 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
             if (isShow) {
                 ll_save_actions.setVisibility(View.VISIBLE);
                 ll_restore.setVisibility(View.VISIBLE);
+                rel_bottom.setVisibility(View.GONE);
+                rel_middle.setVisibility(View.GONE);
 
             } else {
                 ll_save_actions.setVisibility(View.GONE);
                 ll_restore.setVisibility(View.GONE);
+                ll_restore.setVisibility(View.VISIBLE);
+                rel_bottom.setVisibility(View.VISIBLE);
+
+                rel_middle.setVisibility(View.VISIBLE);
                 selectedPhotoList.clear();
             }
 
@@ -1097,6 +1178,8 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
             if (isRestoreScreen) {
                 imageArrayList.clear();
                 imageArrayList.addAll(getRestoreGalleryData(dtsDataBase.getRestoreImageList()));
+               ArrayList<ImageBean> length=getRestoreGalleryData(dtsDataBase.getRestoreImageList());
+                Log.d(TAG, "ImageBean: "+length.size());
                 Collections.sort(imageArrayList, new DtsComparator());
             } else {
                 if (tempArrayList == null) {
@@ -1114,17 +1197,21 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 imageGridAdapter.notifyDataSetChanged();
                 if (imageArrayList.size() > 0) {
                     nophotosfound.setVisibility(View.GONE);
+                    length=imageArrayList.size();
+                    Log.d("TAG", "filerClicked: "+length);
 
                 } else {
                     nophotosfound.setVisibility(View.VISIBLE);
                 }
             }
-            icon_filter.setColorFilter(Color.argb(255, 255, 255, 255));
+            icon_filter.setColorFilter(Color.argb(11,193,224,1));
 
         } else if (position == 2) {
             if (isRestoreScreen) {
                 imageArrayList.clear();
                 imageArrayList.addAll(getRestoreGalleryData(dtsDataBase.getRestoreImageList()));
+                length=imageArrayList.size();
+                Log.d(TAG, "filerClicked: "+length);
                 Collections.sort(imageArrayList, new Comparator<ImageBean>() {
                     @Override
                     public int compare(ImageBean rhs, ImageBean lhs) {
@@ -1137,6 +1224,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
 
             } else {
                 tempArrayList = new ArrayList<ImageBean>();
+                Log.d(TAG, "TEMP: "+tempArrayList.size());
                 ArrayList<ImageBean> sortList = new ArrayList<ImageBean>();
                 for (ImageBean imageBean : imageArrayList) {
                     tempArrayList.add(imageBean);
@@ -1150,6 +1238,8 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 for (ImageBean imageBean : sortList) {
                     if(imageBean.getViewType() == CHILD){
                         imageArrayList.add(imageBean);
+                        Log.d(TAG, "TEMP: "+imageArrayList.size());
+
                     }
                 }
 
@@ -1174,7 +1264,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                     nophotosfound.setVisibility(View.VISIBLE);
                 }
             }
-            icon_filter.setColorFilter(Color.argb(255, 255, 00, 00));
+            icon_filter.setColorFilter(Color.argb(11,193,224,1));
 
         } else if (position == 3) {
             imageArrayList.clear();
@@ -1189,7 +1279,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                     nophotosfound.setVisibility(View.VISIBLE);
                 }
             }
-            icon_filter.setColorFilter(Color.argb(255, 255, 00, 00));
+            icon_filter.setColorFilter(Color.argb(11,193,224,1));
         } else if (position == 4) {
             imageArrayList.clear();
             imageArrayList.addAll(getRestoreGalleryData
@@ -1203,7 +1293,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                     nophotosfound.setVisibility(View.VISIBLE);
                 }
             }
-            icon_filter.setColorFilter(Color.argb(255, 255, 00, 00));
+            icon_filter.setColorFilter(Color.argb(11,193,224,1));
         } else if (position == 5) {
             imageArrayList.clear();
             imageArrayList.addAll(getRestoreGalleryData
@@ -1217,7 +1307,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                     nophotosfound.setVisibility(View.VISIBLE);
                 }
             }
-            icon_filter.setColorFilter(Color.argb(255, 255, 00, 00));
+            icon_filter.setColorFilter(Color.argb(11,193,224,1));
         } else if (position == 6) {
             imageArrayList.clear();
             imageArrayList.addAll(getRestoreGalleryData
@@ -1231,7 +1321,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                     nophotosfound.setVisibility(View.VISIBLE);
                 }
             }
-            icon_filter.setColorFilter(Color.argb(255, 255, 00, 00));
+            icon_filter.setColorFilter(Color.argb(11,193,224,1));
         }
     }
 
@@ -1278,7 +1368,9 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
         @Override
         protected void onPostExecute(Object o) {
             progress_rl.setVisibility(View.GONE);
-                if (imageArrayList != null && imageArrayList.size() > 0) {
+
+
+            if (imageArrayList != null && imageArrayList.size() > 0) {
                     if (imageGridAdapter == null) {
                         imageGridAdapter = new ImageGridAdapter(DtsGalleryActivity.this, DtsGalleryActivity.this,
                                 imageArrayList, Utils.getImageDimenByColumns(DtsGalleryActivity.this, noOfCollumns), isLongPressed);
@@ -1290,6 +1382,9 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                             public int getSpanSize(int position) {
                                 if (imageArrayList != null && imageArrayList.size() > 0) {
                                     if (imageArrayList.get(position).getViewType() == HEADER) {
+                                        length=imageArrayList.size();
+                                        Log.d(TAG, "getSpanSize: "+length);
+                                        tv_badge.setText(Integer.toString(length));
                                         return (noOfCollumns);
                                     } else {
                                         return (1);
@@ -1377,6 +1472,14 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
         public int compare(ImageBean t1, ImageBean t2) {
             return Long.compare(t1.getRemainingTime(), t2.getRemainingTime());
         }
+    }
+    public void moveRestoreImageGallery() {
+        Intent intent = new Intent(this, TemproryFile.class);
+     //   tv_badge.setText(Integer.toString(tempLength));
+
+        intent.putExtra(Constants.galleryType, Constants.delete);
+        startActivity(intent);
+        finish();
     }
 
 

@@ -11,6 +11,7 @@
         android:id="@+id/viewpagerlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:layout_weight="1">
 
         <com.mobile.dts.helper.ImageViewerPager
@@ -43,7 +44,94 @@
 
     </RelativeLayout>
 
+   <RelativeLayout
+       android:id="@+id/rl_crop"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="120dp"
+       android:visibility="gone"
+       android:layout_marginBottom="180dp"
+       >
 
+
+
+       <com.theartofdev.edmodo.cropper.CropImageView
+           android:id="@+id/cropImageView"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginBottom="100dp"
+           />
+
+       <LinearLayout
+           android:layout_below="@+id/cropImageView"
+           android:layout_width="match_parent"
+           android:layout_marginBottom="100dp"
+           android:orientation="horizontal"
+           android:gravity="center"
+           android:weightSum="2"
+           android:id="@+id/ll_crop1"
+           android:layout_height="wrap_content">
+
+           <ImageView
+               android:id="@+id/img_undo"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+                android:layout_weight="1"
+               android:gravity="center"
+                android:src="@drawable/ic_undo"
+               android:tint="@color/blue"
+               android:text="Cancel"/>
+           <ImageView
+               android:id="@+id/done"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_weight="1"
+               android:tint="@color/blue"
+               android:gravity="center"
+             android:src="@drawable/ic_save"
+               android:text="Done"/>
+
+
+
+       </LinearLayout>
+       <LinearLayout
+           android:id="@+id/ll_crop"
+           android:layout_width="match_parent"
+           android:layout_height="100dp"
+           android:gravity="center"
+           android:alpha="0.75"
+           android:visibility="gone"
+           android:orientation="horizontal"
+           android:background="@android:color/black"
+           android:layout_above="@+id/ll_crop1"
+
+           >
+           <ImageView
+               android:id="@+id/rotate_left"
+               android:layout_width="wrap_content"
+
+               android:layout_height="wrap_content"
+               android:background="@drawable/ic_rotate_right"
+               android:layout_marginRight="20dp"/>
+           <ImageView
+               android:id="@+id/rotate_right"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginRight="20dp"
+               android:src="@drawable/ic_rotate_left"/>
+           <ImageView
+               android:id="@+id/crop"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginRight="20dp"
+               android:src="@drawable/ic_crop"/>
+
+
+       </LinearLayout>
+
+
+
+   </RelativeLayout>
 
 
     <RelativeLayout
@@ -63,9 +151,10 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/toolbar_color"
+                android:layout_height="120dp"
+                android:background="@android:color/black"
                 app:contentInsetEnd="0dp"
+                android:alpha="0.75"
                 app:contentInsetStart="0dp">
 
                 <LinearLayout
@@ -80,6 +169,15 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="5dp"
                         android:src="@drawable/ic_left_angle_bracket" />
+                    <ImageView
+                        android:id="@+id/iv_undo"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:visibility="gone"
+                        android:layout_marginLeft="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:src="@mipmap/undo" />
 
                     <TextView
                         android:id="@+id/tv_image_name"
@@ -95,6 +193,7 @@
                         android:textStyle="bold"
                         android:visibility="gone" />
 
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -102,67 +201,116 @@
                         android:gravity="center"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tv_date"
+
+                        <RelativeLayout
+                            android:id="@+id/shareimage"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/padding_small"
-                            android:layout_marginEnd="@dimen/padding_small"
+                            android:layout_gravity="right"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:id="@+id/iimg_share"
+                                android:layout_width="100dp"
+                                android:layout_height="50dp"
+                                android:src="@mipmap/group_2144"
+                                android:tint="@color/blue"
+
+                                android:padding="10dp"
+                                />
+
+
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="12-02-2019"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/large_text_size" />
+                            android:orientation="vertical"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+
+                            >
+
+                            <TextView
+                                android:background="@drawable/curve_black"
+                                android:paddingLeft="20dp"
+                                android:paddingRight="20dp"
+                                android:id="@+id/tv_date"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="12-02-2019"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/large_text_size" />
+                            <LinearLayout
+                                android:layout_marginTop="10dp"
+                                android:id="@+id/stopwatchmainly"
+                                android:paddingRight="10dp"
+                                android:paddingLeft="10dp"
+                                android:layout_width="250dp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/curve_black"
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                >
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-smallcaps"
+                                    android:padding="3dp"
+                                    android:scaleY="1.2"
+                                    android:drawableLeft="@mipmap/icon_timer"
+                                    android:capitalize="none"
+                                    android:text="Remaining :"
+                                    android:textAlignment="center"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp" />
+
+                                <android.support.v7.widget.AppCompatTextView
+                                    android:id="@+id/stopWatch"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/droid_sans_mono"
+                                    android:padding="3dp"
+                                    android:scaleY="1.2"
+                                    android:text="sadasdsadd"
+                                    android:textAlignment="center"
+                                    android:textColor="@android:color/white"
+                                    android:textSize="14sp" />
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
 
                         <TextView
                             android:id="@+id/tv_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/padding_small"
+                            android:paddingLeft="20dp"
+                            android:visibility="gone"
+                            android:paddingRight="20dp"
                             android:gravity="center"
+                            android:background="@drawable/curve_black"
                             android:text="02:45 PM"
                             android:textColor="@color/white"
                             android:textSize="@dimen/medium_text_size" />
+
                     </LinearLayout>
+
                 </LinearLayout>
+
+
             </android.support.v7.widget.Toolbar>
+
         </android.support.design.widget.AppBarLayout>
 
 
-        <LinearLayout
-            android:id="@+id/stopwatchmainly"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/appbarlayout"
-            android:background="#E6f0f0f0"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <android.support.v7.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-smallcaps"
-                android:padding="3dp"
-                android:scaleY="1.2"
-                android:text="Remaining :"
-                android:textAlignment="center"
-                android:textColor="#474747"
-                android:textSize="16sp" />
-
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/stopWatch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/droid_sans_mono"
-                android:padding="3dp"
-                android:scaleY="1.2"
-                android:text="sadasdsadd"
-                android:textAlignment="center"
-                android:textColor="#474747"
-                android:textSize="16sp" />
-
-
-        </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_new"
@@ -211,10 +359,12 @@
         <LinearLayout
             android:id="@+id/ll_save_actions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="center"
-            android:background="#fafafa"
+            android:alpha="0.75"
+            android:background="@android:color/black"
+
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingTop="3dp"
@@ -228,14 +378,9 @@
                 android:layout_marginEnd="3dp"
                 android:background="@drawable/saverippleeffect"
                 android:clickable="true"
+
                 android:orientation="vertical">
 
-                <View
-                    android:layout_width="41dp"
-                    android:layout_height="41dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/shadowlayout" />
 
                 <ImageView
                     android:layout_width="43dp"
@@ -244,7 +389,7 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:clickable="false"
-                    android:src="@mipmap/ic_restoreicon"
+                    android:src="@mipmap/ic_restore"
                     android:text="@string/delete" />
 
                 <TextView
@@ -258,7 +403,7 @@
                     android:capitalize="words"
                     android:clickable="false"
                     android:text="@string/restore"
-                    android:textColor="#C47D2A"
+                    android:textColor="@color/voilet_dark"
                     android:textSize="@dimen/normal_text_size" />
 
             </RelativeLayout>
@@ -279,7 +424,7 @@
                     android:layout_height="41dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/shadowlayout" />
+                     />
 
                 <ImageView
                     android:id="@+id/ic_save"
@@ -289,7 +434,7 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:clickable="false"
-                    android:src="@mipmap/ic_saveimg"
+                    android:src="@drawable/ic_save"
                     android:text="@string/delete" />
 
                 <TextView
@@ -303,7 +448,7 @@
                     android:capitalize="words"
                     android:clickable="false"
                     android:text="@string/save"
-                    android:textColor="#3EC0BF"
+                    android:textColor="@color/color_save"
                     android:textSize="@dimen/normal_text_size" />
 
             </RelativeLayout>
@@ -323,7 +468,7 @@
                     android:layout_height="41dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/shadowlayout" />
+                     />
 
                 <ImageView
                     android:layout_width="43dp"
@@ -333,7 +478,7 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:clickable="false"
-                    android:src="@mipmap/ic_keeptoicon"
+                    android:src="@drawable/ic_keep_to"
                     android:text="@string/delete" />
 
                 <TextView
@@ -347,13 +492,57 @@
                     android:capitalize="words"
                     android:clickable="false"
                     android:text="@string/save24"
-                    android:textColor="#6084A3"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/normal_text_size" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/savekeepsafe"
+                android:layout_width="59dp"
+                android:layout_height="59dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/saverippleeffect"
+                android:clickable="true"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="41dp"
+                    android:layout_height="41dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerInParent="true"
+                     />
+
+                <ImageView
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:layout_alignParentTop="true"
+
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:clickable="false"
+                    android:tint="@color/blue"
+                    android:src="@mipmap/fingerprint"
+                    android:text="@string/delete" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="1dp"
+                    android:capitalize="words"
+                    android:clickable="false"
+                    android:text="@string/keep_safe"
+                    android:textColor="@color/blue"
                     android:textSize="@dimen/normal_text_size" />
 
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/shareimage"
+                android:visibility="gone"
                 android:layout_width="59dp"
                 android:layout_height="59dp"
                 android:layout_marginStart="3dp"
@@ -404,12 +593,6 @@
                 android:clickable="true"
                 android:orientation="vertical">
 
-                <View
-                    android:layout_width="41dp"
-                    android:layout_height="41dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/shadowlayout" />
 
                 <ImageView
                     android:layout_width="43dp"
@@ -418,7 +601,7 @@
                     android:layout_centerInParent="true"
                     android:layout_gravity="center"
                     android:clickable="false"
-                    android:src="@mipmap/ic_deleteicon"
+                    android:src="@drawable/ic_delete"
                     android:text="@string/delete" />
 
                 <TextView
@@ -432,7 +615,43 @@
                     android:capitalize="words"
                     android:clickable="false"
                     android:text="@string/delete"
-                    android:textColor="#EF8282"
+                    android:textColor="@color/voilet_dark"
+                    android:textSize="@dimen/normal_text_size" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/magicimage"
+                android:layout_width="59dp"
+                android:layout_height="59dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/saverippleeffect"
+                android:clickable="true"
+                android:orientation="vertical">
+
+
+                <ImageView
+                    android:layout_width="43dp"
+                    android:layout_height="43dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:clickable="false"
+                    android:src="@drawable/ic_magic_wand_preview"
+                    android:text="@string/delete" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="1dp"
+                    android:capitalize="words"
+                    android:clickable="false"
+                    android:text="@string/edit"
+                    android:textColor="@color/light_ornage"
                     android:textSize="@dimen/normal_text_size" />
 
             </RelativeLayout>

@@ -984,11 +984,11 @@ public class DtsWidget extends Service implements View.OnClickListener {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 1,
                 notificationIntent, 0);
         Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                R.mipmap.ic_launcher);
+                R.mipmap.logo_launcher);
         NotificationCompat.Builder notification = new NotificationCompat.Builder(DtsWidget.this)
-                .setTicker("Dts Widget showing")
-                .setContentText("Dts Widget showing")
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("KeepToo Widget showing")
+                .setContentText("KeepToo Widget showing")
+                .setSmallIcon(R.mipmap.logo_launcher)
                 .setLargeIcon(Bitmap.createScaledBitmap(icon, 128, 128, false))
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationManager.IMPORTANCE_NONE)
@@ -1036,11 +1036,11 @@ public class DtsWidget extends Service implements View.OnClickListener {
         );
 
         Bitmap icon = BitmapFactory.decodeResource(getResources(),
-                R.mipmap.ic_launcher);
+                R.mipmap.logo_launcher);
         NotificationCompat.Builder notification = new NotificationCompat.Builder(DtsWidget.this,CHANNEL_ONE_ID)
-                .setTicker("Dts Widget showing")
-                .setContentText("Dts Widget showing")
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker("KeepToo Widget showing")
+                .setContentText("KeepToo Widget showing")
+                .setSmallIcon(R.mipmap.logo_launcher)
                 .setLargeIcon(Bitmap.createScaledBitmap(icon, 128, 128, false))
                 .setContentIntent(pendingIntent)
                 .setPriority(NotificationManager.IMPORTANCE_NONE)
@@ -1086,11 +1086,11 @@ public class DtsWidget extends Service implements View.OnClickListener {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
+        Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.logo_launcher);
         Notification notification = new Notification.Builder(this, CHANNEL_ONE_ID)
-                .setContentText("Dts Widget showing")
+                .setContentText("KeepToo Widget showing")
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.logo_launcher)
                 .setLargeIcon(icon)
                 .setPriority(Notification.PRIORITY_MIN)
                 .getNotification();

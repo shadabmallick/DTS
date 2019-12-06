@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/topbar_finger_scan"
+        android:id="@+id/top"></include>
+
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_below="@+id/top"
+    android:background="@color/blue">
+
+
+
+    <RelativeLayout
+        android:id="@+id/rel_center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_group_2035"/>
+    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_use_finger"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/code"
+        android:textSize="16dp"
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/rel_center"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_or"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_four_digit"
+        android:textSize="16dp"
+        android:textColor="@android:color/white"
+        android:layout_below="@+id/tv_use_finger"
+        android:gravity="center"/>
+
+    <EditText
+        android:id="@+id/button_enter4digit"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:gravity="center"
+        android:textSize="30dp"
+        android:maxLength="4"
+        android:background="@drawable/cursor_color"
+        android:textCursorDrawable="@color/title_color"
+        android:inputType="numberPassword"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_below="@+id/tv_or"/>
+</RelativeLayout>
+</RelativeLayout>

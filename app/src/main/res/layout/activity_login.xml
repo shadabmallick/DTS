@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_bg"
+    android:background="@mipmap/screen4"
     android:orientation="vertical"
     tools:context="com.mobile.dts.activity.LoginActivity">
 
@@ -31,7 +31,7 @@
                 android:adjustViewBounds="true"
                 android:background="@drawable/ripple_bg"
                 android:clickable="true"
-                android:src="@mipmap/google"
+                android:src="@mipmap/icon_google"
 
                 />
 
@@ -43,7 +43,7 @@
                 android:adjustViewBounds="true"
                 android:background="@drawable/ripple_bg"
                 android:clickable="true"
-                android:src="@mipmap/fb"
+                android:src="@mipmap/icon_facebook"
 
                 />
 
@@ -60,6 +60,7 @@
 
             <android.support.v7.widget.AppCompatCheckBox
                 android:id="@+id/cb_terms"
+                android:buttonTint="@android:color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 

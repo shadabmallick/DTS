@@ -40,7 +40,8 @@ public class GooglePlusLogin implements GoogleApiClient.OnConnectionFailedListen
 
     public void onStart() {
         mGoogleApiClient.connect();
-        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        OptionalPendingResult<GoogleSignInResult> opr =
+                Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);

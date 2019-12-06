@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="FullScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+
+         <item name="android:windowFullscreen">true</item>
+        <item name="colorPrimary">@color/tab_color1</item>
+        <item name="colorPrimaryDark">@color/tab_color1</item>
+        <item name="colorAccent">@color/tab_color1</item>
+    </style>
+</resources>

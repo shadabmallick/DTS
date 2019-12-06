@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gallery_tour_background">
+    <RelativeLayout
+        android:id="@+id/rel_top"
+        android:layout_width="match_parent"
+        android:background="@android:color/white"
+        android:layout_height="61dp">
+        <TextView
+            android:id="@+id/tv_top_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:text="@string/tour"
+            android:layout_centerInParent="true"
+            android:textColor="@color/gallery_tour_background"/>
+
+
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:layout_below="@+id/rel_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="150dp">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+
+            android:layout_height="match_parent">
+
+
+
+            <RelativeLayout
+                android:id="@+id/rl_top_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp">
+
+                <TextView
+                    android:id="@+id/tv_grand_tour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/grand_tour"
+                    android:gravity="center"
+                    android:textSize="16dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    />
+                <TextView
+                    android:layout_below="@+id/tv_grand_tour"
+                    android:id="@+id/tv_grand_tour1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/grand_tour1"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="16dp"
+                    />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_below="@+id/rl_top_text"
+                android:layout_width="wrap_content"
+                android:id="@+id/rel_center"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+
+                >
+
+
+                <ImageView
+                    android:id="@+id/img_center"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_group_2041"
+
+                    />
+
+
+            </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_take_a_tour"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="64dp"
+                android:textSize="20sp"
+                android:background="@drawable/take_a_tour"
+                   android:text="@string/take_a_tour"
+                android:layout_marginRight="64dp"
+
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:gravity="center"
+                android:text="@string/may_be_later"
+                android:padding="10dp"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="64dp"
+                android:textSize="15dp"
+
+                android:layout_marginRight="64dp"
+
+
+
+                />
+
+
+
+        </LinearLayout>
+
+
+
+
+
+    </ScrollView>
+
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/rel_below"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/bottom" />
+
+
+
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 
@@ -23,7 +24,7 @@ import static com.mobile.dts.activity.MainApplication.KEEPTODIRECTORYPATH;
 /*Use to store database data*/
 public class SqlLiteHelper extends SQLiteOpenHelper {
     //db name
-    public static final String DATABASE_NAME = "dts.db";
+    public static final String DATABASE_NAME = "keeptoo.db";
     //db table name
     public static final String TABLE_MEDIA_LIST = "tbl_media_list";
     //db @TABLE_MEDIA_LIST column name
@@ -38,9 +39,18 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     //db version
     private static final int DATABASE_VERSION = 3;
 
-    private static final String CREATE_TABLE_MEDIA_LIST_QUERY = "CREATE  TABLE " + TABLE_MEDIA_LIST + " ( " + MDL_PHOTO_PATH + " VARCHAR PRIMARY KEY, " +
-            MDL_ACTION_TIME + " INTEGER, " + MDL_TIME_TAKEN + " INTEGER, " + MDL_IS_SAVED + " INTEGER DEFAULT 0, "
-            + MDL_IS_SAVED_24_HOURS + " INTEGER DEFAULT 0, " + MDL_IS_DELETED + " INTEGER DEFAULT 0, " + MDL_KEEP_TIME + " INTEGER DEFAULT 0, " + MDL_KEEPTO_URL + " VARCHAR );";
+    private static final String CREATE_TABLE_MEDIA_LIST_QUERY =
+            "CREATE  TABLE " + TABLE_MEDIA_LIST
+                    + " ( " + MDL_PHOTO_PATH + " VARCHAR PRIMARY KEY, "
+                    + MDL_ACTION_TIME + " INTEGER, "
+                    + MDL_TIME_TAKEN + " INTEGER, "
+                    + MDL_IS_SAVED + " INTEGER DEFAULT 0, "
+                    + MDL_IS_SAVED_24_HOURS + " INTEGER DEFAULT 0, "
+                    + MDL_IS_DELETED + " INTEGER DEFAULT 0, "
+                    + MDL_KEEP_TIME + " INTEGER DEFAULT 0, "
+                    + MDL_KEEPTO_URL + " VARCHAR );";
+
+
     boolean notification;
     private SQLiteDatabase database;
     private SharedPreferences settingsPref;
@@ -499,6 +509,23 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         return imageBeans;
     }
 
+
+    public ArrayList<String> getSavedImageList() {
+        database = this.getReadableDatabase();
+        ArrayList<String> imageBeans = new ArrayList<String>();
+        String columnName = MDL_IS_SAVED;
+
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_MEDIA_LIST + " WHERE " + columnName + " = " + 1 + " ORDER BY " + MDL_TIME_TAKEN + " DESC", null);
+        if (cursor.moveToFirst()) {
+            do {
+                imageBeans.add(cursor.getString(cursor.getColumnIndex(MDL_PHOTO_PATH)));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return imageBeans;
+    }
+
+
     /*Use to get Restore media file list*/
     public ArrayList<PhotoDetailBean> getRestoreImageList() {
         database = this.getReadableDatabase();
@@ -644,5 +671,56 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         } else {
             return false;
         }
+    }
+
+    public void queryData(String sql){
+        SQLiteDatabase database = getWritableDatabase();
+        database.execSQL(sql);
+    }
+
+    public void insertData(String name, String price, byte[] image){
+        SQLiteDatabase database = getWritableDatabase();
+        String sql = "INSERT INTO FOOD VALUES (NULL, ?, ?)";
+
+        SQLiteStatement statement = database.compileStatement(sql);
+        statement.clearBindings();
+
+        statement.bindString(1, name);
+
+        statement.bindBlob(2, image);
+
+        statement.executeInsert();
+    }
+
+    public void updateData(String name, String price, byte[] image, int id) {
+        SQLiteDatabase database = getWritableDatabase();
+
+        String sql = "UPDATE FOOD SET name = ?, image = ? WHERE id = ?";
+        SQLiteStatement statement = database.compileStatement(sql);
+
+        statement.bindString(1, name);
+
+        statement.bindBlob(2, image);
+        statement.bindDouble(4, (double)id);
+
+        statement.execute();
+        database.close();
+    }
+
+    public  void deleteData(int id) {
+        SQLiteDatabase database = getWritableDatabase();
+
+        String sql = "DELETE FROM FOOD WHERE id = ?";
+        SQLiteStatement statement = database.compileStatement(sql);
+        statement.clearBindings();
+        statement.bindDouble(1, (double)id);
+
+        statement.execute();
+        database.close();
+    }
+
+    public Cursor getData(String sql){
+        SQLiteDatabase database = getReadableDatabase();
+        return database.rawQuery(sql, null);
     }
 }

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_brown"
+
+    >
+    <RelativeLayout
+        android:id="@+id/rel_top"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_group_2112"
+            android:tint="@color/color_brown"
+            android:padding="10dp"/>
+        <TextView
+            android:id="@+id/tv_top_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:text="@string/tour"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/color_brown"/>
+
+
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:layout_below="@+id/rel_top"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <RelativeLayout
+                android:background="@color/color_brown"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/restore_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/retore_text"
+                    android:layout_marginTop="20dp"/>
+                <TextView
+                    android:id="@+id/tv_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_below="@+id/restore_title"
+                    android:textSize="16dp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/restore_subtitle"
+                    />
+
+
+                <ImageView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_subtitle"
+                    android:layout_marginTop="35dp"
+                    android:scaleType="fitXY"
+                    android:layout_centerInParent="true"
+                    android:id="@+id/center"
+                    android:src="@drawable/ic_group_2142"/>
+
+                <TextView
+                    android:id="@+id/tv_next"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="@string/next"
+                    android:textSize="20dp"
+                    android:layout_marginTop="40dp"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/center_button"
+                    android:gravity="center"
+                    android:layout_marginLeft="65dp"
+                    android:layout_marginRight="65dp"
+                    android:layout_below="@+id/center"/>
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/rel_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+
+        android:layout_marginBottom="30dp">
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_below"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_alignParentBottom="true">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/temp"/>
+
+
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

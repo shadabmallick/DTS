@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/screen4">
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:src="@mipmap/center_logo"/>
+
+
+
+    <RelativeLayout
+        android:id="@+id/rl_storage_permission"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+        android:layout_alignParentBottom="true">
+
+
+        <include
+            android:id="@+id/storage2"
+
+            layout="@layout/storage_access_permission_dialog"/>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

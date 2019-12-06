@@ -237,7 +237,7 @@ public class ImageJobService extends JobService {
         bigText.setSummaryText(count + " " + summary);
         mBuilder.setAutoCancel(true);
         mBuilder.setContentIntent(contentIntent);
-        mBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        mBuilder.setSmallIcon(R.mipmap.logo_launcher);
         mBuilder.setContentText(count + " " + summary);
         mBuilder.setPriority(Notification.PRIORITY_MAX);
         mBuilder.setStyle(bigText);

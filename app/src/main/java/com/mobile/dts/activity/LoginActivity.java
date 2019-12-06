@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -36,11 +39,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login);
+
         initViews();
         initObjects();
+
         initClickListner();
         setScreenNameFirebaseAnalytics("Login Screen", null);
+
     }
 
 
@@ -77,10 +85,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (isTermChecked()) {
                 mGooglePlusLogin.signIn();
 
+
+
+
             }
         } else if (v.getId() == R.id.ll_login_fb) {
             if (isTermChecked()) {
                 facebookManager.doLogin();
+
             }
         } else if (v.getId() == R.id.tv_terms) {
             startActivity(new Intent(this, TermPageActivity.class));
@@ -106,7 +118,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void startHomescreen() {
-        startActivity(new Intent(this, HomeActivity.class));
+        Intent code=new Intent(this, IntroductionAfterLogin.class);
+        code.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        code.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(code);
         this.finish();
     }
 
@@ -137,5 +152,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 }

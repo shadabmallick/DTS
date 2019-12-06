@@ -22,6 +22,7 @@ import com.mobile.dts.helper.GlideApp;
 import com.mobile.dts.helper.photoview.OnViewTapListener;
 import com.mobile.dts.model.ImageBean;
 import com.mobile.dts.utills.Utils;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -67,6 +68,7 @@ public class SlidingImageAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         View itemView = layoutInflater.inflate(R.layout.layout_adapter_sliding_image, container, false);
         final com.mobile.dts.helper.photoview.PhotoView imageView = itemView.findViewById(R.id.imageView);
+        CropImageView cropImageView=itemView.findViewById(R.id.cropImageView);
         imageView.setOnViewTapListener(new ImageViewTapListener());
         ImageView iv_play = itemView.findViewById(R.id.iv_play);
         if (isNavigationExists) {
@@ -90,15 +92,15 @@ public class SlidingImageAdapter extends PagerAdapter {
         }
         File mediaFile = new File(imageArrayList.get(position).getImagePath());
         if (mediaFile != null && mediaFile.exists()) {
-          /*  GlideApp.with(context).
+            GlideApp.with(context).
                     load(imageArrayList.get(position).getImagePath())
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
-                    .into(imageView);*/
-
-            GlideApp.with(context).
-                    load(imageArrayList.get(position).getImagePath())
                     .into(imageView);
+
+        /*    GlideApp.with(context).
+                    load(imageArrayList.get(position).getImagePath())
+                    .into(imageView);*/
 
             itemView.findViewById(R.id.deletedmediatxt).setVisibility(View.GONE);
         } else {

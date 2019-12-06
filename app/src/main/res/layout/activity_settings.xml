@@ -8,41 +8,67 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"
-        android:background="@color/toolbar_color">
+        android:background="@color/white">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
 
-            <ImageButton
+            <ImageView
                 android:id="@+id/icon_home"
-                android:layout_width="30dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_alignParentStart="true"
-                android:layout_centerInParent="true"
-                android:background="@null"
-                android:src="@mipmap/icon_home" />
+
+                android:tint="@color/blue"
+                android:src="@drawable/ic_arrow_left_solid" />
 
             <TextView
                 android:id="@+id/tv_heading"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/settings"
-                android:textColor="@color/white"
+                android:text="Settings"
+                android:layout_weight="1.4"
+                android:textColor="@color/blue"
+                android:gravity="center"
+
+                android:layout_gravity="center"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/tell_friend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".6"
 
-        </RelativeLayout>
+                android:src="@mipmap/tell_friend"/>
+
+
+
+        </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
+    <RelativeLayout
+        android:id="@+id/rel_top"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_height="100dp"
+        android:background="@mipmap/tour_new">
+
+
+
+
+    </RelativeLayout>
     <fragment
+
         android:id="@+id/settingfragment"
         android:name="com.mobile.dts.activity.SettingsActivity$MyPreferenceFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/rel_top" />
 
 
 </RelativeLayout>

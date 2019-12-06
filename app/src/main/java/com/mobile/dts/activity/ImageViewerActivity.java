@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -51,7 +52,14 @@ import com.mobile.dts.utills.Constants;
 import com.nhaarman.supertooltips.ToolTip;
 import com.nhaarman.supertooltips.ToolTipRelativeLayout;
 import com.nhaarman.supertooltips.ToolTipView;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,16 +79,20 @@ import static com.mobile.dts.utills.Constants.newImagenotificationRequestCode;
 public class ImageViewerActivity extends AppCompatActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener, ToolTipView.OnToolTipViewClickedListener, ZoomImageClickListener {
     public static int zoomedValue = -1;
+    public static String TAG="ImageViewerActivity";
     final String[] KEEP_TO_LIST_ITEMS = new String[]{"24 Hours", "48 Hours", "1 Week", "1 Month"};
     final Long[] KEEP_TO_LIST_ITEMS_TIME = new Long[]{Long.valueOf((24 * 60 * 60 * 1000)), Long.valueOf((7 * 24 * 60 * 60 * 1000)),
             Long.valueOf((2 * 7 * 24 * 60 * 60 * 1000)), Long.valueOf(30) * 24 * 60 * 60 * 1000};
-    private ImageView iv_back, iv_left, iv_right, iv_new;
+    private ImageView img_undo,tv_done,rotate_right, rotate_left,iv_undo,iv_back, iv_left, iv_right, iv_new;
     private TextView tv_image_indication_text, tv_image_name, tv_date, tv_time;
-    private LinearLayout ll_save_actions, stopwatchmainly;
+    private LinearLayout ll_crop,ll_save_actions, stopwatchmainly;
     private SqlLiteHelper dtsDataBase;
     private ArrayList<ImageBean> imageBeanArrayList;
     private ViewPager viewPager;
     private int position;
+    Uri uri;
+    File imageFile;
+    OutputStream fOut = null;
     private SlidingImageAdapter slidingImageAdapter = null;
     private TextView stopWatch;
     private boolean isRestoredImages, isSavedImage = false, isFromNotification, isShowBottomView, isOnPauseTrue;
@@ -94,7 +106,8 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
     private FrameLayout mainlayout;
     private AppBarLayout appbarlayout;
     private Timer timer;
-    private RelativeLayout saveImageBtn, save24Btn, shareBtn, deleteBtn, ll_restore, progress_rl, viewpagerlayout;
+    CropImageView cropImageView;
+    private RelativeLayout rl_crop,magicimage,saveImageBtn, save24Btn, shareBtn, deleteBtn, ll_restore, progress_rl, viewpagerlayout;
     private FirebaseAnalytics mFirebaseAnalytics;
     private long mLastClickTime = 0;
     private boolean isKeepToProcessing = false;
@@ -179,9 +192,12 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onPageSelected(int position) {
                 ImageViewerActivity.this.position = position;
+
                 setIndicatorText();
                 if (isRestoredImages) {
                     File imageFile = new File(imageBeanArrayList.get(position).getImagePath());
+
+                    Log.d(TAG, "onPageSelected: "+uri);
                     if (imageFile.exists()) {
                         if (ll_save_actions.getVisibility() == View.GONE) {
                             ll_save_actions.setVisibility(View.VISIBLE);
@@ -235,9 +251,16 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
         if (imageBeanArrayList.size() > 0) {
             String text = String.format(getResources().getString(R.string.image_indication_text), (position + 1 + ""), imageBeanArrayList.size());
             tv_image_indication_text.setText(text);
+            imageFile = new File(imageBeanArrayList.get(position).getImagePath());
+            uri = Uri.fromFile(imageFile);
+            Log.d(TAG, "setIndicatorText: "+imageFile);
+            Log.d(TAG, "setIndicatorText: "+uri);
+            cropImageView.setImageUriAsync(uri);
+
+
             tv_image_name.setText((imageBeanArrayList.get(position).getImageName()));
-            tv_date.setText(imageBeanArrayList.get(position).getCreatedDate());
-            tv_time.setText(imageBeanArrayList.get(position).getCreatedTime());
+            tv_date.setText(imageBeanArrayList.get(position).getCreatedDate()+ " "+imageBeanArrayList.get(position).getCreatedTime());
+          //  tv_time.setText(imageBeanArrayList.get(position).getCreatedTime());
             if (imageBeanArrayList.get(position).isNew() && !isShowBottomView) {
                 iv_new.setVisibility(View.VISIBLE);
             } else {
@@ -245,6 +268,8 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
             }
         }
     }
+
+
     /*Set Stop watch for restore media*/
     private void setStopWatch() {
         if (countDownTimer != null) {
@@ -255,6 +280,10 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
     private void initViews() {
         viewPager = findViewById(R.id.viewPager);
         saveImageBtn = findViewById(R.id.saveimage);
+        tv_done = findViewById(R.id.done);
+        img_undo = findViewById(R.id.img_undo);
+        saveImageBtn = findViewById(R.id.saveimage);
+        rl_crop = findViewById(R.id.rl_crop);
         save24Btn = findViewById(R.id.saveimage24);
         shareBtn = findViewById(R.id.shareimage);
         deleteBtn = findViewById(R.id.deleteimage);
@@ -269,11 +298,83 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
         tv_date = findViewById(R.id.tv_date);
         tv_time = findViewById(R.id.tv_time);
         stopWatch = findViewById(R.id.stopWatch);
+        ll_crop = findViewById(R.id.ll_crop);
+        iv_undo = findViewById(R.id.iv_undo);
+        rotate_right = findViewById(R.id.rotate_right);
+        rotate_left = findViewById(R.id.rotate_left);
         stopwatchmainly = findViewById(R.id.stopwatchmainly);
+        cropImageView = findViewById(R.id.cropImageView);
         mainlayout = findViewById(R.id.mainlayout);
+        magicimage = findViewById(R.id.magicimage);
         appbarlayout = findViewById(R.id.appbarlayout);
         progress_rl = findViewById(R.id.progress_rl);
         viewpagerlayout = findViewById(R.id.viewpagerlayout);
+        magicimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 viewpagerlayout.setVisibility(View.GONE);
+                viewPager.setVisibility(View.GONE);
+                rl_crop.setVisibility(View.VISIBLE);
+
+                ll_crop.setVisibility(ll_crop.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+                iv_undo.setVisibility(iv_undo.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            }
+        });
+        rotate_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                cropImageView.setRotation(cropImageView.getRotation() + 90);
+            }
+        });
+        rotate_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                cropImageView.setRotation(cropImageView.getRotation() - 90);
+            }
+        });
+        tv_done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: ");
+                Bitmap cropped = cropImageView.getCroppedImage();
+                cropImageView.setImageBitmap(cropped);
+
+                if (cropped != null) {
+                    try {
+                        // build directory
+                        if (imageFile.exists()){
+                            imageFile.delete();
+                        }
+
+                        FileOutputStream fos = new FileOutputStream(imageFile);
+                        cropped.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                        fos.close();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                //   imageBeanArrayList.clear();
+
+                //  File imageFile = new File(imageBeanArrayList.get(position).getImagePath());
+                rl_crop.setVisibility(View.GONE);
+                viewPager.setVisibility(View.VISIBLE);
+                viewpagerlayout.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+img_undo.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        rl_crop.setVisibility(View.GONE);
+        viewPager.setVisibility(View.VISIBLE);
+        viewpagerlayout.setVisibility(View.VISIBLE);
+    }
+});
+
     }
     private void initObjects() {
         isRestoredImages = getIntent().getBooleanExtra(Constants.KEY_IS_RESTORED_IMAGE, false);
@@ -342,8 +443,8 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
         }
         dtsDataBase = new SqlLiteHelper(this);
         tv_image_name.setText(imageBeanArrayList.get(position).getImageName());
-        tv_date.setText(imageBeanArrayList.get(position).getCreatedDate());
-        tv_time.setText(imageBeanArrayList.get(position).getCreatedTime());
+        tv_date.setText(imageBeanArrayList.get(position).getCreatedDate()+imageBeanArrayList.get(position).getCreatedTime());
+      //  tv_time.setText(imageBeanArrayList.get(position).getCreatedTime());
         if (isSavedImage || isRestoredImages) {
             ArrayList<ImageBean> imageBeans = new ArrayList<ImageBean>();
             for (int i = 0; i < imageBeanArrayList.size(); i++) {
@@ -682,6 +783,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
         View view = LayoutInflater.from(this).inflate(R.layout.custom_tooltip, null);
         ToolTip toolTip = new ToolTip()
                 .withContentView(view)
+
                 .withColor(Color.parseColor("#00ffffff"))
                 .withAnimationType(ToolTip.AnimationType.FROM_TOP);
         view.findViewById(R.id.keep24).setOnClickListener(ImageViewerActivity.this);

@@ -10,6 +10,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobile.dts.R;
@@ -24,7 +25,7 @@ import static com.mobile.dts.utills.Constants.yCoordinate;
 /*Use to set Widget location*/
 public class WidgetLocationActivity extends AppCompatActivity {
     private Context context;
-    private Button updatebtn;
+    private TextView updatebtn;
     private SharedPreferences sharedpreferences;
     private Intent serviceIntent;
 

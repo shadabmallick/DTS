@@ -11,6 +11,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mobile.dts.R;
@@ -22,7 +23,7 @@ import java.util.Locale;
 public class SettingsActivity extends AppCompatActivity {
 
     private static final int OVERLAY_PERMISSION_REQ_CODE = 103;
-    private ImageButton icon_home;
+    private ImageView icon_home,tell_friend;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
@@ -30,10 +31,19 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         icon_home = findViewById(R.id.icon_home);
+        tell_friend = findViewById(R.id.tell_friend);
         icon_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 homeScreen();
+            }
+        });
+        tell_friend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsActivity.this, TellFriend.class);
+                startActivity(intent);
+                finish();
             }
         });
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -45,7 +55,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void homeScreen() {
-        Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
+        Intent intent = new Intent(SettingsActivity.this, DtsGalleryActivity.class);
         startActivity(intent);
         finish();
     }
@@ -126,7 +136,7 @@ public class SettingsActivity extends AppCompatActivity {
                     return false;
                 }
             });
-          /*  Preference language = findPreference(getString(R.string.setLanguage));
+            Preference language = findPreference(getString(R.string.setLanguage));
             language.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
                 @Override
@@ -137,7 +147,7 @@ public class SettingsActivity extends AppCompatActivity {
                     }
                     return true;
                 }
-            });*/
+            });
         }
 
         /*Handle lauguage selection process*/

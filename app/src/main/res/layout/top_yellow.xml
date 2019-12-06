@@ -1,0 +1,28 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="61dp">
+        <ImageView
+            android:id="@+id/img_back"
+            android:tint="@color/take_a_tour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_group_2112"
+            android:padding="10dp"/>
+        <TextView
+            android:id="@+id/tv_top_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:textSize="16dp"
+            android:text="@string/tour"
+            android:textColor="@color/take_a_tour"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

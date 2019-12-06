@@ -284,7 +284,7 @@ public class Scheduler extends BroadcastReceiver {
         bigText.setSummaryText(count + " " + summary);
         mBuilder.setAutoCancel(true);
         mBuilder.setContentIntent(contentIntent);
-        mBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        mBuilder.setSmallIcon(R.mipmap.logo_launcher);
         mBuilder.setContentText(count + " " + summary);
         mBuilder.setPriority(Notification.PRIORITY_MAX);
         mBuilder.setStyle(bigText);
@@ -292,7 +292,7 @@ public class Scheduler extends BroadcastReceiver {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelID,
-                    "DtsApp",
+                    "KeepToo",
                     NotificationManager.IMPORTANCE_DEFAULT);
             channel.setSound(null, null);
             mNotificationManager.createNotificationChannel(channel);

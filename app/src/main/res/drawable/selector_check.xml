@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_checked="true"
-          android:drawable="@mipmap/ic_checked" /> <!-- checked -->
+          android:drawable="@drawable/ic_outline" /> <!-- checked -->
     <item android:state_checked="false"
-          android:drawable="@mipmap/ic_unchecked" /> <!-- unchecked-->
+          android:drawable="@drawable/ic_outline_check_box_24px" /> <!-- unchecked-->
 </selector>

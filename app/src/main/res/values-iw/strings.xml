@@ -1,13 +1,42 @@
 <resources>
-    <string name="app_name">dts</string>
-    <string name="facebook_app_id">1208072019334451</string>
+    <string name="app_name">KeepToo</string>
+    <string name="facebook_app_id">1373665722798910</string>
+    <string name="location_activity">Location Activity</string>
+    <string name="widget_position">Select the position that you want the widget to appear.</string>
+    <string name="spread_text1">Spread the word</string>
+    <string name="spread_text"> Enjoying our app? send a link to a friend and welcome him to join our great service</string>
+    <string name="rate_us">KeepToo Rate us</string>
+    <string name="rate_us_title">Enjoying KeepToo? </string>
+    <string name="rate_us_subtitle">What is your level of satisfaction of application?</string>
+    <string name="rate_us_text">Rate us</string>
+    <string name="safe_service">Safe Service</string>
+    <string name="safe_service_text">Enjoying our safe service? </string>
+    <string name="safe_service_subtext">We will be glad to continue to give\n you the service, plus a fee to continue\n to enjoy full security, efficiently and easily!</string>
+    <string name="year"> 1 year</string>
+    <string name="month"> 3 Mo</string>
+    <string name="month1"> 1 Mo</string>
+    <string name="dollar">$</string>
+    <string name="nineteen">19</string>
+    <string name="nine">9</string>
+    <string name="three">3</string>
+    <string name="buy_now">Buy Now</string>
+    <string name="message_shortcut_short_label">Recent Media</string>
+    <string name="message_shortcut_long_label">See your all messages in one click</string>
+    <string name="message_disabled_message">Messages are disabled for now</string>
+    <string name="message_activity">Message Activity</string>
+    <string name="update_dynamic_shortcuts">Update Dynamic Shortcuts</string>
+    <string name="add_dynamic_shortcuts">Add Dynamic Shortcuts</string>
+    <string name="delete_dynamic_shortcuts">Delete Dynamic Shortcuts</string>
+    <string name="add_pinned_shortcuts">Add Pinned Shortcuts</string>
+    <string name="dynamic_shortcut">Dynamic Shortcut</string>
+    <string name="pinned_shortcut">Pinned Shortcut</string>
     <string name="title_activity_login">Login</string>
     <string name="tncdisclaimer">Please accept <b><font color="#e9e9e9">Terms and Privacy Policy</font></b></string>
     <string name="terms">Terms and Privacy Policy</string>
     <string name="aboutus">About us</string>
     <string name="an_error_has_been_occoured">An error has been occoured</string>
     <string name="title_activity_home">Home</string>
-    <string name="title_activity_dts_gallery">Dts Gallery</string>
+    <string name="title_activity_dts_gallery">Recent Media</string>
     <string name="save">שמור</string>
     <string name="save24">שמור ל-</string>
     <string name="save_for_24_hours">save for 24 hours</string>
@@ -17,11 +46,11 @@
     <string name="unselect_all">UnselectAll</string>
     <string name="setTime">timeset</string>
     <string name="setLanguage">setlanguage</string>
-    <string name="dts_gallery">Dts - גלריה</string>
+    <string name="dts_gallery">KeepToo - גלריה</string>
     <string name="restore_photos">שחזור מדיה</string>
     <string name="settings">הגדרות</string>
     <string name="talk_with_us">דברו איתנו</string>
-    <string name="gallery">Dts - גלריה</string>
+    <string name="gallery">KeepToo - גלריה</string>
     <string name="rearrange_photos">Rearrange</string>
     <string name="dummy_date">11-03-2018</string>
     <string name="share">שתף</string>
@@ -32,12 +61,19 @@
     <string name="auto_launch_on_reboot">Auto Launch on Device Reboot</string>
     <string name="reminder">Reminder</string>
     <string name="frequency">Frequency</string>
-    <string name="aboutustxt">Lorem ipsum dolor sit amet, ex iisque vocibus petentium pri, et est dolore sadipscing. Velit molestie dissentiet vix eu, in vim vidisse oportere accusamus, nam legere labore vituperatoribus at. Te sale soluta erroribus cum, pro an lobortis torquatos. Clita lobortis cotidieque at duo. Natum viderer quo ea. Usu esse habeo ne. Reque minimum omittam per ea.
+    <string name="edit">Edit</string>
+    <string name="safe_setting_title">Safe Setting</string>
+    <string name="personal_details">Personal Details</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="help_text">We will be happy to assist you in any\n way needed.\n Just send us your request and we will\n get back to you as soon as possible</string>
+    <string name="help">Help &amp; Support </string>
+    <string name="send_mail">Send Mail</string>
+    <string name="history_organised">History Organised</string>
+    <string name="history_organised_title">Well done! </string>
+    <string name="see">See You</string>
 
-Et usu elitr propriae. Ad usu epicuri iracundia, unum detraxit ius eu. Ei pri movet officiis, natum augue tibique his an. Sale cetero definitiones eum an, te nam agam laoreet deterruisset, ex mel atqui aperiam dolores.
-
-Aliquam disputando ea sed, vim in erat definitiones, per ut summo alterum moderatius. Et cum commodo accumsan delicatissimi, vis ipsum quidam oporteat te, qui euismod reprehendunt id. Ad accusam fastidii dissentias nam. No mei solet libris impetus. Te duo sale possim repudiare, vero liber facilis ne his.</string>
-    <string name="set_frequency">Set Frequency</string>
+    <string name="aboutustxt">In describing the American identity, Huntington first contests the notion that the country is, as often repeated, "a nation of immigrants". He writes that America\'s founders were not immigrants, but settlers, since British settlers came to North America to establish a new society, as opposed to migrating from one existing society to another one as immigrants do. Later peoples who joined the culture present in the original British colonies, already established by these settlers, were indeed immigrants. Would America be the America it is today if in the 17th and 18th centuries it had been settled not by British Protestants but by French, Spanish, or Portuguese Catholics? The answer is no. It would not be America; it would be Quebec, Mexico, or Brazil. Protestant emphasis on the individual conscience and the responsibility of individuals to learn God's truths directly from the Bible promoted American commitment to individualism.</string>    <string name="set_frequency">Set Frequency</string>
     <string name="notification">Notification</string>
     <string name="widget">Widget</string>
     <string name="confirm_delete">Confirm Delete</string>

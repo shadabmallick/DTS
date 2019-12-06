@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+        android:id="@+id/rel_top"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="61dp">
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/back_arrow"
+            android:tint="@color/blue"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"/>
+        <TextView
+            android:id="@+id/tv_top_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:text="@string/help"
+            android:layout_centerInParent="true"
+            android:textColor="@color/blue"/>
+
+
+    </RelativeLayout>
+    <View
+        android:id="@+id/view1"
+        android:layout_below="@+id/rel_top"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorGrey"></View>
+
+<RelativeLayout
+    android:id="@+id/rel_icon"
+    android:layout_width="match_parent"
+    android:layout_below="@+id/view1"
+    android:gravity="center"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/img_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/icon_keeptoo"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/help_text"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:textSize="16dp"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/img_top"/>
+
+
+
+
+
+</RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="50dp"
+        android:layout_marginLeft="50dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/rel_icon"
+        android:background="@drawable/center_button"
+        >
+        <TextView
+
+
+            android:layout_marginRight="50dp"
+            android:layout_marginLeft="50dp"
+            android:textSize="16dp"
+            android:drawableTint="@android:color/white"
+            android:layout_gravity="center"
+            android:drawablePadding="10dp"
+            android:drawableLeft="@mipmap/icon_mail"
+            android:textColor="@android:color/white"
+            android:background="@drawable/center_button"
+            android:text="@string/send_mail"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>

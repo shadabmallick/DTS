@@ -41,8 +41,7 @@ public class TalkWithUsActivity extends AppCompatActivity {
     }
 
     private void homeScreen() {
-        Intent intent = new Intent(TalkWithUsActivity.this, HomeActivity.class);
-        startActivity(intent);
+
         finish();
     }
 

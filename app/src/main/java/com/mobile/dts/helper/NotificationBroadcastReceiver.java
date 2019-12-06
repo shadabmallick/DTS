@@ -13,7 +13,7 @@ public class NotificationBroadcastReceiver extends BroadcastReceiver {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Intent i = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
                     .putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName())
-                    .putExtra(Settings.EXTRA_CHANNEL_ID, "com.mobile.dts")
+                    .putExtra(Settings.EXTRA_CHANNEL_ID, "com.mobile.keeptoo")
                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
 

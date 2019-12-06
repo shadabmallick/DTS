@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dts-mobile-SourceCode_Release.iml" filepath="$PROJECT_DIR$/dts-mobile-SourceCode_Release.iml" />
+      <module fileurl="file://$PROJECT_DIR$/keepToo.iml" filepath="$PROJECT_DIR$/keepToo.iml" />
     </modules>
   </component>
 </project>

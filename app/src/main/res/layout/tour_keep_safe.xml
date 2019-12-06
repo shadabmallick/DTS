@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+   >
+    <include layout="@layout/top_yellow"></include>
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="62dp"
+        android:background="@color/take_a_tour">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/safe1"
+                android:layout_gravity="center"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:textSize="16dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/safe2"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:textSize="16dp"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/safe3"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:textSize="16dp"
+                />
+        </LinearLayout>
+
+</RelativeLayout>
+    <TextView
+        android:id="@+id/tv_next"
+        android:layout_width="231dp"
+        android:layout_height="52dp"
+        android:background="@drawable/blue_center_button"
+        android:text="@string/next"
+        android:gravity="center"
+        android:textSize="20dp"
+        android:textColor="@android:color/white"
+        android:layout_centerInParent="true"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/rl_center"
+        android:gravity="center"
+        android:layout_below="@+id/tv_next">
+
+        <ImageView
+            android:id="@+id/id_add_folder"
+            android:layout_margin="30dp"            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/add_folder"/>
+        <ImageView
+            android:id="@+id/id_add_picture"
+
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@+id/id_add_folder"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/add_photo"/>
+        <ImageView
+            android:id="@+id/id_add_cam"
+            android:layout_margin="30dp"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@+id/id_add_picture"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/cam"/>
+
+
+
+
+
+
+    </RelativeLayout>
+
+
+<RelativeLayout
+    android:id="@+id/rl_center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_marginBottom="30dp"
+    >
+
+
+</RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel_below"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_alignParentBottom="true">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/safe"/>
+
+
+
+
+
+    </RelativeLayout>
+</RelativeLayout>
