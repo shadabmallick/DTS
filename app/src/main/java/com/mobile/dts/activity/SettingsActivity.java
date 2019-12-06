@@ -38,6 +38,7 @@ public class SettingsActivity extends AppCompatActivity {
                 homeScreen();
             }
         });
+/*
         tell_friend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,6 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
+*/
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setScreenNameFirebaseAnalytics("Settings Screen", null);
     }
@@ -92,7 +94,7 @@ public class SettingsActivity extends AppCompatActivity {
                     return false;
                 }
             });
-            notification = (Preference) findPreference("notification");
+            notification =  findPreference("notification");
             notification.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 
 
@@ -132,6 +134,43 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     Intent intent = new Intent(getActivity(), WidgetSizeDialog.class);
+                    startActivity(intent);
+                    return false;
+                }
+            });
+
+            Preference talk_with_us = findPreference("talk_with_us");
+            talk_with_us.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(getActivity(), TalkWithUsActivity.class);
+                    startActivity(intent);
+                    return false;
+                }
+            });
+
+            Preference help_support = findPreference("help_support");
+            help_support.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(getActivity(), HelpSupport.class);
+                    startActivity(intent);
+                    return false;
+                }
+            });
+
+
+            Preference safe = findPreference("safe");
+            safe.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    Intent intent = new Intent(getActivity(), SafeSetting.class);
                     startActivity(intent);
                     return false;
                 }

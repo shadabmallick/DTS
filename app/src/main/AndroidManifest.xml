@@ -54,6 +54,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
         <activity
+            android:name=".activity.SafeSetting"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme" />
+        <activity
             android:name=".activity.TemproryFile"
 
             android:screenOrientation="portrait"
@@ -215,6 +220,10 @@
             android:theme="@style/FullScreenTheme" />
         <activity
             android:name=".activity.SafPromptActivity"
+            android:label="@string/title_activity_saf_prompt"
+            android:theme="@style/FullScreenTheme" />
+        <activity
+            android:name=".activity.HelpSupport"
             android:label="@string/title_activity_saf_prompt"
             android:theme="@style/FullScreenTheme" />
 

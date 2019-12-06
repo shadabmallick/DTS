@@ -14,7 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/toolbar_color"
+            android:background="@color/blue"
 
             >
 
@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
-                    android:src="@drawable/ic_left_angle_bracket" />
+                    android:src="@drawable/ic_arrow_left_solid" />
 
                 <TextView
                     android:id="@+id/textView"
