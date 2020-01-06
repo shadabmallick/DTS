@@ -245,7 +245,7 @@ public class ImageJobService extends JobService {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channelID,
-                    "DtsApp",
+                    "KeepTooApp",
                     NotificationManager.IMPORTANCE_DEFAULT);
             channel.setSound(null, null);
             mNotificationManager.createNotificationChannel(channel);

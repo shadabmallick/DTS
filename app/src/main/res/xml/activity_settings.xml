@@ -2,6 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     >
 
     <PreferenceCategory android:title="General"
@@ -34,19 +35,14 @@
             android:title="Widget Size" />
 
 
-        <ListPreference
-            android:defaultValue="1003"
-            android:entries="@array/schedulingname"
-            android:entryValues="@array/schedulingvalue"
+        <Preference
             android:key="scheduling"
             android:summary="Scheduling frequency"
             android:title="Widget Scheduling" />
 
 
-        <ListPreference
-            android:defaultValue="1008"
-            android:entries="@array/methodname"
-            android:entryValues="@array/methodvalue"
+        <Preference
+
             android:key="method"
             android:summary="Set Widget method"
             android:title="Method" />

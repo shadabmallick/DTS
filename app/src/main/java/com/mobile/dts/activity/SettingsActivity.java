@@ -12,10 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mobile.dts.R;
 import com.mobile.dts.helper.CustomDialogClass;
+import com.mobile.dts.helper.CustomDialogMethod;
 
 import java.util.Locale;
 
@@ -25,12 +27,15 @@ public class SettingsActivity extends AppCompatActivity {
     private static final int OVERLAY_PERMISSION_REQ_CODE = 103;
     private ImageView icon_home,tell_friend;
     private FirebaseAnalytics mFirebaseAnalytics;
+   public RelativeLayout rl_main;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         icon_home = findViewById(R.id.icon_home);
+        rl_main = findViewById(R.id.rl_main);
         tell_friend = findViewById(R.id.tell_friend);
         icon_home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,7 +43,6 @@ public class SettingsActivity extends AppCompatActivity {
                 homeScreen();
             }
         });
-/*
         tell_friend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,7 +51,6 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
-*/
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         setScreenNameFirebaseAnalytics("Settings Screen", null);
     }
@@ -76,6 +79,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static class MyPreferenceFragment extends PreferenceFragment {
         Preference notification;
 
+
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -86,11 +90,13 @@ public class SettingsActivity extends AppCompatActivity {
                 @RequiresApi(api = Build.VERSION_CODES.M)
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    if (!Settings.canDrawOverlays(getContext())) {
+                   /* if (!Settings.canDrawOverlays(getContext())) {
                         Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                                 Uri.parse("package:" + getActivity().getPackageName()));
                         startActivityForResult(intent, OVERLAY_PERMISSION_REQ_CODE);
-                    }
+                    }*/
+                    Intent intent = new Intent(getActivity(), WidgetSchedule.class);
+                    startActivity(intent);
                     return false;
                 }
             });
@@ -101,6 +107,16 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     CustomDialogClass cdd = new CustomDialogClass(getActivity());
+                    cdd.show();
+                    return false;
+                }
+            });   notification =  findPreference("method");
+            notification.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    CustomDialogMethod cdd = new CustomDialogMethod(getActivity());
                     cdd.show();
                     return false;
                 }
@@ -133,8 +149,14 @@ public class SettingsActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
-                    Intent intent = new Intent(getActivity(), WidgetSizeDialog.class);
-                    startActivity(intent);
+                  //  Intent intent = new Intent(getActivity(), WidgetSizeDialog.class);
+                  //  startActivity(intent);
+
+                    WidgetSizeDialog widgetSizeDialog =
+                            new WidgetSizeDialog(getActivity());
+                    widgetSizeDialog.show();
+
+
                     return false;
                 }
             });

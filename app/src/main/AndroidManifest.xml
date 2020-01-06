@@ -113,6 +113,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/FullScreenTheme" />
         <activity
+            android:name=".activity.HistoryOrganised"
+            android:screenOrientation="portrait"
+            android:theme="@style/FullScreenTheme" />
+        <activity
             android:name=".activity.SettingsActivity"
             android:label="Settings"
             android:screenOrientation="portrait"
@@ -139,12 +143,16 @@
             android:theme="@style/FullScreenTheme" />
         <activity
             android:name=".activity.WidgetLocationActivity"
-            android:label="Widget Location setting"
-            android:theme="@style/Theme.AppCompat.Light" />
+
+            android:theme="@style/FullScreenTheme" />
         <activity
+            android:name=".activity.WidgetSchedule"
+
+            android:theme="@style/FullScreenTheme" />
+       <!-- <activity
             android:name=".activity.WidgetSizeDialog"
             android:label="Widget Size setting"
-            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+            android:theme="@style/MyCustomDialog" />-->
         <activity
             android:name=".activity.ImageViewerActivity"
             android:screenOrientation="portrait"

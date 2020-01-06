@@ -35,7 +35,7 @@ import static com.mobile.dts.utills.Utils.getMonthName;
 public class KeepSafeMultiple extends AppCompatActivity {
     String TAG="KeepSafeMultiple";
     RecyclerView recyclerView;
-  RelativeLayout layoutforprofileimage,rl_folder,rel_first_bottom;
+  RelativeLayout rel_fourth_bottom,layoutforprofileimage,rl_folder,rel_first_bottom;
    // ArrayList<ImageBean> sinceInstallList = new Utils().fetchFolderList(KeepSafeMultiple.this);
     private SharedPreferences sharedpreferences, settingsPref;
 
@@ -53,6 +53,7 @@ public class KeepSafeMultiple extends AppCompatActivity {
         settingsPref = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         layoutforprofileimage=findViewById(R.id.layoutforprofileimage);
         rel_first_bottom=findViewById(R.id.rel_first_bottom);
+        rel_fourth_bottom=findViewById(R.id.rel_fourth_bottom);
         rl_folder=findViewById(R.id.rl_folder);
         recyclerView=findViewById(R.id.rv_folder);
         ArrayList<String> savedImageList = dtsDataBase.getSavedImageList();
@@ -64,6 +65,7 @@ public class KeepSafeMultiple extends AppCompatActivity {
         layoutforprofileimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 rl_folder.setVisibility(rl_folder.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             }
         });
@@ -73,6 +75,16 @@ public class KeepSafeMultiple extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), DtsGalleryActivity.class);
                 //tv_badge.setText(Integer.toString(tempLength));
                 intent.putExtra(Constants.galleryType, Constants.delete);
+                startActivity(intent);
+                finish();
+            }
+        });
+        rel_fourth_bottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                //tv_badge.setText(Integer.toString(tempLength));
+               // intent.putExtra(Constants.galleryType, Constants.delete);
                 startActivity(intent);
                 finish();
             }

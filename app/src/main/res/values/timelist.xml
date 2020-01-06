@@ -12,7 +12,7 @@
     </string-array>
 
 
-    <string-array name="schedulingname">
+   <!-- <string-array name="schedulingname">
         <item>Real Time</item>
         <item>Every 5 media files</item>
         <item>Every 10 media files</item>
@@ -23,7 +23,7 @@
         <item>1004</item>
         <item>1005</item>
     </string-array>
-
+-->
 
     <string-array name="methodname">
         <item>Media file counter in Widget</item>

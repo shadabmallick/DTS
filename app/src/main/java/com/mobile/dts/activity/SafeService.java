@@ -27,7 +27,6 @@ public class SafeService extends AppCompatActivity {
                 finish();
             }
         });
-/*
         tv_buy_now.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,6 +34,5 @@ public class SafeService extends AppCompatActivity {
                 startActivity(history);
             }
         });
-*/
     }
 }

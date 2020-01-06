@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobile.dts.R;
 import com.mobile.dts.utills.Constants;
@@ -24,13 +25,13 @@ public class CustomDialogClass extends Dialog implements
         android.view.View.OnClickListener {
 
     public Activity activity;
-    public TextView cancel;
+    public TextView cancel,update;
     public CheckedTextView checkedTextView1, checkedTextView2, checkedTextView3;
     private SharedPreferences sharedpreferences;
     private boolean isRealtimeNotification;
 
     public CustomDialogClass(Activity activity) {
-        super(activity);
+        super(activity, R.style.MySettingsStyle);
         this.activity = activity;
     }
 
@@ -43,10 +44,12 @@ public class CustomDialogClass extends Dialog implements
         checkedTextView2 = (CheckedTextView) findViewById(R.id.text2);
         checkedTextView3 = (CheckedTextView) findViewById(R.id.text3);
         cancel = (TextView) findViewById(R.id.cancel);
+        update = (TextView) findViewById(R.id.update);
         checkedTextView1.setOnClickListener(this);
         checkedTextView2.setOnClickListener(this);
         checkedTextView3.setOnClickListener(this);
         cancel.setOnClickListener(this);
+        update.setOnClickListener(this);
         boolean isDisbledNotification = sharedpreferences.getBoolean(Constants.isDisbledNotification, false);
         if (!isDisbledNotification) {
             isRealtimeNotification = sharedpreferences.getBoolean(Constants.isRealTimeNotification, false);
@@ -93,6 +96,9 @@ public class CustomDialogClass extends Dialog implements
                 break;
             case R.id.cancel:
                 break;
+
+                case R.id.update:
+                    Toast.makeText(getContext(),"Update",Toast.LENGTH_SHORT).show();
             case R.id.text3:
                 try {
                     SharedPreferences.Editor editor2 = sharedpreferences.edit();

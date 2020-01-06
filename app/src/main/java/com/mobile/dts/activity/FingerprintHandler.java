@@ -2,6 +2,7 @@ package com.mobile.dts.activity;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,6 +16,7 @@ import com.shashank.sony.fancytoastlib.FancyToast;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 
+@SuppressLint("NewApi")
 public class FingerprintHandler extends FingerprintManager.AuthenticationCallback {
 
     private CancellationSignal cancellationSignal;

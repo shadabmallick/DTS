@@ -134,7 +134,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
     private FragmentManager fragmentManager;
     private ToolTipRelativeLayout mToolTipFrameLayout;
     private ToolTipView mTipView;
-    private RelativeLayout rel_fourth_bottom,rel_second_bottom,rel_first_bottom, rel_middle,rel_bottom,progress_rl, ll_delete, ll_save, ll_restore, ll_keep_to, ll_share, ll_dtscancel;
+    private RelativeLayout layoutforprofileimage,rel_fourth_bottom,rel_second_bottom,rel_first_bottom, rel_middle,rel_bottom,progress_rl, ll_delete, ll_save, ll_restore, ll_keep_to, ll_share, ll_dtscancel;
     private int selectedMenu = 1;
     private ArrayList<String> selectedPhotoList;
     private boolean pick_photos;
@@ -167,6 +167,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
         ll_restore = findViewById(R.id.ll_restore);
         ll_dtscancel = findViewById(R.id.ll_dtscancel);
         rel_fourth_bottom = findViewById(R.id.rel_fourth_bottom);
+        layoutforprofileimage = findViewById(R.id.layoutforprofileimage);
         tv_heading = findViewById(R.id.tv_heading);
         icon_home = findViewById(R.id.icon_home);
         icon_filter = findViewById(R.id.icon_filter);
@@ -189,6 +190,14 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 rel_first_bottom.setEnabled(false);
                 moveRestoreImageGallery();
 
+            }
+        });
+
+        layoutforprofileimage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), DtsGalleryActivity.class);
+                startActivity(intent);
             }
         });
         rel_second_bottom.setOnClickListener(new View.OnClickListener() {
@@ -546,7 +555,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 if (_imageBean.isSaved24()) {
                     timerTime = _imageBean.getKeepTime() - (Calendar.getInstance().getTimeInMillis() - actionTime);
                 } else {
-                    timerTime = (actionTime + Long.parseLong(deleteTimeInterval) * 1000) - Calendar.getInstance().getTimeInMillis();
+                    timerTime = (actionTime + Long.parseLong(deleteTimeInterval) * 500) - Calendar.getInstance().getTimeInMillis();
                 }
                 if (timerTime < 0) {
                     timerTime = Long.parseLong(Constants.defaultDeleteTimeInterval);
@@ -1474,9 +1483,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
         }
     }
     public void moveRestoreImageGallery() {
-        Intent intent = new Intent(this, TemproryFile.class);
-     //   tv_badge.setText(Integer.toString(tempLength));
-
+        Intent intent = new Intent(this, DtsGalleryActivity.class);
         intent.putExtra(Constants.galleryType, Constants.delete);
         startActivity(intent);
         finish();

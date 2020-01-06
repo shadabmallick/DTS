@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/keeptp_background"
+
+    >
+
+    <RelativeLayout
+
+        android:id="@+id/rel_top"
+        android:background="@color/green_dark"
+        android:layout_width="match_parent"
+        android:layout_height="61dp">
+        <TextView
+            android:id="@+id/tv_top_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:text="@string/history_organised"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"/>
+
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@+id/rel_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
+
+
+
+
+    <RelativeLayout
+        android:background="@color/keeptp_background"
+        android:layout_below="@+id/rel_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/restore_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:textColor="@android:color/white"
+            android:text="@string/history_organised_title"
+            android:layout_marginTop="20dp"/>
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_below="@+id/restore_title"
+            android:textSize="16dp"
+            android:textColor="@android:color/white"
+            android:text="@string/history_organised_sub_title"
+            />
+        <RelativeLayout
+            android:id="@+id/rel_center"
+            android:layout_below="@+id/tv_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:background="@mipmap/history_icon">
+
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/tv_see_you"
+            android:layout_below="@+id/rel_center"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginLeft="65dp"
+            android:layout_marginRight="65dp"
+            android:layout_marginTop="30dp"
+            android:text="@string/see"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:background="@drawable/center_button"
+            />
+
+
+    </RelativeLayout>
+    </ScrollView>
+
+
+
+
+</RelativeLayout>

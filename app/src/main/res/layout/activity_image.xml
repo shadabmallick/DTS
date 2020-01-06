@@ -266,7 +266,7 @@
                                     android:text="Remaining :"
                                     android:textAlignment="center"
                                     android:textColor="@android:color/white"
-                                    android:textSize="14sp" />
+                                    android:textSize="12sp" />
 
                                 <android.support.v7.widget.AppCompatTextView
                                     android:id="@+id/stopWatch"
@@ -275,10 +275,9 @@
                                     android:fontFamily="@font/droid_sans_mono"
                                     android:padding="3dp"
                                     android:scaleY="1.2"
-                                    android:text="sadasdsadd"
                                     android:textAlignment="center"
                                     android:textColor="@android:color/white"
-                                    android:textSize="14sp" />
+                                    android:textSize="12sp" />
 
 
                             </LinearLayout>

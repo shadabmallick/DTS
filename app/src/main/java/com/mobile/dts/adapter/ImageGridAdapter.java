@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.mobile.dts.utills.Utils;
 
 import java.util.ArrayList;
 
+import static com.mobile.dts.activity.TemproryFile.TAG;
 import static com.mobile.dts.utills.Constants.CHILD;
 import static com.mobile.dts.utills.Constants.HEADER;
 import static com.mobile.dts.utills.Constants.defaultDeleteTimeInterval;
@@ -101,6 +103,8 @@ public class ImageGridAdapter extends RecyclerView.Adapter {
                     ((ViewHolder) holder).imgSize.setText(String.format("%02d", hours)
                             + ":" + String.format("%02d", minutes)
                             + ":" + String.format("%02d", seconds));
+
+                    Log.d(TAG, "onBindViewHolder: "+hours + ""+ minutes + ""+seconds);
                 } else {
                     int temphours = (hours - (days * 24));
                     String dayStr;

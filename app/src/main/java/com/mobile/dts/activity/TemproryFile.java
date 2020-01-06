@@ -132,7 +132,7 @@ public class TemproryFile  extends AppCompatActivity implements ImageClickListne
     private FragmentManager fragmentManager;
     private ToolTipRelativeLayout mToolTipFrameLayout;
     private ToolTipView mTipView;
-    private RelativeLayout rel_fourth_bottom,rel_second_bottom,rel_first_bottom, rel_middle,rel_bottom,progress_rl, ll_delete, ll_save, ll_restore, ll_keep_to, ll_share, ll_dtscancel;
+    private RelativeLayout layoutforprofileimage,rel_fourth_bottom,rel_second_bottom,rel_first_bottom, rel_middle,rel_bottom,progress_rl, ll_delete, ll_save, ll_restore, ll_keep_to, ll_share, ll_dtscancel;
     private int selectedMenu = 1;
     private ArrayList<String> selectedPhotoList;
     private boolean pick_photos;
@@ -165,6 +165,7 @@ public class TemproryFile  extends AppCompatActivity implements ImageClickListne
         ll_restore = findViewById(R.id.ll_restore);
         ll_dtscancel = findViewById(R.id.ll_dtscancel);
         rel_fourth_bottom = findViewById(R.id.rel_fourth_bottom);
+        layoutforprofileimage = findViewById(R.id.layoutforprofileimage);
         tv_heading = findViewById(R.id.tv_heading);
         icon_home = findViewById(R.id.icon_home);
         icon_filter = findViewById(R.id.icon_filter);
@@ -179,12 +180,14 @@ public class TemproryFile  extends AppCompatActivity implements ImageClickListne
         rel_second_bottom = findViewById(R.id.rel_second_bottom);
         //    tv_badge.setText(length);
 
-      /*  rel_first_bottom.setOnClickListener(new View.OnClickListener() {
+        layoutforprofileimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                moveRestoreImageGallery();
+                Intent intent = new Intent(TemproryFile.this, DtsGalleryActivity.class);
+                startActivity(intent);
+                finish();
             }
-        });*/
+        });
         rel_second_bottom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

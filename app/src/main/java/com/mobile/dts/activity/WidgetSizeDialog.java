@@ -2,27 +2,33 @@ package com.mobile.dts.activity;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mobile.dts.R;
 
+import static android.content.Context.WINDOW_SERVICE;
 import static com.mobile.dts.utills.Constants.appPref;
 import static com.mobile.dts.utills.Constants.widgetSize;
 
 /*Use to set Widget size*/
-public class WidgetSizeDialog extends AppCompatActivity {
+public class WidgetSizeDialog extends Dialog {
 
     private SeekBar wodgetSizeBar;
     private ImageView widgetImage;
@@ -30,23 +36,36 @@ public class WidgetSizeDialog extends AppCompatActivity {
     private SharedPreferences sharedpreferences;
     private WindowManager windowManager;
     private int _widgetSize;
-    private Button updatesizebtn;
+    private TextView updatesizebtn,cancel;
     private int _progress = 0;
     private int widgetSizeFromDimens;
+
+
+    private Context context;
+
+    public WidgetSizeDialog(@NonNull Context context) {
+        super(context, R.style.MySettingsStyle);
+        //super(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        this.context = context;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog_widgetsizesetting);
-        getScreenSize();
+
+        //getScreenSize();
+
         widgetImage = findViewById(R.id.widgetimage);
-        sharedpreferences = this.getSharedPreferences(appPref, Activity.MODE_PRIVATE);
+        sharedpreferences = context.getSharedPreferences(appPref, Activity.MODE_PRIVATE);
         wodgetSizeBar = findViewById(R.id.sizeprogress);
+        cancel = findViewById(R.id.button_cancel);
         updatesizebtn = findViewById(R.id.updatesizebtn);
-        widgetSizeFromDimens = (int) (getResources().getDimension(R.dimen.widgetsamllsize));
+        widgetSizeFromDimens = (int) (context.getResources().getDimension(R.dimen.widgetsamllsize));
         if (sharedpreferences.contains(widgetSize)) {
             _widgetSize = (int) sharedpreferences.getFloat(widgetSize, widgetSizeFromDimens);
-            _widgetSize = _widgetSize * 70 / 100;
+            _widgetSize = _widgetSize * 50 / 100;
         } else {
             _widgetSize = widgetSizeFromDimens;
         }
@@ -70,7 +89,7 @@ public class WidgetSizeDialog extends AppCompatActivity {
                 params = new RelativeLayout.LayoutParams(progress + widgetSizeFromDimens, progress + widgetSizeFromDimens);
                 params.addRule(RelativeLayout.CENTER_IN_PARENT);
                 widgetImage.setLayoutParams(params);
-                _progress = (progress + widgetSizeFromDimens) * 100 / 70;
+                _progress = (progress + widgetSizeFromDimens) * 100 / 50;
 
             }
 
@@ -89,16 +108,21 @@ public class WidgetSizeDialog extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putFloat(widgetSize, _progress);
                     editor.commit();
-                    Toast.makeText(WidgetSizeDialog.this, "Size updated successfully", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Size updated successfully", Toast.LENGTH_SHORT).show();
                 }
-                finish();
+                dismiss();
             }
         });
-
+     cancel.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+             dismiss();
+         }
+     });
     }
 
     private void getScreenSize() {
-        windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        windowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);

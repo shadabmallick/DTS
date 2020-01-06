@@ -11,6 +11,7 @@ import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyPermanentlyInvalidatedException;
 import android.security.keystore.KeyProperties;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobile.dts.R;
 
@@ -63,31 +65,39 @@ public class SafeFingerPrint extends AppCompatActivity {
 
             keyguardManager =
                     (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
-            fingerprintManager =
-                    (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
-
-          //  textView = (TextView) findViewById(R.id.textview);
-
-            if (!fingerprintManager.isHardwareDetected()) {
-
-                textView.setText("Your device doesn't support fingerprint authentication");
-
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                fingerprintManager =
+                        (FingerprintManager) getSystemService(FINGERPRINT_SERVICE);
             }
 
+            //  textView = (TextView) findViewById(R.id.textview);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!fingerprintManager.isHardwareDetected()) {
+
+                    textView.setText("Your device doesn't support fingerprint authentication");
+
+                }
+            }
 
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-                textView.setText("Please enable the fingerprint permission");
+                Toast.makeText(getApplicationContext(),"Please enable the fingerprint permission",Toast.LENGTH_SHORT).show();
 
             }
 
-            if (!fingerprintManager.hasEnrolledFingerprints()) {
-                textView.setText("No fingerprint configured. Please register at least one fingerprint in your device's Settings");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!fingerprintManager.hasEnrolledFingerprints()) {
+                    Toast.makeText(getApplicationContext(),"No fingerprint configured. Please register at least one fingerprint in your device's Settings",Toast.LENGTH_SHORT).show();
 
+
+                }
             }
 
             if (!keyguardManager.isKeyguardSecure()) {
-                textView.setText("Please enable lockscreen security in your device's Settings");
+                Toast.makeText(getApplicationContext(),"Please enable lockscreen security in your device's Settings",Toast.LENGTH_SHORT).show();
+
+               // textView.setText("Please enable lockscreen security in your device's Settings");
             } else {
                 try {
 
@@ -95,10 +105,14 @@ public class SafeFingerPrint extends AppCompatActivity {
                 } catch (FingerprintException e) {
                     e.printStackTrace();
                 }
-                if (initCipher()) {
-                    cryptoObject = new FingerprintManager.CryptoObject(cipher);
-                    FingerprintHandler helper = new FingerprintHandler(this);
-                    helper.startAuth(fingerprintManager, cryptoObject);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (initCipher()) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            cryptoObject = new FingerprintManager.CryptoObject(cipher);
+                        }
+                        FingerprintHandler helper = new FingerprintHandler(this);
+                        helper.startAuth(fingerprintManager, cryptoObject);
+                    }
                 }
             }
 
@@ -117,15 +131,17 @@ public class SafeFingerPrint extends AppCompatActivity {
             keyGenerator = KeyGenerator.getInstance(KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");
 
             keyStore.load(null);
-            keyGenerator.init(new
-                    KeyGenParameterSpec.Builder(KEY_NAME,
-                    KeyProperties.PURPOSE_ENCRYPT |
-                            KeyProperties.PURPOSE_DECRYPT)
-                    .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
-                    .setUserAuthenticationRequired(true)
-                    .setEncryptionPaddings(
-                            KeyProperties.ENCRYPTION_PADDING_PKCS7)
-                    .build());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                keyGenerator.init(new
+                        KeyGenParameterSpec.Builder(KEY_NAME,
+                        KeyProperties.PURPOSE_ENCRYPT |
+                                KeyProperties.PURPOSE_DECRYPT)
+                        .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                        .setUserAuthenticationRequired(true)
+                        .setEncryptionPaddings(
+                                KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                        .build());
+            }
 
             keyGenerator.generateKey();
 
@@ -144,6 +160,7 @@ public class SafeFingerPrint extends AppCompatActivity {
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     public boolean initCipher() {
         try {
             cipher = Cipher.getInstance(

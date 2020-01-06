@@ -209,8 +209,8 @@ public class LocationWidget extends Service {
         original_width = size.x;
         int marginValue = (int) getResources().getDimension(R.dimen.widgetmargin);
         screen_width = screen_width - marginValue;
-        screenWidthhalf = screen_width/2;
-        screenHeightHalf = screen_height/2;
+        screenWidthhalf = screen_width/6;
+        screenHeightHalf = screen_height/6;
     }
 
     @Nullable

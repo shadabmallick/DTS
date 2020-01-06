@@ -53,4 +53,49 @@
     </style>
 
 
+    <style name="MyCustomDialog" parent="Theme.AppCompat.Light.Dialog">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/tab_color1</item>
+        <item name="colorPrimaryDark">@color/tab_color1</item>
+        <item name="colorAccent">@color/tab_color1</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+
+    <style name="MySettingsStyle" parent="FullScreenTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/tab_color1</item>
+        <item name="colorPrimaryDark">@color/tab_color1</item>
+        <item name="colorAccent">@color/tab_color1</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="SpecificListPrefTheme" parent="AppTheme">
+        <item name="android:alertDialogTheme">@style/ListPrefAlertDialogTheme</item>
+    </style>
+
+    <style name="ListPrefAlertDialogTheme" parent="@android:style/Theme.Holo.Light.Dialog.MinWidth">
+        <item name="android:alertDialogStyle">@style/ListPrefAlertDialogStyle</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+    <style name="ListPrefAlertDialogStyle">
+        <item name="android:fullDark"    >@android:color/transparent</item>
+        <item name="android:topDark"     >@android:color/transparent</item>
+        <item name="android:centerDark"  >@android:color/transparent</item>
+        <item name="android:bottomDark"  >@android:color/transparent</item>
+        <item name="android:fullBright"  >@android:color/transparent</item>
+        <item name="android:topBright"   >@android:color/transparent</item>
+        <item name="android:centerBright">@android:color/transparent</item>
+        <item name="android:bottomBright">@android:color/transparent</item>
+        <item name="android:bottomMedium">@android:color/transparent</item>
+        <item name="android:centerMedium">@android:color/transparent</item>
+    </style>
+
+    <style name="ThemeWithCorners" parent="android:Theme.Dialog">
+        <item name="android:windowBackground">@drawable/theme_draw</item>
+    </style>
 </resources>

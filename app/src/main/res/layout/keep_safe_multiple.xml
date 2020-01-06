@@ -118,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:gravity="center"
-            android:layout_marginBottom="80dp">
+            android:layout_marginBottom="40dp">
             <RelativeLayout
                 android:id="@+id/layoutforprofileimage"
                 android:layout_width="80dp"
@@ -179,7 +179,8 @@
         android:id="@+id/rel_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"        android:layout_marginBottom="50dp">
+        android:layout_alignParentBottom="true"
+        >
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="80dp"

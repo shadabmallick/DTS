@@ -25,7 +25,7 @@ import static com.mobile.dts.utills.Constants.yCoordinate;
 /*Use to set Widget location*/
 public class WidgetLocationActivity extends AppCompatActivity {
     private Context context;
-    private TextView updatebtn;
+    private TextView updatebtn,tv_ok;
     private SharedPreferences sharedpreferences;
     private Intent serviceIntent;
 
@@ -33,10 +33,11 @@ public class WidgetLocationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = WidgetLocationActivity.this;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setContentView(R.layout.activity_locationsetting);
         sharedpreferences = context.getSharedPreferences(appPref, Activity.MODE_PRIVATE);
         updatebtn = findViewById(R.id.updatebtn);
+        tv_ok = findViewById(R.id.tv_ok);
         updatebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,6 +50,12 @@ public class WidgetLocationActivity extends AppCompatActivity {
                     finish();
 
                 }
+            }
+        });
+        tv_ok.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
