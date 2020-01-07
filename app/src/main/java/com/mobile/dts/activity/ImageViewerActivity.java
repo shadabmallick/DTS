@@ -96,9 +96,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
     private FrameLayout mainlayout;
     private AppBarLayout appbarlayout;
     private Timer timer;
-    private RelativeLayout saveImageBtn, save24Btn, shareBtn, deleteBtn,
-            ll_restore, progress_rl, viewpagerlayout, savekeepsafe;
-    private RelativeLayout magicimage,saveImageBtn, save24Btn, shareBtn, deleteBtn, ll_restore, progress_rl, viewpagerlayout;
+    private RelativeLayout magicimage, saveImageBtn, save24Btn, shareBtn, deleteBtn, ll_restore, progress_rl, viewpagerlayout, savekeepsafe;
     private FirebaseAnalytics mFirebaseAnalytics;
     private long mLastClickTime = 0;
     private boolean isKeepToProcessing = false;
