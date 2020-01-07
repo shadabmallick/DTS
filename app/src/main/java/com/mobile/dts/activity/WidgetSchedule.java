@@ -3,6 +3,7 @@ package com.mobile.dts.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -45,7 +46,7 @@ public class WidgetSchedule extends AppCompatActivity {
         time=findViewById(R.id.time);
         time1=findViewById(R.id.time1);
         ll_clock=findViewById(R.id.ll_clock);
-
+        hideAmPmLayout(time1);
         sharedpreferences =getApplicationContext().getSharedPreferences(Constants.appPref, Activity.MODE_PRIVATE);
 
         update.setOnClickListener(new View.OnClickListener() {
@@ -90,5 +91,11 @@ public class WidgetSchedule extends AppCompatActivity {
 
     }
 
-
+    private void hideAmPmLayout(TimePicker picker) {
+        final int id = Resources.getSystem().getIdentifier("ampm_layout", "id", "android");
+        final View amPmLayout = picker.findViewById(id);
+        if(amPmLayout != null) {
+            amPmLayout.setVisibility(View.GONE);
+        }
+    }
 }

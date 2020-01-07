@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:text="CANCEL"
-                    android:layout_margin="10dp"
+                    android:layout_marginRight="40dp"
                     android:background="@color/transparent"
                     android:textColor="@color/blue" />
                 <TextView
@@ -101,7 +101,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:layout_margin="10dp"
                     android:background="@color/transparent"
                     android:text="UPDATE"
                     android:textColor="@color/blue" />
