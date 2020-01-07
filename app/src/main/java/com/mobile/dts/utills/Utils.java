@@ -71,7 +71,8 @@ public class Utils {
         return mimeType != null && mimeType.startsWith("video");
     }
 
-    public static boolean moveFile(Context context, String inputPath, String inputFile, String outputPath, long lastmodified) {
+    public static boolean moveFile(Context context, String inputPath, String inputFile,
+                                   String outputPath, long lastmodified) {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         try {
             if (inputPath.contains(path) && outputPath.contains(path)) {

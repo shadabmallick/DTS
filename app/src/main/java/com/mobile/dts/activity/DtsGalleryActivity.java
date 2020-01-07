@@ -123,6 +123,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 length=imageArrayList.size();
                 Log.d(TAG, "onReceive: "+length);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     };
@@ -180,7 +181,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
         tv_top=findViewById(R.id.tv_top);
         tv_badge = findViewById(R.id.tv_badge1);
         rel_second_bottom = findViewById(R.id.rel_second_bottom);
-    //    tv_badge.setText(length);
+        // tv_badge.setText(length);
        // rel_first_bottom.setClickable(true);
 
         rel_first_bottom.setOnClickListener(new View.OnClickListener() {

@@ -96,7 +96,8 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
     private FrameLayout mainlayout;
     private AppBarLayout appbarlayout;
     private Timer timer;
-    private RelativeLayout saveImageBtn, save24Btn, shareBtn, deleteBtn, ll_restore, progress_rl, viewpagerlayout;
+    private RelativeLayout saveImageBtn, save24Btn, shareBtn, deleteBtn,
+            ll_restore, progress_rl, viewpagerlayout, savekeepsafe;
     private FirebaseAnalytics mFirebaseAnalytics;
     private long mLastClickTime = 0;
     private boolean isKeepToProcessing = false;
@@ -276,6 +277,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
         appbarlayout = findViewById(R.id.appbarlayout);
         progress_rl = findViewById(R.id.progress_rl);
         viewpagerlayout = findViewById(R.id.viewpagerlayout);
+        savekeepsafe = findViewById(R.id.savekeepsafe);
     }
     private void initObjects() {
         isRestoredImages = getIntent().getBooleanExtra(Constants.KEY_IS_RESTORED_IMAGE, false);
@@ -498,6 +500,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
         iv_left.setOnClickListener(this);
         iv_right.setOnClickListener(this);
         ll_restore.setOnClickListener(this);
+        savekeepsafe.setOnClickListener(this);
     }
     @Override
     public void onBackPressed() {
@@ -661,6 +664,9 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
             } else {
                 new KeepImageAsyncTask().execute(KEEP_TO_LIST_ITEMS_TIME[3]);
             }
+        } else if (v.getId() == R.id.savekeepsafe){
+
+
         }
     }
     /*Handle Keep To file from restore screen*/
@@ -693,6 +699,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
         mTipView = mToolTipFrameLayout.showToolTipForView(toolTip, findViewById(R.id.saveimage24));
         mTipView.setOnToolTipViewClickedListener(this);
     }
+    
     private void crudButtonAction(int viewID, long keepTime) {
         boolean isSuccess;
         if(imageBeanArrayList!=null && imageBeanArrayList.size()>0) {
@@ -1292,4 +1299,10 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
             setIndicatorText();
         }
     }
+
+
+
+
+
+
 }
