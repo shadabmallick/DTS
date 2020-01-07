@@ -96,7 +96,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
     private FrameLayout mainlayout;
     private AppBarLayout appbarlayout;
     private Timer timer;
-    private RelativeLayout saveImageBtn, save24Btn, shareBtn, deleteBtn, ll_restore, progress_rl, viewpagerlayout;
+    private RelativeLayout magicimage,saveImageBtn, save24Btn, shareBtn, deleteBtn, ll_restore, progress_rl, viewpagerlayout;
     private FirebaseAnalytics mFirebaseAnalytics;
     private long mLastClickTime = 0;
     private boolean isKeepToProcessing = false;
@@ -241,7 +241,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
             tv_date.setText(imageBeanArrayList.get(position).getCreatedDate());
             tv_time.setText(imageBeanArrayList.get(position).getCreatedTime());
             if (imageBeanArrayList.get(position).isNew() && !isShowBottomView) {
-                iv_new.setVisibility(View.VISIBLE);
+                iv_new.setVisibility(View.GONE);
             } else {
                 iv_new.setVisibility(View.GONE);
             }
@@ -265,6 +265,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
         iv_left = findViewById(R.id.iv_left);
         iv_right = findViewById(R.id.iv_right);
         iv_new = findViewById(R.id.iv_new);
+        magicimage = findViewById(R.id.magicimage);
         ll_save_actions = findViewById(R.id.ll_save_actions);
         ll_restore = findViewById(R.id.ll_restore);
         tv_image_name = findViewById(R.id.tv_image_name);
