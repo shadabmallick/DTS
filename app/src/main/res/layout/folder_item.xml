@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:layout_centerVertical="true"
+            android:textColor="#B7B7B7"
             android:text="Safe Gallery"
             />
 
