@@ -6,7 +6,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class ImageViewerPager extends android.support.v4.view.ViewPager {
+import androidx.viewpager.widget.ViewPager;
+
+public class ImageViewerPager extends ViewPager {
 
     public static boolean enabled = true;
 

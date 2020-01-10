@@ -21,15 +21,15 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -123,6 +123,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
                 length=imageArrayList.size();
                 Log.d(TAG, "onReceive: "+length);
             } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     };
@@ -180,7 +181,7 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
         tv_top=findViewById(R.id.tv_top);
         tv_badge = findViewById(R.id.tv_badge1);
         rel_second_bottom = findViewById(R.id.rel_second_bottom);
-    //    tv_badge.setText(length);
+        // tv_badge.setText(length);
        // rel_first_bottom.setClickable(true);
 
         rel_first_bottom.setOnClickListener(new View.OnClickListener() {
@@ -261,9 +262,9 @@ public class DtsGalleryActivity extends AppCompatActivity implements ImageClickL
         MenuParams menuParams = new MenuParams();
         menuParams.setActionBarSize((int) getResources().getDimension(R.dimen.tool_bar_height));
         menuParams.setMenuObjects(getMenuObjects());
-        menuParams.setClosableOutside(false);
-        menuParams.setAnimationDuration(50);
-        menuParams.setAnimationDelay(50);
+        menuParams.setClosableOutside(true);
+        menuParams.setAnimationDuration(0);
+        menuParams.setAnimationDelay(0);
 
         mMenuDialogFragment = ContextMenuDialogFragment.newInstance(menuParams);
         mMenuDialogFragment.setItemClickListener(DtsGalleryActivity.this);

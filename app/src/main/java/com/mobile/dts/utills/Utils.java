@@ -12,9 +12,9 @@ import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.provider.DocumentFile;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.documentfile.provider.DocumentFile;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.Toast;
@@ -71,7 +71,8 @@ public class Utils {
         return mimeType != null && mimeType.startsWith("video");
     }
 
-    public static boolean moveFile(Context context, String inputPath, String inputFile, String outputPath, long lastmodified) {
+    public static boolean moveFile(Context context, String inputPath, String inputFile,
+                                   String outputPath, long lastmodified) {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath();
         try {
             if (inputPath.contains(path) && outputPath.contains(path)) {

@@ -20,18 +20,9 @@ import android.graphics.Matrix;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.support.v7.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
-
-import com.mobile.dts.helper.photoview.OnMatrixChangedListener;
-import com.mobile.dts.helper.photoview.OnOutsidePhotoTapListener;
-import com.mobile.dts.helper.photoview.OnPhotoTapListener;
-import com.mobile.dts.helper.photoview.OnScaleChangedListener;
-import com.mobile.dts.helper.photoview.OnSingleFlingListener;
-import com.mobile.dts.helper.photoview.OnViewDragListener;
-import com.mobile.dts.helper.photoview.OnViewTapListener;
-import com.mobile.dts.helper.photoview.PhotoViewAttacher;
 
 /**
  * A zoomable ImageView. See {@link PhotoViewAttacher} for most of the details on how the zooming

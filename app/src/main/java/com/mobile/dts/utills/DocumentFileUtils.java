@@ -6,9 +6,9 @@ import android.content.SharedPreferences;
 import android.content.UriPermission;
 import android.net.Uri;
 import android.provider.DocumentsContract;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.provider.DocumentFile;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.documentfile.provider.DocumentFile;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
@@ -21,7 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
-import static android.support.v4.provider.DocumentFile.fromTreeUri;
+import static androidx.documentfile.provider.DocumentFile.fromTreeUri;
 import static com.mobile.dts.utills.Constants.SDCARDROOTDIRECTORYURI;
 import static com.mobile.dts.utills.Constants.appPref;
 

@@ -3,7 +3,7 @@
     <dimen name="padding_medium">9dp</dimen>
     <dimen name="corner_redius">10dp</dimen>
     <dimen name="padding_small">5dp</dimen>
-    <dimen name="standered_image_size">180dp</dimen>
+    <dimen name="standered_image_size">300dp</dimen>
     <dimen name="ultra_large_size">22sp</dimen>
     <dimen name="padding_large">20dp</dimen>
     <dimen name="padding_extra_large">30dp</dimen>

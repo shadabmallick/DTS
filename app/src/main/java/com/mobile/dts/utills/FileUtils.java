@@ -3,7 +3,7 @@ package com.mobile.dts.utills;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.format.Formatter;
 
 import java.io.File;

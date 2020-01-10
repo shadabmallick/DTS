@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -18,19 +17,13 @@ import android.widget.RelativeLayout;
 import com.mobile.dts.R;
 import com.mobile.dts.adapter.MyRecyclerViewAdapter;
 import com.mobile.dts.database.SqlLiteHelper;
-import com.mobile.dts.model.DateTimeBean;
 import com.mobile.dts.model.ImageBean;
 import com.mobile.dts.utills.Constants;
-import com.mobile.dts.utills.Utils;
 
 
 import java.util.ArrayList;
 
-import static com.mobile.dts.utills.Constants.CHILD;
-import static com.mobile.dts.utills.Constants.HEADER;
 import static com.mobile.dts.utills.Constants.appPref;
-import static com.mobile.dts.utills.Utils.getDateTime;
-import static com.mobile.dts.utills.Utils.getMonthName;
 
 public class KeepSafeMultiple extends AppCompatActivity {
     String TAG="KeepSafeMultiple";
@@ -58,7 +51,7 @@ public class KeepSafeMultiple extends AppCompatActivity {
         recyclerView=findViewById(R.id.rv_folder);
         ArrayList<String> savedImageList = dtsDataBase.getSavedImageList();
 
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         adapter = new MyRecyclerViewAdapter(this, savedImageList);
         recyclerView.setAdapter(adapter);

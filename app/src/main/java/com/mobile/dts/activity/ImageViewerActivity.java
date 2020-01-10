@@ -1,14 +1,17 @@
 package com.mobile.dts.activity;
+
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import com.mobile.dts.helper.GlideApp;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,11 +19,15 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.Settings;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v4.content.FileProvider;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import androidx.core.content.FileProvider;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,23 +37,31 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mobile.dts.R;
+import com.mobile.dts.adapter.FolderAdapter;
 import com.mobile.dts.adapter.SlidingImageAdapter;
 import com.mobile.dts.callbacks.ZoomImageClickListener;
 import com.mobile.dts.database.SqlLiteHelper;
 import com.mobile.dts.helper.DtsWidget;
+
 import com.mobile.dts.helper.ImageViewerPager;
 import com.mobile.dts.helper.Scheduler;
+import com.mobile.dts.helper.photoview.PhotoView;
 import com.mobile.dts.model.DateTimeBean;
+import com.mobile.dts.model.FolderData;
 import com.mobile.dts.model.ImageBean;
+import com.mobile.dts.model.KeepSafeData;
 import com.mobile.dts.model.PhotoDetailBean;
 import com.mobile.dts.utills.Constants;
 import com.nhaarman.supertooltips.ToolTip;
@@ -54,12 +69,11 @@ import com.nhaarman.supertooltips.ToolTipRelativeLayout;
 import com.nhaarman.supertooltips.ToolTipView;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -67,7 +81,9 @@ import java.util.Date;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import io.fabric.sdk.android.Fabric;
+
 import static com.mobile.dts.utills.Constants.CHILD;
 import static com.mobile.dts.utills.Constants.FROMIMAGEGALLERY;
 import static com.mobile.dts.utills.Constants.appPref;
@@ -76,8 +92,15 @@ import static com.mobile.dts.utills.Constants.deletedImageBroadcast;
 import static com.mobile.dts.utills.Constants.lastViewTime;
 import static com.mobile.dts.utills.Constants.newImagenotificationRequestCode;
 /*Use to show Image viewer screen(Using click on Dts gallery or Restore gallery and Using Widget click)*/
-public class ImageViewerActivity extends AppCompatActivity implements View.OnClickListener,
-        AdapterView.OnItemClickListener, ToolTipView.OnToolTipViewClickedListener, ZoomImageClickListener {
+
+public class ImageViewerActivity extends AppCompatActivity implements
+        View.OnClickListener,
+        AdapterView.OnItemClickListener,
+        ToolTipView.OnToolTipViewClickedListener,
+        ZoomImageClickListener,
+        FolderAdapter.ViewClickListener{
+
+
     public static int zoomedValue = -1;
     public static String TAG="ImageViewerActivity";
     final String[] KEEP_TO_LIST_ITEMS = new String[]{"24 Hours", "48 Hours", "1 Week", "1 Month"};
@@ -107,10 +130,12 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
     private AppBarLayout appbarlayout;
     private Timer timer;
     CropImageView cropImageView;
-    private RelativeLayout rl_crop,magicimage,saveImageBtn, save24Btn, shareBtn, deleteBtn, ll_restore, progress_rl, viewpagerlayout;
+    private RelativeLayout rl_crop,magicimage,saveImageBtn, save24Btn, shareBtn, deleteBtn, ll_restore, progress_rl, viewpagerlayout,savekeepsafe;
     private FirebaseAnalytics mFirebaseAnalytics;
     private long mLastClickTime = 0;
     private boolean isKeepToProcessing = false;
+
+
     public static int getSoftButtonsBarSizePort(Activity activity) {
         // getRealMetrics is only available with API 17 and +
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -134,6 +159,8 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_image);
         Fabric.with(this, new Crashlytics());
+
+        initViewsFolders();
         initViews();
         initClickListner();
         removeNotification();
@@ -185,6 +212,8 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
 
         initObjects();
 
+
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -209,11 +238,13 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
                         } else {
                             deleteBtn.setVisibility(View.GONE);
                         }
+
                     } else {
                         if (countDownTimer != null) {
                             countDownTimer.cancel();
                         }
                         stopWatch.setText("");
+                        stopWatch2.setText("");
                         if (ll_save_actions.getVisibility() == View.VISIBLE) {
                             ll_save_actions.setVisibility(View.GONE);
                         }
@@ -383,6 +414,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
+        savekeepsafe = findViewById(R.id.savekeepsafe);
     }
     private void initObjects() {
         isRestoredImages = getIntent().getBooleanExtra(Constants.KEY_IS_RESTORED_IMAGE, false);
@@ -487,6 +519,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
                     countDownTimer.cancel();
                 }
                 stopWatch.setText("");
+                stopWatch2.setText("");
             }
             registerReceiver(deletedImagebroadcastReceiver, new IntentFilter(deletedImageBroadcast));
         }
@@ -605,6 +638,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
         iv_left.setOnClickListener(this);
         iv_right.setOnClickListener(this);
         ll_restore.setOnClickListener(this);
+        savekeepsafe.setOnClickListener(this);
     }
     @Override
     public void onBackPressed() {
@@ -650,7 +684,9 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
                 findViewById(R.id.card_view).setVisibility(View.VISIBLE);
             }
             runTimer(true);
-        } else if (v.getId() == R.id.saveimage) {/*Handle save button click*/
+        }
+
+        else if (v.getId() == R.id.saveimage) {/*Handle save button click*/
             runTimer(false);
             if (isRestoredImages) {
                 new SaveAsyncTask().execute();
@@ -664,7 +700,9 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
                 findViewById(R.id.card_view).setVisibility(View.VISIBLE);
             }
             runTimer(true);
-        } else if (v.getId() == R.id.saveimage24) { /*Handle Keep to button click*/
+        }
+
+        else if (v.getId() == R.id.saveimage24) { /*Handle Keep to button click*/
             runTimer(false);
             if (mTipView == null) {
                 findViewById(R.id.card_view).setVisibility(View.GONE);
@@ -675,7 +713,9 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
                 findViewById(R.id.card_view).setVisibility(View.VISIBLE);
             }
             runTimer(true);
-        } else if (v.getId() == R.id.deleteimage) { /*Handle delete button click*/
+        }
+
+        else if (v.getId() == R.id.deleteimage) { /*Handle delete button click*/
             if (SystemClock.elapsedRealtime() - mLastClickTime < 150) {
                 return;
             }
@@ -689,18 +729,26 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
                 findViewById(R.id.card_view).setVisibility(View.VISIBLE);
             }
             runTimer(true);
-        } else if (v.getId() == R.id.iv_left) {
+        }
+
+        else if (v.getId() == R.id.iv_left) {
             if (position > 0)
                 position = position - 1;
             viewPager.setCurrentItem(position, true);
-        } else if (v.getId() == R.id.iv_right) {
+        }
+
+        else if (v.getId() == R.id.iv_right) {
             if (position < imageBeanArrayList.size() - 1)
                 position = position + 1;
             viewPager.setCurrentItem(position, true);
-        } else if (v.getId() == R.id.ll_restore) {
+        }
+
+        else if (v.getId() == R.id.ll_restore) {
             runTimer(false);
             new RestoreAsyncTask().execute();/*Process restore media file*/
-        } else if (v.getId() == R.id.iv_back) {
+        }
+
+        else if (v.getId() == R.id.iv_back) {
             if(!isKeepToProcessing) {
                 ImageViewerPager.enabled = true;
                 if (isRestoredImages) {
@@ -711,7 +759,9 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
                     finish();
                 }
             }
-        } else if (v.getId() == R.id.keep24) {
+        }
+
+        else if (v.getId() == R.id.keep24) {
             runTimer(false);
             if (isRestoredImages) {
                 PhotoDetailBean selectedImage = getSelectedImageDetail(R.id.saveimage24, imageBeanArrayList.get(position), KEEP_TO_LIST_ITEMS_TIME[0]);
@@ -726,7 +776,9 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
                 /*Handling keep to media file if clicked from Dts gallery*/
                 new KeepImageAsyncTask().execute(KEEP_TO_LIST_ITEMS_TIME[0]);
             }
-        } else if (v.getId() == R.id.keep2w) {
+        }
+
+        else if (v.getId() == R.id.keep2w) {
             runTimer(false);
             if (isRestoredImages) {
                 PhotoDetailBean selectedImage = getSelectedImageDetail(R.id.saveimage24, imageBeanArrayList.get(position), KEEP_TO_LIST_ITEMS_TIME[2]);
@@ -740,7 +792,9 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
             } else {
                 new KeepImageAsyncTask().execute(KEEP_TO_LIST_ITEMS_TIME[2]);
             }
-        } else if (v.getId() == R.id.keep1w) {
+        }
+
+        else if (v.getId() == R.id.keep1w) {
             runTimer(false);
             if (isRestoredImages) {
                 PhotoDetailBean selectedImage = getSelectedImageDetail(R.id.saveimage24, imageBeanArrayList.get(position), KEEP_TO_LIST_ITEMS_TIME[1]);
@@ -754,7 +808,9 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
             } else {
                 new KeepImageAsyncTask().execute(KEEP_TO_LIST_ITEMS_TIME[1]);
             }
-        } else if (v.getId() == R.id.keep1m) {
+        }
+
+        else if (v.getId() == R.id.keep1m) {
             runTimer(false);
             if (isRestoredImages) {
                 PhotoDetailBean selectedImage = getSelectedImageDetail(R.id.saveimage24, imageBeanArrayList.get(position), KEEP_TO_LIST_ITEMS_TIME[3]);
@@ -768,6 +824,72 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
             } else {
                 new KeepImageAsyncTask().execute(KEEP_TO_LIST_ITEMS_TIME[3]);
             }
+        }
+
+        else if (v.getId() == R.id.savekeepsafe){
+
+
+            actionTime = imageBeanArrayList.get(position).getActionTime();
+            keepTime = imageBeanArrayList.get(position).getKeepTime();
+            isSaved24h = imageBeanArrayList.get(position).isSaved24();
+            selected_image = new File(imageBeanArrayList.get(position).getImagePath()).getAbsolutePath();
+
+            setSelectedData();
+            setFolderData();
+
+            stopwatchmainly2.setVisibility(stopwatchmainly.getVisibility());
+            mainlayout2.setVisibility(View.VISIBLE);
+
+        }
+
+
+
+        switch (v.getId()){
+
+            case R.id.iv_new_folder:
+
+                linear_show_folder.setVisibility(View.GONE);
+                linear_create_folder.setVisibility(View.VISIBLE);
+
+                break;
+
+            case R.id.tv_ok:
+
+                if (edt_folder_name.getText().toString().trim().length() == 0){
+                    Toast.makeText(ImageViewerActivity.this, "Enter folder name",
+                            Toast.LENGTH_SHORT).show();
+                }else {
+
+                    FolderData folderData = new FolderData();
+                    folderData.setFolderName(edt_folder_name.getText().toString());
+                    folderData.setCreationTime(System.currentTimeMillis());
+
+                    dtsDataBase.insertFolder(folderData);
+                }
+
+
+                linear_create_folder.setVisibility(View.GONE);
+                linear_show_folder.setVisibility(View.VISIBLE);
+
+                setFolderData();
+
+                break;
+
+            case R.id.tv_cancel:
+
+                linear_create_folder.setVisibility(View.GONE);
+                linear_show_folder.setVisibility(View.VISIBLE);
+
+                setFolderData();
+
+                break;
+
+            case R.id.iv_back2:
+
+                mainlayout2.setVisibility(View.GONE);
+
+                break;
+
         }
     }
     /*Handle Keep To file from restore screen*/
@@ -801,6 +923,7 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
         mTipView = mToolTipFrameLayout.showToolTipForView(toolTip, findViewById(R.id.saveimage24));
         mTipView.setOnToolTipViewClickedListener(this);
     }
+    
     private void crudButtonAction(int viewID, long keepTime) {
         boolean isSuccess;
         if(imageBeanArrayList!=null && imageBeanArrayList.size()>0) {
@@ -1003,6 +1126,13 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
                         stopWatch.setText(String.format("%02d", hours)
                                 + ":" + String.format("%02d", minutes)
                                 + ":" + String.format("%02d", seconds));
+
+
+                        stopWatch2.setText(String.format("%02d", hours)
+                                + ":" + String.format("%02d", minutes)
+                                + ":" + String.format("%02d", seconds));
+
+                        Log.d(TAG, "onTick: " +String.format("%02d", hours) +minutes);
                     } else {
                         int temphours = (hours - (days * 24));
                         String dayStr;
@@ -1018,6 +1148,10 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
                             hoursStr = "Hour";
                         }
                         stopWatch.setText(String.format("%02d", days) + " " + dayStr
+                                + ":" + String.format("%02d", temphours) + " " + hoursStr);
+
+
+                        stopWatch2.setText(String.format("%02d", days) + " " + dayStr
                                 + ":" + String.format("%02d", temphours) + " " + hoursStr);
                     }
                 }
@@ -1142,8 +1276,10 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
             appbarlayout.setVisibility(View.VISIBLE);
             tv_image_indication_text.setVisibility(View.VISIBLE);
             mainlayout.setBackgroundColor(Color.WHITE);
+
             if (imageBeanArrayList.size() > 0 && imageBeanArrayList.get(position).isNew()) {
                 iv_new.setVisibility(View.GONE);
+
             }
             runTimer(true);
         } else {
@@ -1397,4 +1533,152 @@ public class ImageViewerActivity extends AppCompatActivity implements View.OnCli
             setIndicatorText();
         }
     }
+
+
+
+
+
+
+    ///// NEW WORK ....
+
+    private FrameLayout mainlayout2;
+
+    private AppBarLayout appbarlayout2;
+    private LinearLayout ll_folder_view, linear_create_folder, linear_show_folder, stopwatchmainly2;
+    private EditText edt_folder_name;
+    private TextView tv_cancel, tv_ok, tv_date2;
+    private RecyclerView recycler_folder;
+    private AppCompatTextView stopWatch2;
+    private ImageView iv_new_folder, iv_back2;
+    private RelativeLayout rel_create_folder;
+    private PhotoView imageView;
+
+    private String selected_image, date;
+    private boolean isSaved24h;
+    private long actionTime, keepTime;
+
+    private void initViewsFolders() {
+
+        mainlayout2 = findViewById(R.id.mainlayout2);
+        appbarlayout2 = findViewById(R.id.appbarlayout2);
+        ll_folder_view = findViewById(R.id.ll_folder_view);
+        linear_create_folder = findViewById(R.id.linear_create_folder);
+        linear_show_folder = findViewById(R.id.linear_show_folder);
+        stopwatchmainly2 = findViewById(R.id.stopwatchmainly2);
+        edt_folder_name = findViewById(R.id.edt_folder_name);
+        tv_cancel = findViewById(R.id.tv_cancel);
+        tv_ok = findViewById(R.id.tv_ok);
+        tv_date2 = findViewById(R.id.tv_date2);
+        recycler_folder = findViewById(R.id.recycler_folder);
+        stopWatch2 = findViewById(R.id.stopWatch2);
+        iv_new_folder = findViewById(R.id.iv_new_folder);
+        iv_back2 = findViewById(R.id.iv_back2);
+        rel_create_folder = findViewById(R.id.rel_create_folder);
+        imageView = findViewById(R.id.imageView);
+
+        mainlayout2.setVisibility(View.GONE);
+
+
+        recycler_folder.setLayoutManager(new LinearLayoutManager(this));
+
+
+
+        iv_new_folder.setOnClickListener(this);
+        iv_back2.setOnClickListener(this);
+        tv_cancel.setOnClickListener(this);
+        tv_ok.setOnClickListener(this);
+
+
+    }
+
+    private void setSelectedData(){
+
+        ll_save_actions.setVisibility(View.VISIBLE);
+
+        tv_date2.setText(tv_date.getText().toString());
+
+        GlideApp.with(this).
+                load(new File(selected_image))
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
+                .into(imageView);
+    }
+
+    private void setFolderData(){
+
+        ArrayList<FolderData> folderDataArrayList = dtsDataBase.getAllFolder();
+
+        FolderAdapter folderAdapter = new FolderAdapter(ImageViewerActivity.this,
+                folderDataArrayList);
+
+        recycler_folder.setAdapter(folderAdapter);
+        folderAdapter.setViewClickListener(this);
+
+    }
+
+    @Override
+    public void onImageClicked(int clickEvent, int folderId) {
+
+        if (clickEvent == 0){
+
+            KeepSafeData keepSafeData = new KeepSafeData();
+            keepSafeData.setFolderId(folderId);
+            keepSafeData.setEntryTime(System.currentTimeMillis());
+            keepSafeData.setPhotoOriginalPath(selected_image);
+
+            keepSafeData.setPhotoByte(getByteArrayFromFile(selected_image));
+
+            dtsDataBase.insertToKeepSafe(keepSafeData);
+
+        }else if (clickEvent == 1){
+
+            deleteFolderDialog(folderId);
+
+        }
+
+
+    }
+
+    public static byte[] getByteArrayFromFile(String filePath) {
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(filePath);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            byte[] b = new byte[1024];
+            for (int readNum; (readNum = fis.read(b)) != -1; ) {
+                bos.write(b, 0, readNum);
+            }
+            return bos.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("mylog", e.toString());
+        }
+        return null;
+    }
+
+
+    private void deleteFolderDialog(final int folderId){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ImageViewerActivity.this);
+        builder.setTitle(R.string.app_name);
+        builder.setMessage("Are you sure you want to delete?");
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+                dtsDataBase.deleteFolder(folderId);
+
+                setFolderData();
+            }
+        });
+        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+
+            }
+        });
+        builder.show();
+    }
+
+
+
 }

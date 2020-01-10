@@ -2,20 +2,20 @@ package com.mobile.dts.adapter;
 
 import android.content.Context;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.mobile.dts.helper.GlideApp;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mobile.dts.R;
 import com.mobile.dts.callbacks.ImageClickListner;
-import com.mobile.dts.helper.GlideApp;
+
 import com.mobile.dts.model.ImageBean;
 import com.mobile.dts.utills.Utils;
 
@@ -92,7 +92,7 @@ public class ImageGridAdapter extends RecyclerView.Adapter {
                ((ViewHolder) holder).imgSize.setVisibility(View.VISIBLE);
                 ((ViewHolder) holder).tv_time.setVisibility(View.GONE);
                 ((ViewHolder) holder).tv_date.setVisibility(View.GONE);
-                ((ViewHolder) holder).iv_image_name.setText(context.getResources().getString(R.string.remaining));
+                ((ViewHolder) holder).iv_image_name.setImageResource(R.mipmap.icon_timer);
                 int seconds = (int) (imageBean.getRemainingTime() / 1000);
                 int hours = seconds / (60 * 60);
                 int tempMint = (seconds - (hours * 60 * 60));
@@ -170,8 +170,8 @@ public class ImageGridAdapter extends RecyclerView.Adapter {
     class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView iv_folder_thumbnail;
         private AppCompatCheckBox checkbox;
-        private TextView imgSize, iv_image_name, tv_date, tv_time;
-        private ImageView imgRecent, imgsave24, iv_play;
+        private TextView imgSize, tv_date, tv_time;
+        private ImageView imgRecent, imgsave24, iv_play,iv_image_name;
 
         public ViewHolder(View itemView) {
             super(itemView);

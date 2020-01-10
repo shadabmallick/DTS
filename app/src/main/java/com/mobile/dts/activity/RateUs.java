@@ -3,18 +3,15 @@ package com.mobile.dts.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mobile.dts.R;
-
-import static com.mobile.dts.activity.CodeAgain.MY_PREFS_NAME;
 
 public class RateUs extends AppCompatActivity {
 

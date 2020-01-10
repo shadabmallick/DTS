@@ -1,11 +1,10 @@
 package com.mobile.dts.activity;
 
-import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Environment;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.mobile.dts.saveImageEvent.CameraBroadcastReceiver;

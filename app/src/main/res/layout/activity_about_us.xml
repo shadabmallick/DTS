@@ -6,15 +6,15 @@
     android:orientation="vertical"
     tools:context="com.mobile.dts.activity.TermPageActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/blue"
+            android:background="@color/white"
 
             >
 
@@ -28,6 +28,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerInParent="true"
+                    android:tint="@color/blue"
                     android:src="@drawable/ic_arrow_left_solid" />
 
                 <TextView
@@ -40,15 +41,23 @@
                     android:drawablePadding="@dimen/padding_medium"
                     android:gravity="top"
                     android:text="@string/aboutus"
-                    android:textColor="@color/white"
+                    android:textColor="@color/blue"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
 
             </RelativeLayout>
-        </android.support.v7.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/logo_launcher">
+
+    </ImageView>
 
     <ScrollView
         android:layout_width="match_parent"

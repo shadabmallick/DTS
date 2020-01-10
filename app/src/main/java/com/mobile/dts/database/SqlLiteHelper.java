@@ -9,8 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.mobile.dts.callbacks.ImageMovedListener;
+import com.mobile.dts.model.FolderData;
+import com.mobile.dts.model.KeepSafeData;
 import com.mobile.dts.model.PhotoDetailBean;
 import com.mobile.dts.utills.Constants;
 import com.mobile.dts.utills.FileUtils;
@@ -41,7 +44,8 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_MEDIA_LIST_QUERY =
             "CREATE  TABLE " + TABLE_MEDIA_LIST
-                    + " ( " + MDL_PHOTO_PATH + " VARCHAR PRIMARY KEY, "
+                    + " ( "
+                    + MDL_PHOTO_PATH + " VARCHAR PRIMARY KEY, "
                     + MDL_ACTION_TIME + " INTEGER, "
                     + MDL_TIME_TAKEN + " INTEGER, "
                     + MDL_IS_SAVED + " INTEGER DEFAULT 0, "
@@ -67,6 +71,9 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_MEDIA_LIST_QUERY);
+
+        db.execSQL(CREATE_TABLE_FOLDER);
+        db.execSQL(CREATE_TABLE_KEEP_SAFE);
     }
 
 
@@ -592,7 +599,10 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         ArrayList<String> imageBeans = new ArrayList<String>();
         String deleteColumnName = MDL_IS_DELETED;
         String isSave24column = MDL_IS_SAVED_24_HOURS;
-        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_MEDIA_LIST + " WHERE " + isSave24column + " = " + 1 + " or +" + deleteColumnName + " = " + 1 + " ORDER BY " + MDL_TIME_TAKEN + " DESC", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_MEDIA_LIST
+                + " WHERE " + isSave24column + " = " + 1
+                + " or +" + deleteColumnName + " = " + 1
+                + " ORDER BY " + MDL_TIME_TAKEN + " DESC", null);
         if (cursor.moveToFirst()) {
             do {
                 imageBeans.add(cursor.getString(cursor.getColumnIndex(MDL_PHOTO_PATH)));
@@ -723,4 +733,158 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = getReadableDatabase();
         return database.rawQuery(sql, null);
     }
+
+
+
+
+
+    //////////////// NEW WORK ... 6-Jan-2020
+
+    public static final String TABLE_FOLDER = "table_folder";
+    public static final String FOLDER_ID = "folder_id";
+    public static final String FOLDER_NAME = "folder_name";
+    public static final String FOLDER_CREATION_TIME = "folder_creation_time";
+    public static final String FOLDER_IS_DELETED = "folder_is_deleted";
+
+    private static final String CREATE_TABLE_FOLDER = "CREATE TABLE " + TABLE_FOLDER
+            + " ( " + FOLDER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + FOLDER_CREATION_TIME + " INTEGER, "
+            + FOLDER_IS_DELETED + " INTEGER DEFAULT 0, "
+            + FOLDER_NAME + " VARCHAR );";
+
+    public void insertFolder(FolderData folderData){
+        database = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(FOLDER_NAME, folderData.getFolderName());
+        contentValues.put(FOLDER_CREATION_TIME, folderData.getCreationTime());
+
+        database.insert(TABLE_FOLDER, null, contentValues);
+        contentValues.clear();
+
+    }
+
+    public void deleteFolder(int folder_id){
+
+        database = this.getWritableDatabase();
+
+        String selection = FOLDER_ID + " =? ";
+        String[] selectionArgs = { String.valueOf(folder_id) };
+
+        database.delete(TABLE_FOLDER, selection, selectionArgs);
+
+    }
+
+    public ArrayList<FolderData> getAllFolder(){
+        database = this.getReadableDatabase();
+
+        ArrayList<FolderData> list = new ArrayList<>();
+
+        String rawQuery = "SELECT * FROM " + TABLE_FOLDER
+                + " WHERE " + FOLDER_IS_DELETED + " = " + 0
+                + " ORDER BY " + FOLDER_CREATION_TIME + " DESC";
+
+        Cursor cursor = database.rawQuery(rawQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                FolderData folderData = new FolderData();
+                folderData.setFolderId(cursor.getInt(cursor.getColumnIndex(FOLDER_ID)));
+                folderData.setFolderName(cursor.getString(cursor.getColumnIndex(FOLDER_NAME)));
+
+                list.add(folderData);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return list;
+    }
+
+
+
+
+    public static final String TABLE_KEEP_SAFE = "table_keep_safe";
+    public static final String SAFE_ID = "safe_id";
+    public static final String SAFE_ENTRY_TIME = "safe_entry_time";
+    public static final String SAFE_BYTE_DATA = "safe_byte_data";
+
+    private static final String CREATE_TABLE_KEEP_SAFE = "CREATE TABLE " + TABLE_KEEP_SAFE
+            + " ( " + SAFE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + FOLDER_ID + " INTEGER, "
+            + MDL_PHOTO_PATH + " VARCHAR, "
+            + SAFE_ENTRY_TIME + " INTEGER, "
+            + MDL_IS_DELETED + " INTEGER DEFAULT 0, "
+            + SAFE_BYTE_DATA + " BLOB );";
+
+    public void insertToKeepSafe(KeepSafeData keepSafeData){
+        database = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(FOLDER_ID, keepSafeData.getFolderId());
+        contentValues.put(MDL_PHOTO_PATH, keepSafeData.getPhotoOriginalPath());
+        contentValues.put(SAFE_ENTRY_TIME, keepSafeData.getEntryTime());
+        contentValues.put(SAFE_BYTE_DATA, keepSafeData.getPhotoByte());
+        contentValues.put(MDL_IS_DELETED, 0);
+
+
+        database.insert(TABLE_KEEP_SAFE, null, contentValues);
+        contentValues.clear();
+
+        Log.d("TAG", "insert keep safe " +keepSafeData.getFolderId());
+        Log.d("TAG", "insert keep safe " +keepSafeData.getPhotoOriginalPath());
+        Log.d("TAG", "insert keep safe " +keepSafeData.getEntryTime());
+        Log.d("TAG", "insert keep safe " +keepSafeData.getPhotoByte());
+
+    }
+
+
+    public ArrayList<KeepSafeData> getFolderWiseImage(int folder_id){
+        database = this.getReadableDatabase();
+
+        ArrayList<KeepSafeData> arrayList = new ArrayList<>();
+
+        String rawQuery = "SELECT * FROM " + TABLE_KEEP_SAFE
+                + " WHERE " + FOLDER_ID + " = " + folder_id
+                + " AND " + MDL_IS_DELETED + " = " + 0
+                + " ORDER BY " + MDL_KEEP_TIME + " DESC";
+
+        Cursor cursor = database.rawQuery(rawQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                KeepSafeData keepSafeData = new KeepSafeData();
+                keepSafeData.setId(cursor.getInt(cursor.getColumnIndex(SAFE_ID)));
+                keepSafeData.setFolderId(cursor.getInt(cursor.getColumnIndex(FOLDER_ID)));
+                keepSafeData.setPhotoOriginalPath(cursor.getString(cursor.getColumnIndex(MDL_PHOTO_PATH)));
+                keepSafeData.setPhotoByte(cursor.getBlob(cursor.getColumnIndex(SAFE_BYTE_DATA)));
+                keepSafeData.setEntryTime(cursor.getInt(cursor.getColumnIndex(SAFE_ENTRY_TIME)));
+
+                arrayList.add(keepSafeData);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return arrayList;
+    }
+
+
+    public void deleteKeepSafeImage(int id){
+        database = this.getWritableDatabase();
+
+        String selection = SAFE_ID + " =? ";
+        String[] selectionArgs = { String.valueOf(id) };
+
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(MDL_IS_DELETED, 1);
+
+        database.update(TABLE_KEEP_SAFE, contentValues, selection, selectionArgs);
+    }
+
+
 }

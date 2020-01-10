@@ -58,7 +58,7 @@
             android:layout_centerHorizontal="true"
             android:paddingBottom="@dimen/padding_medium">
 
-            <android.support.v7.widget.AppCompatCheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/cb_terms"
                 android:buttonTint="@android:color/white"
                 android:layout_width="wrap_content"

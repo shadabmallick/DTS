@@ -31,9 +31,8 @@
 
         </RelativeLayout>
 
-
-
     </RelativeLayout>
+
     <TextView
         android:id="@+id/tv_folder"
         android:layout_width="match_parent"
@@ -48,12 +47,12 @@
         android:layout_below="@id/rel_toolbar"/>
 
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_folder"
         android:layout_margin="10dp"
         android:layout_below="@+id/tv_folder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent"/>
 
     <RelativeLayout
 
@@ -88,23 +87,17 @@
             <ImageView
                 android:id="@+id/id_add_cam"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"                android:layout_width="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
                 android:layout_toRightOf="@+id/id_add_picture"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/cam"/>
 
 
-
-
-
-
         </RelativeLayout>
 
-
-
-
-
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rl_plus"
         android:layout_width="match_parent"
@@ -112,6 +105,7 @@
         android:layout_alignParentBottom="true"
         android:gravity="center"
         android:layout_marginBottom="10dp">
+
         <RelativeLayout
             android:id="@+id/rel_middle"
             android:layout_width="match_parent"
@@ -119,10 +113,10 @@
             android:layout_gravity="bottom"
             android:gravity="center"
             android:layout_marginBottom="40dp">
+
             <RelativeLayout
                 android:id="@+id/layoutforprofileimage"
                 android:layout_width="80dp"
-
                 android:layout_height="80dp">
 
                 <ImageView
@@ -175,12 +169,14 @@
         android:textColor="#009688"
         android:textSize="15sp"
         android:visibility="gone"/>
+
     <RelativeLayout
         android:id="@+id/rel_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         >
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="80dp"
@@ -194,10 +190,10 @@
             android:gravity="center"
             android:layout_marginLeft="20dp"
             >
+
             <ImageView
                 android:id="@+id/img_temp"
                 android:layout_width="wrap_content"
-
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:src="@mipmap/sand_clock"
@@ -209,12 +205,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/temp"
                 android:layout_marginTop="20dp"
-
-
-
                 />
 
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_toRightOf="@+id/rel_first_bottom"
             android:id="@+id/rel_second_bottom"
@@ -223,6 +217,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
             >
+
             <ImageView
                 android:id="@+id/img_safe"
                 android:layout_width="wrap_content"
@@ -239,12 +234,10 @@
                 android:layout_marginLeft="5dp"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-
-
-
                 />
 
         </RelativeLayout>
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -272,9 +265,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/clean"
                     android:layout_marginTop="20dp"
-
-
-
                     />
 
             </RelativeLayout>
@@ -302,9 +292,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/setting"
                     android:layout_marginTop="20dp"
-
-
-
                     />
 
             </RelativeLayout>

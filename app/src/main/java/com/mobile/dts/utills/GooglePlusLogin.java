@@ -3,7 +3,9 @@ package com.mobile.dts.utills;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
+
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.google.android.gms.auth.api.Auth;
@@ -17,6 +19,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.mobile.dts.model.UserBean;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class GooglePlusLogin implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -25,7 +29,7 @@ public class GooglePlusLogin implements GoogleApiClient.OnConnectionFailedListen
     private Context context;
     private GoogleApiClient mGoogleApiClient;
     private OnClientConnectedListener listener;
-
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
     public GooglePlusLogin(FragmentActivity context, OnClientConnectedListener listener) {
         this.context = context;
         this.listener = listener;
@@ -93,6 +97,12 @@ public class GooglePlusLogin implements GoogleApiClient.OnConnectionFailedListen
             UserBean.getObect().emailId = email;
             UserBean.getObect().accountType = "2";
             UserBean.getObect().picUrl = imageUrl;
+
+            SharedPreferences.Editor editor = context.getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+            editor.putString("name", UserBean.getObect().userName);
+            editor.putString("lastname", UserBean.getObect().lastName);
+            editor.putString("email", UserBean.getObect().emailId);
+            editor.apply();
             listener.onGoogleProfileFetchComplete();
         } else {
             listener.onClientFailed();
