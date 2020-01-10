@@ -5,10 +5,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.mobile.dts.R;
 import com.mobile.dts.model.FolderData;
 
@@ -19,10 +18,12 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     private LayoutInflater mInflater;
     private ArrayList<FolderData> dataArrayList;
 
+
     public FolderAdapter(Context context, ArrayList<FolderData> dataArrayList) {
         this.mInflater = LayoutInflater.from(context);
         this.dataArrayList = dataArrayList;
         this.context=context;
+
     }
 
     @Override
@@ -35,10 +36,28 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        FolderData folderData = dataArrayList.get(position);
+        final FolderData folderData = dataArrayList.get(position);
 
         holder.tv_folder_name.setText(folderData.getFolderName());
 
+
+        holder.rel_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                mViewClickListener.onImageClicked(0, folderData.getFolderId());
+            }
+        });
+
+        holder.rel_main.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                mViewClickListener.onImageClicked(1, folderData.getFolderId());
+
+                return true;
+            }
+        });
 
     }
 
@@ -47,24 +66,28 @@ public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder
         return dataArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements
-            View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView tv_folder_name;
+        public RelativeLayout rel_main;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tv_folder_name =  itemView.findViewById(R.id.tv_folder_name);
-            itemView.setOnClickListener(this);
+            rel_main =  itemView.findViewById(R.id.rel_main);
         }
 
-        @Override
-        public void onClick(View view) {
-            onItemClick(view, getAdapterPosition());
-        }
     }
 
-    public void onItemClick(View view, int position) {
 
+    private ViewClickListener mViewClickListener;
+    public interface ViewClickListener {
+        void onImageClicked(int clickEvent, int folderId);
     }
+    public void setViewClickListener (ViewClickListener viewClickListener) {
+        mViewClickListener = viewClickListener;
+    }
+
+
+
 }

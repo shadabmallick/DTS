@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import com.mobile.dts.callbacks.ImageMovedListener;
 import com.mobile.dts.model.FolderData;
@@ -763,6 +764,17 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     }
 
+    public void deleteFolder(int folder_id){
+
+        database = this.getWritableDatabase();
+
+        String selection = FOLDER_ID + " =? ";
+        String[] selectionArgs = { String.valueOf(folder_id) };
+
+        database.delete(TABLE_FOLDER, selection, selectionArgs);
+
+    }
+
     public ArrayList<FolderData> getAllFolder(){
         database = this.getReadableDatabase();
 
@@ -820,6 +832,11 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
         database.insert(TABLE_KEEP_SAFE, null, contentValues);
         contentValues.clear();
+
+        Log.d("TAG", "insert keep safe " +keepSafeData.getFolderId());
+        Log.d("TAG", "insert keep safe " +keepSafeData.getPhotoOriginalPath());
+        Log.d("TAG", "insert keep safe " +keepSafeData.getEntryTime());
+        Log.d("TAG", "insert keep safe " +keepSafeData.getPhotoByte());
 
     }
 
