@@ -46,11 +46,35 @@
         android:background="@drawable/blue_center_button"
         android:layout_below="@id/rel_toolbar"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/recycler_folder"
+
+        android:layout_margin="10dp"
+        android:layout_below="@+id/tv_folder"
+
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+    <TextView
+        android:id="@+id/tv_recent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Recent Media"
+        android:alpha="0.5"
+        android:textColor="@color/white"
+        android:layout_marginLeft="130dp"
+        android:layout_marginRight="130dp"
+        android:gravity="center"
+
+        android:background="@drawable/blue_center_button"
+        android:layout_below="@id/recycler_folder"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_folder"
         android:layout_margin="10dp"
-        android:layout_below="@+id/tv_folder"
+        android:layout_below="@+id/tv_recent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

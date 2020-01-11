@@ -40,11 +40,11 @@ public class CustomDialogClass extends Dialog implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customdialogui);
         sharedpreferences = getContext().getApplicationContext().getSharedPreferences(Constants.appPref, Activity.MODE_PRIVATE);
-        checkedTextView1 = (CheckedTextView) findViewById(R.id.text1);
-        checkedTextView2 = (CheckedTextView) findViewById(R.id.text2);
-        checkedTextView3 = (CheckedTextView) findViewById(R.id.text3);
-        cancel = (TextView) findViewById(R.id.cancel);
-        update = (TextView) findViewById(R.id.update);
+        checkedTextView1 =  findViewById(R.id.text1);
+        checkedTextView2 =  findViewById(R.id.text2);
+        checkedTextView3 =  findViewById(R.id.text3);
+        cancel =  findViewById(R.id.cancel);
+        update =  findViewById(R.id.update);
         checkedTextView1.setOnClickListener(this);
         checkedTextView2.setOnClickListener(this);
         checkedTextView3.setOnClickListener(this);

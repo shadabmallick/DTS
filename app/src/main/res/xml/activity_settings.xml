@@ -80,7 +80,7 @@
             />
         <Preference
             android:key="help_support"
-            android:summary="Help &amp; support in nay issue"
+            android:summary="Help &amp; support in any issue"
             android:title="Help &amp; Support"
 
             />

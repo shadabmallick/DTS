@@ -1597,11 +1597,13 @@ public class ImageViewerActivity extends AppCompatActivity implements
 
         tv_date2.setText(tv_date.getText().toString());
 
+/*
         GlideApp.with(this).
                 load(new File(selected_image))
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(imageView);
+*/
     }
 
     private void setFolderData(){
@@ -1629,6 +1631,8 @@ public class ImageViewerActivity extends AppCompatActivity implements
             keepSafeData.setPhotoByte(getByteArrayFromFile(selected_image));
 
             dtsDataBase.insertToKeepSafe(keepSafeData);
+            Toast.makeText(getApplicationContext(),"Image saved",Toast.LENGTH_SHORT).show();
+            linear_show_folder.setVisibility(View.GONE);
 
         }else if (clickEvent == 1){
 

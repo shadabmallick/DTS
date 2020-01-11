@@ -849,7 +849,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         String rawQuery = "SELECT * FROM " + TABLE_KEEP_SAFE
                 + " WHERE " + FOLDER_ID + " = " + folder_id
                 + " AND " + MDL_IS_DELETED + " = " + 0
-                + " ORDER BY " + MDL_KEEP_TIME + " DESC";
+                + " ORDER BY " + SAFE_ENTRY_TIME + " DESC";
 
         Cursor cursor = database.rawQuery(rawQuery, null);
 

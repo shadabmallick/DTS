@@ -64,7 +64,7 @@ public class WidgetSizeDialog extends Dialog {
         widgetSizeFromDimens = (int) (context.getResources().getDimension(R.dimen.widgetsamllsize));
         if (sharedpreferences.contains(widgetSize)) {
             _widgetSize = (int) sharedpreferences.getFloat(widgetSize, widgetSizeFromDimens);
-            _widgetSize = _widgetSize * 50 / 100;
+            _widgetSize = _widgetSize * 70 / 100;
         } else {
             _widgetSize = widgetSizeFromDimens;
         }
@@ -88,7 +88,7 @@ public class WidgetSizeDialog extends Dialog {
                 params = new RelativeLayout.LayoutParams(progress + widgetSizeFromDimens, progress + widgetSizeFromDimens);
                 params.addRule(RelativeLayout.CENTER_IN_PARENT);
                 widgetImage.setLayoutParams(params);
-                _progress = (progress + widgetSizeFromDimens) * 100 / 50;
+                _progress = (progress + widgetSizeFromDimens) * 100 / 70;
 
             }
 

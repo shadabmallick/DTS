@@ -24,7 +24,7 @@
     <dimen name="widgetsize">50dp</dimen>
     <dimen name="disableDistanceY">28dp</dimen>
     <dimen name="disableDistanceX">57dp</dimen>
-    <dimen name="widgetsamllsize">56dp</dimen>
+    <dimen name="widgetsamllsize">36dp</dimen>
     <dimen name="dp17">17dp</dimen>
     <dimen name="sp10">10sp</dimen>
     <dimen name="marginbottom">74dp</dimen>

@@ -170,6 +170,7 @@
             android:layout_marginRight="100dp"
             android:text="@string/recent_media"
             android:gravity="center"
+             android:layout_marginTop="20dp"
             android:padding="5dp"
             android:alpha="0.5"
 
@@ -186,6 +187,7 @@
             android:gravity="center"
             android:padding="5dp"
             android:alpha="0.5"
+            android:layout_marginTop="20dp"
             android:visibility="gone"
             android:textSize="13dp"
             android:textColor="@android:color/white"

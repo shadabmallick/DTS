@@ -10,13 +10,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         app:cardElevation="8dp"
+
         app:cardCornerRadius="8dp">
 
         <ImageView
             android:id="@+id/img_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_left_solid"></ImageView>
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/device"></ImageView>
 
     </androidx.cardview.widget.CardView>
 

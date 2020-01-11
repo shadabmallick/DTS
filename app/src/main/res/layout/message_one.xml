@@ -76,7 +76,7 @@
                     android:layout_below="@+id/lltop"
                     android:layout_marginTop="30dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/ic_group_2041">
+                    android:background="@drawable/ic_2222">
                     <TextView
                         android:id="@+id/tv_badge"
                         android:layout_width="20dp"
