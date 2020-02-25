@@ -21,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.documentfile.provider.DocumentFile;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.mobile.dts.R;
 import com.mobile.dts.activity.ImageViewLoadingActivity;
@@ -33,10 +34,15 @@ import com.mobile.dts.utills.Utils;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static com.mobile.dts.utills.Constants.alarmRequestCode;
 import static com.mobile.dts.utills.Constants.defaultDeleteTimeInterval;
@@ -46,6 +52,7 @@ import static com.mobile.dts.utills.Constants.everyThirdDaytime;
 import static com.mobile.dts.utills.Constants.isBoot;
 import static com.mobile.dts.utills.Constants.isRealTimeNotification;
 import static com.mobile.dts.utills.Constants.newImagenotificationRequestCode;
+import static com.mobile.dts.utills.Constants.saved_time;
 
 /*This is the scheduler class. It shows widget and
 notification with new images. It checks every 30 seconds for new images*/
@@ -76,6 +83,15 @@ public class Scheduler extends BroadcastReceiver {
                     notification = true;
 
                 } else {
+
+                    // selected time
+                    String selected_time = sharedpreferences.getString(saved_time, "");
+                    System.out.println("selected_time :: " + selected_time);
+                    if (!selected_time.isEmpty()){
+                        notification = true;
+                    }
+
+
                     if (!sharedpreferences.contains(everyThirdDaytime)) {
                         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                         Date today = new Date();
@@ -103,9 +119,51 @@ public class Scheduler extends BroadcastReceiver {
             intent.setAction(Constants.ACTION_ALARM_RECEIVER);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmRequestCode, intentcontext, 0);
             AlarmManager am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-            am.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTime()
-                    .getTime() + Long.parseLong(timeset.toString()) * 1000, pendingIntent);
+            am.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance()
+                    .getTime().getTime()
+                    + Long.parseLong(timeset.toString()) * 1000, pendingIntent);
             long lastModifiedTime = sharedpreferences.getLong(Constants.lastViewTime, 0l);
+
+
+
+
+
+            /// new work ...
+            String selected_time = sharedpreferences.getString(saved_time, "");
+            Log.d("Keeptoo", "selected_time :: " + selected_time);
+            if (!selected_time.isEmpty()){
+
+                SimpleDateFormat sdf =
+                        new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+                try {
+                    Date mDate = sdf.parse(selected_time);
+
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTimeInMillis(System.currentTimeMillis());
+
+                    Log.d("Keeptoo", "selected_time :: " +mDate.getHours());
+                    Log.d("Keeptoo", "selected_time :: " +mDate.getMinutes());
+
+                    cal.set(Calendar.HOUR_OF_DAY, mDate.getHours());
+                    cal.set(Calendar.MINUTE, mDate.getMinutes());
+
+
+                   // long timeInMilliseconds = mDate.getTime();
+                    AlarmManager am1 = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+                    am1.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+                            AlarmManager.INTERVAL_DAY, pendingIntent);
+
+                    System.out.println("Date in milli :: " + cal.getTimeInMillis());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            /// new work finish...
+
+
+
+
+
             if ((ContextCompat.checkSelfPermission(context.getApplicationContext(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) &&
                     (ContextCompat.checkSelfPermission(context.getApplicationContext(),
@@ -207,6 +265,7 @@ public class Scheduler extends BroadcastReceiver {
             }
             boolean overlay = false;
             String schedulingOption = settingsPref.getString("scheduling", "1003");
+            System.out.println("schedulingOption :: " + schedulingOption);
             switch (schedulingOption) {
                 case "1003":
                     if (newCount != 0) {
@@ -225,6 +284,71 @@ public class Scheduler extends BroadcastReceiver {
                     break;
                 default:
             }
+
+
+            /// new work ...
+            selected_time = sharedpreferences.getString(saved_time, "");
+            Log.d("Keeptoo", "selected_time :: " + selected_time);
+            if (!selected_time.isEmpty()){
+                overlay = false;
+
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat sdf =
+                        new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+                try {
+                    //Date date1 = calendar.getTime();
+                    //Date date2 = sdf.parse(selected_time);
+
+
+                    Date date1 = calendar.getTime();
+                    String date_s = sdf.format(date1);
+
+                    //Date date2 = sdf.parse(selected_time);
+
+                    Log.d("TAG s", "date_s = "+date_s);
+                    Log.d("TAG s", "selected_time = "+selected_time);
+
+                    if (selected_time.equals(date_s)){
+                        overlay = true;
+                    }else {
+
+                        /*Date mDate = sdf.parse(selected_time);
+                        long timeInMilliseconds = mDate.getTime();
+
+                        Intent intentcontext1 = new Intent(context, Scheduler.class);
+                        intent.setAction(Constants.ACTION_ALARM_RECEIVER);
+                        PendingIntent pendingIntent1 = PendingIntent.getBroadcast(context, alarmRequestCode, intentcontext1, 0);
+                        AlarmManager am1 = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+                        am1.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTime()
+                                .getTime() + Long.parseLong("60") * 1000, pendingIntent1);*/
+                    }
+
+                   /* if (date1.equals(date2)){
+
+                        overlay = true;
+
+                    }else {
+
+                        Intent intentcontext1 = new Intent(context, Scheduler.class);
+                        intent.setAction(Constants.ACTION_ALARM_RECEIVER);
+                        PendingIntent pendingIntent1 = PendingIntent.getBroadcast(context, alarmRequestCode, intentcontext1, 0);
+                        am = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+                        am.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTime()
+                                .getTime() + Long.parseLong(timeset.toString()) * 1000, pendingIntent1);
+
+                    }*/
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }else {
+                overlay = true;
+            }
+            /// new work finish...
+
+
+
             if (newCount != 0) {
                 if (notification) {
                     ArrayList<ImageBean> newImagesWithoutImage = new Utils().getNewImageList(context);
@@ -265,6 +389,7 @@ public class Scheduler extends BroadcastReceiver {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             Intent intentcontext = new Intent(context, Scheduler.class);
             intent.setAction(Constants.ACTION_ALARM_RECEIVER);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmRequestCode, intentcontext, 0);

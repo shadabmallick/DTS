@@ -107,7 +107,7 @@ public class ActivityCode extends AppCompatActivity {
 
                     if(button_enter4digit.getText().toString().equals(ifsound)){
                         Log.d(TAG, "onTextChanged: ");
-                        Intent codeagain=new Intent(getApplicationContext(),DtsGalleryActivity.class);
+                        Intent codeagain=new Intent(getApplicationContext(),KeepSafeMultiple.class);
                         codeagain.putExtra("code",button_enter4digit.getText().toString());
 
                         codeagain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

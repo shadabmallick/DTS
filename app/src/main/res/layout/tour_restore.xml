@@ -73,13 +73,13 @@
                 <ImageView
 
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     android:layout_below="@+id/tv_subtitle"
                     android:layout_marginTop="35dp"
                     android:scaleType="fitXY"
                     android:layout_centerInParent="true"
                     android:id="@+id/center"
-                    android:src="@drawable/ic_group_2142"/>
+                    android:src="@drawable/center_png"/>
 
                 <TextView
                     android:id="@+id/tv_next"

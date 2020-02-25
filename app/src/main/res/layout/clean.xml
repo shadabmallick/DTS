@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/keeptp_background"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/rel_top"
+        android:layout_width="match_parent"
+        android:background="@android:color/white"
+        android:layout_height="61dp">
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_group_2112"
+            android:padding="10dp"/>
+        <TextView
+            android:id="@+id/tv_top_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/tour"
+            android:textColor="@color/keeptp_background"/>
+
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_below="@+id/rel_top"
+        android:layout_width="match_parent"
+        android:background="@color/keeptp_background"
+        android:layout_marginBottom="150dp"
+        android:layout_height="match_parent">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/keeptp_background"
+                >
+                <TextView
+                    android:id="@+id/restore_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="16dp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/clean_free"
+                    android:layout_marginTop="10dp"/>
+                <TextView
+                    android:id="@+id/tv_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_below="@+id/restore_title"
+                    android:textSize="16dp"
+                    android:textColor="@android:color/white"
+                    android:text="@string/have_time"
+                    />
+                <ImageView
+                    android:id="@+id/img_bin"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_subtitle"
+                    android:src="@drawable/ic_group_2250"/>
+
+                <RelativeLayout
+                    android:id="@+id/rl_center"
+                    android:gravity="center"
+                    android:layout_below="@+id/img_bin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <ImageView
+                        android:id="@+id/mask1"
+                        android:layout_marginTop="30dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/mask"/>
+                    <ImageView
+                        android:id="@+id/mask2"
+                        android:layout_toRightOf="@+id/mask1"
+                        android:layout_marginLeft="-50dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/mask1"/>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tv_end_tour"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="Coming Soon"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@+id/rl_center"                android:padding="10dp"
+                    android:textColor="@android:color/white"
+                    android:layout_marginLeft="64dp"
+                    android:textSize="20sp"
+                    android:layout_marginRight="64dp"
+                    android:background="@drawable/center_button"
+
+                    />
+
+
+            </RelativeLayout>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/rel_below"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2"
+        android:layout_alignParentBottom="true">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/clean"/>
+
+
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobile.dts.R;
 import com.mobile.dts.utills.Constants;
@@ -26,7 +27,7 @@ public class CustomDialogMethod extends Dialog implements
         View.OnClickListener {
 
     public Activity activity;
-    public TextView cancel;
+    public TextView cancel,update;
     public CheckedTextView checkedTextView1, checkedTextView2, checkedTextView3;
     private SharedPreferences sharedpreferences,settingsPref;
     private boolean isRealtimeNotification;
@@ -45,6 +46,7 @@ public class CustomDialogMethod extends Dialog implements
         checkedTextView2 = (CheckedTextView) findViewById(R.id.text2);
      //   checkedTextView3 = (CheckedTextView) findViewById(R.id.text3);
         cancel = (TextView) findViewById(R.id.cancel);
+        update = (TextView) findViewById(R.id.update);
         checkedTextView1.setOnClickListener(this);
         checkedTextView2.setOnClickListener(this);
 
@@ -52,15 +54,19 @@ public class CustomDialogMethod extends Dialog implements
         settingsPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         cancel.setOnClickListener(this);
+        update.setOnClickListener(this);
+     String test=   settingsPref.getString("method","");
         boolean isDisbledNotification = settingsPref.getBoolean(Constants.isDisbledNotification, false);
-        if (!isDisbledNotification) {
-            isRealtimeNotification = settingsPref.getBoolean(Constants.isRealTimeNotification, false);
-            if (isRealtimeNotification) {
+        if (test.equals("1008")) {
+          //  isRealtimeNotification = settingsPref.getBoolean(Constants.isRealTimeNotification, false);
+
                 checkedTextView1.setChecked(true);
+                checkedTextView2.setChecked(false);
             } else {
                 checkedTextView2.setChecked(true);
+                checkedTextView1.setChecked(false);
             }
-        }
+
     }
 
     @Override
@@ -70,7 +76,8 @@ public class CustomDialogMethod extends Dialog implements
                 SharedPreferences.Editor editor1 = settingsPref.edit();
                 editor1.putString("method","1008");
                 editor1.commit();
-
+                checkedTextView1.setChecked(true);
+                checkedTextView2.setChecked(false);
 
                 break;
             case R.id.text2:
@@ -79,17 +86,28 @@ public class CustomDialogMethod extends Dialog implements
 
                      editor2.putString("method","1009");
                      editor2.commit();
+                    checkedTextView1.setChecked(false);
+                    checkedTextView2.setChecked(true);
+                     break;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
             case R.id.cancel:
+                dismiss();
                 break;
+
+
+                case R.id.update:
+dismiss();
+Toast.makeText(getContext(),"Update",Toast.LENGTH_SHORT).show();
+
+                    break;
 
 
             default:
                 break;
         }
-        dismiss();
+        //dismiss();
     }
 }

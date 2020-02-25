@@ -62,7 +62,8 @@
             android:text="Sending new media files notification after every 3 days"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:drawableLeft="?android:attr/listChoiceIndicatorSingle"
-            android:drawableRight="@null"            android:textColor="?android:attr/textColorAlertDialogListItem"
+            android:drawableRight="@null"
+            android:textColor="?android:attr/textColorAlertDialogListItem"
             android:textSize="14dp" />
 
         <CheckedTextView

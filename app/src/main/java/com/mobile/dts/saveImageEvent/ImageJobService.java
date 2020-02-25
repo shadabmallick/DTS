@@ -28,6 +28,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.mobile.dts.R;
 import com.mobile.dts.activity.ImageViewLoadingActivity;
@@ -37,13 +38,18 @@ import com.mobile.dts.model.ImageBean;
 import com.mobile.dts.utills.Constants;
 import com.mobile.dts.utills.Utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import static com.mobile.dts.utills.Constants.alarmRequestCode;
 import static com.mobile.dts.utills.Constants.defaultTimeset;
 import static com.mobile.dts.utills.Constants.isRealTimeNotification;
 import static com.mobile.dts.utills.Constants.newImagenotificationRequestCode;
+import static com.mobile.dts.utills.Constants.saved_time;
 
 /*This class create to get new image event*/
 public class ImageJobService extends JobService {
@@ -180,6 +186,46 @@ public class ImageJobService extends JobService {
                                         }
                                         Scheduler.count = count;
                                         Scheduler.newImages = newImages;
+
+
+
+                                        /// new work ...
+                                        String selected_time = sharedpreferences.getString(saved_time, "");
+                                        if (!selected_time.isEmpty()){
+                                            overlay = false;
+
+                                            Calendar calendar = Calendar.getInstance();
+                                            SimpleDateFormat sdf =
+                                                    new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
+                                            try {
+                                                Date date1 = calendar.getTime();
+                                                String date_s = sdf.format(date1);
+
+                                                //Date date2 = sdf.parse(selected_time);
+
+                                                Log.d("TAG", "date_s = "+date_s);
+                                                Log.d("TAG", "selected_time = "+selected_time);
+
+                                                if (selected_time.equals(date_s)){
+                                                    overlay = true;
+                                                }
+
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }else {
+                                            overlay = true;
+                                        }
+                                        /// new work finish...
+
+
+
+
+
+
+
+
                                         if (overlay) {
                                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                                                 startForegroundService(new Intent(getApplicationContext(), DtsWidget.class));

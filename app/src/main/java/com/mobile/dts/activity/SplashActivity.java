@@ -24,9 +24,12 @@ import com.crashlytics.android.Crashlytics;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mobile.dts.R;
 import com.mobile.dts.database.DTSPreferences;
+import com.mobile.dts.database.SqlLiteHelper;
 import com.mobile.dts.helper.Scheduler;
+import com.mobile.dts.model.FolderData;
 import com.mobile.dts.utills.Constants;
 import com.mobile.dts.utills.Utils;
+import com.splunk.mint.Mint;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -44,16 +47,19 @@ import static com.mobile.dts.utills.Constants.lastViewTime;
 
 /*Uses to show Splash screen*/
 public class SplashActivity extends AppCompatActivity {
-
+    public static String[] stringArray = {"My Stuff","ID & Documents","My Password"};
     private SharedPreferences sharedpreferences, settingsPref;
     private FirebaseAnalytics mFirebaseAnalytics;
-
+    private SqlLiteHelper dtsDataBase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash_screen);
+        dtsDataBase = new SqlLiteHelper(this);
+
+        Mint.initAndStartSession(this.getApplication(), "c7ff8612");
         Fabric.with(this, new Crashlytics());
         addDynamicShortcuts();
         sharedpreferences = getSharedPreferences(appPref, Activity.MODE_PRIVATE);
@@ -104,7 +110,7 @@ public class SplashActivity extends AppCompatActivity {
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
             shortcutManager =  getSystemService(ShortcutManager.class);
-            Intent intent= new Intent(this, FingerScan.class);
+            Intent intent= new Intent(this, DtsGalleryActivity.class);
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("weburl"));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -118,7 +124,7 @@ public class SplashActivity extends AppCompatActivity {
         }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
             shortcutManager =  getSystemService(ShortcutManager.class);
-            Intent intent= new Intent(this, FingerScan.class);
+            Intent intent= new Intent(this, DtsGalleryActivity.class);
             intent.setAction(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("weburl"));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -165,6 +171,18 @@ public class SplashActivity extends AppCompatActivity {
                 } else {
 
                     if (DTSPreferences.SharedInstance(SplashActivity.this).FirstLaunch()) {
+
+                        for(int cnt=0;cnt<stringArray.length;cnt++)
+                        {
+                            FolderData folderData = new FolderData();
+                            folderData.setFolderName(stringArray[cnt]);
+
+                            Calendar calendar = Calendar.getInstance();
+                            folderData.setCreationTime(calendar.getTimeInMillis());
+
+                            dtsDataBase.insertFolder(folderData);
+
+                        }
 
                         DTSPreferences.SharedInstance(SplashActivity.this).setFirstTimeLaunch(false);
                         startActivity(new Intent(SplashActivity.this, MainScreen.class));

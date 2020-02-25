@@ -119,9 +119,10 @@ public class IntroductionAfterLogin extends AppCompatActivity {
 
         }else {
 
-            Intent intent = new Intent(IntroductionAfterLogin.this, FingerScan.class);
+            Intent intent = new Intent(IntroductionAfterLogin.this, DtsGalleryActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish();
 
         }
     }
@@ -169,6 +170,6 @@ public class IntroductionAfterLogin extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        moveTaskToBack(true);
+        moveTaskToBack(false);
     }
 }

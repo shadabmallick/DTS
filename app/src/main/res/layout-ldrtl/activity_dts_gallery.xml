@@ -104,15 +104,56 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
+        <RelativeLayout
             android:id="@+id/nophotosfound"
             android:layout_width="match_parent"
+            android:visibility="gone"
             android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:gravity="center"
-            android:text="No Recent photos found"
-            android:textSize="23dp"
-            android:visibility="gone" />
+            android:background="@color/gallery_tour_background">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/temp_media_text"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:layout_marginTop="50dp"
+                android:textColor="@android:color/white"
+                />
+
+            <RelativeLayout
+                android:id="@+id/rel_center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@drawable/ic_group_2150">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/white_ring"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="16dp"
+                    />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/wating_cup"
+                    android:layout_centerInParent="true"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_below="@+id/rel_center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_group_1985"/>
+
+
+
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

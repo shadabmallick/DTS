@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.mobile.dts.activity.DtsGalleryActivity.TAG;
 import static com.mobile.dts.utills.Constants.everyThirdDaytime;
 import static com.mobile.dts.utills.Constants.isDisbledNotification;
 import static com.mobile.dts.utills.Constants.isRealTimeNotification;
@@ -39,6 +41,7 @@ public class CustomDialogClass extends Dialog implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customdialogui);
+        setCancelable(false);
         sharedpreferences = getContext().getApplicationContext().getSharedPreferences(Constants.appPref, Activity.MODE_PRIVATE);
         checkedTextView1 =  findViewById(R.id.text1);
         checkedTextView2 =  findViewById(R.id.text2);
@@ -50,16 +53,26 @@ public class CustomDialogClass extends Dialog implements
         checkedTextView3.setOnClickListener(this);
         cancel.setOnClickListener(this);
         update.setOnClickListener(this);
+
+
         boolean isDisbledNotification = sharedpreferences.getBoolean(Constants.isDisbledNotification, false);
+        Log.d(TAG, "onCreate: "+isDisbledNotification);
+        Log.d(TAG, "onCreate: "+isRealtimeNotification);
         if (!isDisbledNotification) {
             isRealtimeNotification = sharedpreferences.getBoolean(Constants.isRealTimeNotification, false);
             if (isRealtimeNotification) {
                 checkedTextView1.setChecked(true);
+                Log.d(TAG, "onCreate1: "+isDisbledNotification);
+                Log.d(TAG, "onCreate1: "+isRealtimeNotification);
             } else {
                 checkedTextView2.setChecked(true);
+                Log.d(TAG, "onCreate2: "+isDisbledNotification);
+                Log.d(TAG, "onCreate2: "+isRealtimeNotification);
             }
         } else {
             checkedTextView3.setChecked(true);
+            Log.d(TAG, "onCreate3: "+isDisbledNotification);
+            Log.d(TAG, "onCreate3: "+isRealtimeNotification);
         }
     }
 
@@ -73,6 +86,13 @@ public class CustomDialogClass extends Dialog implements
                 SharedPreferences.Editor editor4 = sharedpreferences.edit();
                 editor4.putBoolean(isDisbledNotification, false);
                 editor4.commit();
+
+                checkedTextView1.setChecked(true);
+                checkedTextView2.setChecked(false);
+                checkedTextView3.setChecked(false);
+
+                Log.d(TAG, "onClick: "+isDisbledNotification);
+                Log.d(TAG, "onClick: "+isRealtimeNotification);
                 break;
             case R.id.text2:
                 try {
@@ -90,20 +110,42 @@ public class CustomDialogClass extends Dialog implements
                     editor5.putBoolean(isDisbledNotification, false);
                     editor5.commit();
 
+                    checkedTextView1.setChecked(false);
+                    checkedTextView2.setChecked(true);
+                    checkedTextView3.setChecked(false);
+
+                    Log.d(TAG, "onClick: "+isDisbledNotification);
+                    Log.d(TAG, "onClick: "+isRealtimeNotification);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
             case R.id.cancel:
+
+                dismiss();
+
                 break;
 
-                case R.id.update:
-                    Toast.makeText(getContext(),"Update",Toast.LENGTH_SHORT).show();
+            case R.id.update:
+
+                Toast.makeText(getContext(),"Update",Toast.LENGTH_SHORT).show();
+
+                dismiss();
+
+                break;
+
             case R.id.text3:
                 try {
                     SharedPreferences.Editor editor2 = sharedpreferences.edit();
                     editor2.putBoolean(isDisbledNotification, true);
                     editor2.commit();
+                    Log.d(TAG, "onClick: "+isDisbledNotification);
+                    Log.d(TAG, "onClick: "+isRealtimeNotification);
+
+                    checkedTextView1.setChecked(false);
+                    checkedTextView2.setChecked(false);
+                    checkedTextView3.setChecked(true);
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -112,6 +154,5 @@ public class CustomDialogClass extends Dialog implements
             default:
                 break;
         }
-        dismiss();
     }
 }

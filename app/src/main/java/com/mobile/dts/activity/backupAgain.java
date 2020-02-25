@@ -87,7 +87,7 @@ public class backupAgain extends AppCompatActivity {
                 if(code.equals(button_enter4digit.getText().toString())) {
 
                    editor.putString("code", button_enter4digit.getText().toString());
-                    Intent codeagain = new Intent(getApplicationContext(), DtsGalleryActivity.class);
+                    Intent codeagain = new Intent(getApplicationContext(), KeepSafeMultiple.class);
                     codeagain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     codeagain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     editor.apply();

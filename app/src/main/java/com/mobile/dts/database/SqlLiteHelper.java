@@ -21,7 +21,9 @@ import com.mobile.dts.utills.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import static com.mobile.dts.activity.ImageViewerActivity.TAG;
 import static com.mobile.dts.activity.MainApplication.KEEPTODIRECTORYPATH;
 
 /*Use to store database data*/
@@ -39,8 +41,16 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     public static final String MDL_IS_DELETED = "is_deleted";
     public static final String MDL_KEEP_TIME = "keep_time";
     public static final String MDL_KEEPTO_URL = "keepto_url";
+
+    public static final String MDL_KEEP_SAFE = "keep_safe";
+    public static final String MDL_KEEP_SAFE_DELLETED = "keep_safe_delete";
+    public static final String MDL_FOLDER_ID = "folder_id";
+    public static final String MDL_KEEPTO_HARD_DELETE = "hard_delete";
+
+    public static final String MDL_SAFE_ENTRY_TIME = "safe_entry_time";
+
     //db version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     private static final String CREATE_TABLE_MEDIA_LIST_QUERY =
             "CREATE  TABLE " + TABLE_MEDIA_LIST
@@ -52,6 +62,11 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                     + MDL_IS_SAVED_24_HOURS + " INTEGER DEFAULT 0, "
                     + MDL_IS_DELETED + " INTEGER DEFAULT 0, "
                     + MDL_KEEP_TIME + " INTEGER DEFAULT 0, "
+                    + MDL_KEEP_SAFE + " INTEGER DEFAULT 0, "
+                    + MDL_KEEP_SAFE_DELLETED + " INTEGER DEFAULT 0, "
+                    + MDL_FOLDER_ID + " INTEGER DEFAULT 0, "
+                    + MDL_KEEPTO_HARD_DELETE + " INTEGER DEFAULT 0, "
+                    + MDL_SAFE_ENTRY_TIME + " INTEGER DEFAULT 0, "
                     + MDL_KEEPTO_URL + " VARCHAR );";
 
 
@@ -73,7 +88,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_MEDIA_LIST_QUERY);
 
         db.execSQL(CREATE_TABLE_FOLDER);
-        db.execSQL(CREATE_TABLE_KEEP_SAFE);
+
     }
 
 
@@ -82,6 +97,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         if (newVersion == 3) {
             db.execSQL("ALTER TABLE " + TABLE_MEDIA_LIST + " ADD COLUMN " + MDL_KEEPTO_URL + " VARCHAR");
         }
+
 
     }
 
@@ -112,7 +128,8 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             photoDetailBean.setPhotoPath(photoDetailBean.getPhotoOriginalPath());
 
         }
-        if (!isImageExists(photoDetailBean.getPhotoPath()) && photoDetailBean.getPhotoPath() != null &&
+        if (!isImageExists(photoDetailBean.getPhotoPath())
+                && photoDetailBean.getPhotoPath() != null &&
                 !photoDetailBean.getPhotoPath().contains(KEEPTODIRECTORYPATH)) {
             contentValues.put(MDL_PHOTO_PATH, photoDetailBean.getPhotoPath());
             contentValues.put(MDL_ACTION_TIME, photoDetailBean.getActionTime());
@@ -127,6 +144,9 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             }
             long id = database.insert(TABLE_MEDIA_LIST, null, contentValues);
             contentValues.clear();
+
+            Log.d("TAG", "insert = "+status);
+
         } else {
             if (photoDetailBean.isSaved() == 1) {
                 contentValues.put(MDL_IS_SAVED, photoDetailBean.isSaved());
@@ -151,7 +171,8 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 contentValues.put(MDL_IS_SAVED_24_HOURS, 0);
                 contentValues.put(MDL_ACTION_TIME, photoDetailBean.getActionTime());
                 //  contentValues.put(MDL_KEEPTO_URL, "");
-            } else if (photoDetailBean.isSaved() == 0 && photoDetailBean.isSavedFor24Hours() == 0
+            } else if (photoDetailBean.isSaved() == 0
+                    && photoDetailBean.isSavedFor24Hours() == 0
                     && photoDetailBean.isDeleted() == 0) {
                 contentValues.put(MDL_IS_DELETED, 0);
                 contentValues.put(MDL_IS_SAVED, 1);
@@ -162,6 +183,9 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             database.update(TABLE_MEDIA_LIST, contentValues,
                     MDL_PHOTO_PATH + " =" + "'" + photoDetailBean.getPhotoPath() + "'", null);
             contentValues.clear();
+
+
+            Log.d("TAG", "update = "+status);
         }
         return true;
 
@@ -246,7 +270,8 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                     contentValues.put(MDL_IS_SAVED, 0);
                     contentValues.put(MDL_IS_SAVED_24_HOURS, 0);
                     contentValues.put(MDL_ACTION_TIME, photoDetailBean.getActionTime());
-                } else if (photoDetailBean.isSaved() == 0 && photoDetailBean.isSavedFor24Hours() == 0
+                } else if (photoDetailBean.isSaved() == 0
+                        && photoDetailBean.isSavedFor24Hours() == 0
                         && photoDetailBean.isDeleted() == 0) {
                     contentValues.put(MDL_IS_DELETED, 0);
                     contentValues.put(MDL_IS_SAVED, 1);
@@ -263,16 +288,17 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
     }
 
-
     public boolean insertOrUpdatePhotoRestoreDetail(PhotoDetailBean photoDetailBean) {
         database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+
         boolean status = false;
         String destinationDirectory = null;
         String existingFileName = null;
         if (photoDetailBean.getPhotoLocalPath() != null &&
                 !photoDetailBean.getPhotoLocalPath().isEmpty()) {
-            existingFileName = photoDetailBean.getPhotoPath().substring(photoDetailBean.getPhotoPath().lastIndexOf("/") + 1);
+            existingFileName = photoDetailBean.getPhotoPath()
+                    .substring(photoDetailBean.getPhotoPath().lastIndexOf("/") + 1);
             String existingFileDirrectory = KEEPTODIRECTORYPATH;
             destinationDirectory = photoDetailBean.getPhotoOriginalPath().substring(0, photoDetailBean.getPhotoOriginalPath().lastIndexOf("/") + 1);
             if (destinationDirectory.contains(Environment.getExternalStorageDirectory().getAbsolutePath())) {
@@ -290,6 +316,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         } else {
             status = true;
         }
+        Log.d(TAG, "insertOrUpdatePhotoRestoreDetail: "+isImageExists(photoDetailBean.getPhotoOriginalPath()));
         // if media not exists then execute
         if (!isImageExists(photoDetailBean.getPhotoOriginalPath())) {
             contentValues.put(MDL_PHOTO_PATH, photoDetailBean.getPhotoPath());
@@ -301,14 +328,20 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             contentValues.put(MDL_KEEP_TIME, photoDetailBean.getKeepTime());
             long id = database.insert(TABLE_MEDIA_LIST, null, contentValues);
             contentValues.clear();
+
+            Log.d("TAG", "isImageExists = "+status);
+
         } else {
+
             if (photoDetailBean.isSaved() == 1) {
                 contentValues.put(MDL_IS_SAVED, photoDetailBean.isSaved());
                 contentValues.put(MDL_ACTION_TIME, 0);
                 contentValues.put(MDL_IS_SAVED_24_HOURS, 0);
                 contentValues.put(MDL_IS_DELETED, 0);
                 contentValues.put(MDL_KEEPTO_URL, "");
-            } else if (photoDetailBean.isSavedFor24Hours() == 1) {
+            }
+
+            else if (photoDetailBean.isSavedFor24Hours() == 1) {
                 contentValues.put(MDL_IS_SAVED_24_HOURS, photoDetailBean.isSavedFor24Hours());
                 contentValues.put(MDL_KEEP_TIME, photoDetailBean.getKeepTime());
                 contentValues.put(MDL_ACTION_TIME, photoDetailBean.getActionTime());
@@ -318,12 +351,17 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 }
                 contentValues.put(MDL_IS_DELETED, 0);
                 contentValues.put(MDL_IS_SAVED, 0);
-            } else if (photoDetailBean.isDeleted() == 1) {
+            }
+
+            else if (photoDetailBean.isDeleted() == 1) {
                 contentValues.put(MDL_IS_DELETED, photoDetailBean.isDeleted());
                 contentValues.put(MDL_IS_SAVED, 0);
                 contentValues.put(MDL_IS_SAVED_24_HOURS, 0);
                 contentValues.put(MDL_ACTION_TIME, photoDetailBean.getActionTime());
-            } else if (photoDetailBean.isSaved() == 0 && photoDetailBean.isSavedFor24Hours() == 0
+            }
+
+            else if (photoDetailBean.isSaved() == 0
+                    && photoDetailBean.isSavedFor24Hours() == 0
                     && photoDetailBean.isDeleted() == 0) {
                 contentValues.put(MDL_IS_DELETED, 0);
                 contentValues.put(MDL_IS_SAVED, 1);
@@ -331,9 +369,13 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 contentValues.put(MDL_ACTION_TIME, 0);
                 contentValues.put(MDL_KEEPTO_URL, "");
             }
+
+            Log.d("TAG", "db update status = "+status);
             if (status) {
                 database.update(TABLE_MEDIA_LIST, contentValues,
-                        MDL_PHOTO_PATH + " =" + "'" + photoDetailBean.getPhotoOriginalPath() + "'", null);
+                        MDL_PHOTO_PATH + " ="
+                                + "'" + photoDetailBean.getPhotoOriginalPath()
+                                + "'", null);
             }
             contentValues.clear();
         }
@@ -389,6 +431,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         try {
             imageMovedListener = (ImageMovedListener) context;
         } catch (Exception e) {
+            e.printStackTrace();
         }
         ContentValues contentValues = new ContentValues();
         for (int i = 0; i < photoDetailBeanArrayList.size(); i++) {
@@ -444,45 +487,55 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
                     }
 
-                } else if (photoDetailBean.isSavedFor24Hours() == 1) {
+                }
+
+                else if (photoDetailBean.isSavedFor24Hours() == 1) {
                     contentValues.put(MDL_IS_SAVED_24_HOURS, photoDetailBean.isSavedFor24Hours());
                     contentValues.put(MDL_KEEP_TIME, photoDetailBean.getKeepTime());
                     contentValues.put(MDL_ACTION_TIME, photoDetailBean.getActionTime());
                     if (notification
-                            && status && destinationDirectory != null) {
+                            && status
+                            && destinationDirectory != null) {
                         contentValues.put(MDL_KEEPTO_URL, destinationDirectory + existingFileName);
-
 
                     }
                     contentValues.put(MDL_IS_DELETED, 0);
                     contentValues.put(MDL_IS_SAVED, 0);
                     contentValues.put(MDL_IS_SAVED_24_HOURS, 1);
                     //contentValues.put(MDL_IS_SAVED,0);
-                } else if (photoDetailBean.isDeleted() == 1) {
+                }
+
+                else if (photoDetailBean.isDeleted() == 1) {
                     contentValues.put(MDL_IS_DELETED, photoDetailBean.isDeleted());
                     contentValues.put(MDL_IS_SAVED, 0);
                     contentValues.put(MDL_IS_SAVED_24_HOURS, 0);
                     contentValues.put(MDL_ACTION_TIME, photoDetailBean.getActionTime());
                     // contentValues.put(MDL_KEEPTO_URL, "");
-                } else if (photoDetailBean.isSaved() == 0 && photoDetailBean.isSavedFor24Hours() == 0
+                }
+
+                else if (photoDetailBean.isSaved() == 0
+                        && photoDetailBean.isSavedFor24Hours() == 0
                         && photoDetailBean.isDeleted() == 0) {
+
                     contentValues.put(MDL_IS_DELETED, 0);
                     contentValues.put(MDL_IS_SAVED, 1);
                     contentValues.put(MDL_IS_SAVED_24_HOURS, 0);
                     contentValues.put(MDL_ACTION_TIME, 0);
                     contentValues.put(MDL_KEEPTO_URL, "");
+
                     if (imageMovedListener != null) {
-                        if (existingFileDirrectory != null && !existingFileDirrectory.contains(Environment.getExternalStorageDirectory().getAbsolutePath())) {
+                        if (existingFileDirrectory != null
+                                && !existingFileDirrectory.contains(Environment.getExternalStorageDirectory().getAbsolutePath())) {
                             imageMovedListener.onImageMoved(i, photoDetailBeanArrayList.size());
 
                         }
-
                     }
-
                 }
                 if (status) {
                     database.update(TABLE_MEDIA_LIST, contentValues,
-                            MDL_PHOTO_PATH + " =" + "'" + photoDetailBean.getPhotoOriginalPath() + "'", null);
+                            MDL_PHOTO_PATH + " ="
+                                    + "'" + photoDetailBean.getPhotoOriginalPath()
+                                    + "'", null);
                 }
                 contentValues.clear();
             }
@@ -513,6 +566,9 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
+
+        Log.d("DB", "imageBeans : "+imageBeans);
+
         return imageBeans;
     }
 
@@ -539,7 +595,10 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         ArrayList<PhotoDetailBean> imageBeans = new ArrayList<PhotoDetailBean>();
         String deleteColumnName = MDL_IS_DELETED;
         String isSave24column = MDL_IS_SAVED_24_HOURS;
-        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_MEDIA_LIST + " WHERE " + isSave24column + " = " + 1 + " or +" + deleteColumnName + " = " + 1 + " ORDER BY " + MDL_TIME_TAKEN + " DESC", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_MEDIA_LIST
+                + " WHERE " + isSave24column + " = " + 1
+                + " or +" + deleteColumnName + " = " + 1
+                + " ORDER BY " + MDL_TIME_TAKEN + " DESC", null);
         if (cursor.moveToFirst()) {
             do {
                 PhotoDetailBean imageBean = new PhotoDetailBean();
@@ -569,7 +628,10 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         ArrayList<PhotoDetailBean> imageBeans = new ArrayList<PhotoDetailBean>();
         String isSave24column = MDL_IS_SAVED_24_HOURS;
         String KeepToColumn = MDL_KEEP_TIME;
-        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_MEDIA_LIST + " WHERE " + isSave24column + " = " + 1 + " and +" + KeepToColumn + " = " + keeptime + " ORDER BY " + MDL_TIME_TAKEN + " DESC", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_MEDIA_LIST
+                + " WHERE " + isSave24column + " = " + 1
+                + " and +" + KeepToColumn + " = " + keeptime
+                + " ORDER BY " + MDL_TIME_TAKEN + " DESC", null);
         if (cursor.moveToFirst()) {
             do {
                 PhotoDetailBean imageBean = new PhotoDetailBean();
@@ -757,7 +819,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(FOLDER_NAME, folderData.getFolderName());
-        contentValues.put(FOLDER_CREATION_TIME, folderData.getCreationTime());
+        contentValues.put(FOLDER_CREATION_TIME, Calendar.getInstance().getTimeInMillis());
 
         database.insert(TABLE_FOLDER, null, contentValues);
         contentValues.clear();
@@ -803,18 +865,106 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     }
 
 
+    public void updateFolderId(int folder_id, String imagePath) {
+
+        if (isImageExists(imagePath)) {
+
+            database = this.getWritableDatabase();
+
+            String selection = MDL_PHOTO_PATH + " =? ";
+            String[] selectionArgs = { imagePath };
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MDL_FOLDER_ID, folder_id);
+            contentValues.put(MDL_SAFE_ENTRY_TIME, Calendar.getInstance().getTimeInMillis());
+
+            database.update(TABLE_MEDIA_LIST, contentValues, selection, selectionArgs);
+            //contentValues.clear();
+
+            Log.d("DB", "TABLE_MEDIA_LIST insert: ");
+            Log.d("DB", "TABLE_MEDIA_LIST folder_id: "+folder_id);
+
+        }else {
+
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MDL_PHOTO_PATH, imagePath);
+            contentValues.put(MDL_FOLDER_ID, folder_id);
+            contentValues.put(MDL_SAFE_ENTRY_TIME, Calendar.getInstance().getTimeInMillis());
+
+            database.insert(TABLE_MEDIA_LIST, null, contentValues);
+
+        }
+
+
+    }
+
+
+
+    public ArrayList<KeepSafeData> getFolderWiseImages(String folder_id) {
+
+        ArrayList<KeepSafeData> arrayList = new ArrayList<>();
+
+        database = this.getReadableDatabase();
+
+        String query = "SELECT * FROM " + TABLE_MEDIA_LIST
+                + " WHERE " + MDL_FOLDER_ID + " = " + folder_id
+                + " ORDER BY " + MDL_SAFE_ENTRY_TIME + " DESC";
+
+        //Log.d("DB", "query : "+query);
+
+        Cursor cursor = database.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                KeepSafeData keepSafeData = new KeepSafeData();
+                keepSafeData.setFolderId(cursor.getInt(cursor.getColumnIndex(MDL_FOLDER_ID)));
+                keepSafeData.setPhotoOriginalPath(cursor.getString(cursor.getColumnIndex(MDL_PHOTO_PATH)));
+                keepSafeData.setEntryTime(cursor.getInt(cursor.getColumnIndex(MDL_SAFE_ENTRY_TIME)));
+
+                arrayList.add(keepSafeData);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        Log.d("DB", "arrayList size: "+arrayList.size());
+
+        return arrayList;
+    }
+
+
+
+    public void deleteKeepSafeImage(String imagePath){
+        database = this.getWritableDatabase();
+
+        String selection = MDL_PHOTO_PATH + " =? ";
+        String[] selectionArgs = { imagePath };
+
+        database.delete(TABLE_MEDIA_LIST, selection, selectionArgs);
+    }
+
+
+
+
+
+
+
+
+
+    //////////////////////////////////////////////////
 
 
     public static final String TABLE_KEEP_SAFE = "table_keep_safe";
     public static final String SAFE_ID = "safe_id";
-    public static final String SAFE_ENTRY_TIME = "safe_entry_time";
+
     public static final String SAFE_BYTE_DATA = "safe_byte_data";
 
     private static final String CREATE_TABLE_KEEP_SAFE = "CREATE TABLE " + TABLE_KEEP_SAFE
             + " ( " + SAFE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + FOLDER_ID + " INTEGER, "
             + MDL_PHOTO_PATH + " VARCHAR, "
-            + SAFE_ENTRY_TIME + " INTEGER, "
+            + MDL_SAFE_ENTRY_TIME + " INTEGER, "
             + MDL_IS_DELETED + " INTEGER DEFAULT 0, "
             + SAFE_BYTE_DATA + " BLOB );";
 
@@ -825,7 +975,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
 
         contentValues.put(FOLDER_ID, keepSafeData.getFolderId());
         contentValues.put(MDL_PHOTO_PATH, keepSafeData.getPhotoOriginalPath());
-        contentValues.put(SAFE_ENTRY_TIME, keepSafeData.getEntryTime());
+        contentValues.put(MDL_SAFE_ENTRY_TIME, keepSafeData.getEntryTime());
         contentValues.put(SAFE_BYTE_DATA, keepSafeData.getPhotoByte());
         contentValues.put(MDL_IS_DELETED, 0);
 
@@ -849,7 +999,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         String rawQuery = "SELECT * FROM " + TABLE_KEEP_SAFE
                 + " WHERE " + FOLDER_ID + " = " + folder_id
                 + " AND " + MDL_IS_DELETED + " = " + 0
-                + " ORDER BY " + SAFE_ENTRY_TIME + " DESC";
+                + " ORDER BY " + MDL_SAFE_ENTRY_TIME + " DESC";
 
         Cursor cursor = database.rawQuery(rawQuery, null);
 
@@ -861,7 +1011,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 keepSafeData.setFolderId(cursor.getInt(cursor.getColumnIndex(FOLDER_ID)));
                 keepSafeData.setPhotoOriginalPath(cursor.getString(cursor.getColumnIndex(MDL_PHOTO_PATH)));
                 keepSafeData.setPhotoByte(cursor.getBlob(cursor.getColumnIndex(SAFE_BYTE_DATA)));
-                keepSafeData.setEntryTime(cursor.getInt(cursor.getColumnIndex(SAFE_ENTRY_TIME)));
+                keepSafeData.setEntryTime(cursor.getInt(cursor.getColumnIndex(MDL_SAFE_ENTRY_TIME)));
 
                 arrayList.add(keepSafeData);
 
@@ -873,18 +1023,6 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     }
 
 
-    public void deleteKeepSafeImage(int id){
-        database = this.getWritableDatabase();
-
-        String selection = SAFE_ID + " =? ";
-        String[] selectionArgs = { String.valueOf(id) };
-
-        ContentValues contentValues = new ContentValues();
-
-        contentValues.put(MDL_IS_DELETED, 1);
-
-        database.update(TABLE_KEEP_SAFE, contentValues, selection, selectionArgs);
-    }
 
 
 }

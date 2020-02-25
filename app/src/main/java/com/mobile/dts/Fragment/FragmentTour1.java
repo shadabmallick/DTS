@@ -1,6 +1,7 @@
 package com.mobile.dts.Fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mobile.dts.R;
+import com.mobile.dts.activity.FingerScan;
 
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public class FragmentTour1 extends Fragment {
 
     String TAG="product";
 
-    TextView tv_take_a_tour;
+    TextView tv_take_a_tour,may__be_later;
 
     ArrayList<HashMap<String,String>> list_names;
     ProgressDialog pd;
@@ -43,7 +45,7 @@ public class FragmentTour1 extends Fragment {
         tv_take_a_tour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentHomeTour fragment2 = new FragmentHomeTour();
+                FragmentHomeTourSetting fragment2 = new FragmentHomeTourSetting();
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.flContent, fragment2);
@@ -51,6 +53,13 @@ public class FragmentTour1 extends Fragment {
 
                 fragmentTransaction.commit();
 
+            }
+        });
+        may__be_later.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent finger=new Intent(getActivity(), FingerScan.class);
+                getActivity().startActivity(finger);
             }
         });
 
@@ -63,6 +72,7 @@ public class FragmentTour1 extends Fragment {
         /* rv_category = view.findViewById(R.id.rv_product);
          */
         tv_take_a_tour = view.findViewById(R.id.tv_take_a_tour);
+        may__be_later = view.findViewById(R.id.may__be_later);
     }
 
 

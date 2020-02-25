@@ -55,7 +55,8 @@ public class ImageGridAdapter extends RecyclerView.Adapter {
         if (viewType == HEADER) {
             inflatingView = layoutInflater.inflate(R.layout.adapter_photofolder_header, parent, false);
             return new HeaderViewHolder(inflatingView);
-        } else {
+        }
+        else  {
             inflatingView = layoutInflater.inflate(R.layout.adapter_photosfolder, parent, false);
             return new ViewHolder(inflatingView);
         }
@@ -65,8 +66,10 @@ public class ImageGridAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ImageBean imageBean = imagePathList.get(position);
         if (imageBean.getViewType() == CHILD) {
+
+
             ((ViewHolder) holder).iv_image_name.setVisibility(View.GONE);
-              ((ViewHolder) holder).imgSize.setVisibility(View.GONE);
+            ((ViewHolder) holder).imgSize.setVisibility(View.GONE);
             ((ViewHolder) holder).tv_time.setVisibility(View.GONE);
             ((ViewHolder) holder).tv_date.setVisibility(View.GONE);
             GlideApp.with(context).load("file://" + imageBean.getImagePath())
@@ -136,8 +139,9 @@ public class ImageGridAdapter extends RecyclerView.Adapter {
                 ((ViewHolder) holder).imgRecent.setVisibility(View.GONE);
             }
             ((ViewHolder) holder).tv_date.setText(imageBean.getCreatedDate());
+            ((ViewHolder) holder).tv_date.setText(imageBean.getCreatedDate());
 
-        }
+        } else
         if (imageBean.getViewType() == HEADER) {
             ((HeaderViewHolder) holder).headertext.setText(imageBean.getCreatedDate());
         }

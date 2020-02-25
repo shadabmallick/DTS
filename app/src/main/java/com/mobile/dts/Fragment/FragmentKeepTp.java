@@ -58,7 +58,7 @@ public class FragmentKeepTp extends Fragment {
         img_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentHomeTour fragment2 = new FragmentHomeTour();
+                FragmentHomeTourSetting fragment2 = new FragmentHomeTourSetting();
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.flContent, fragment2);

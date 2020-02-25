@@ -10,6 +10,16 @@ public class KeepSafeData {
     private byte[] photoByte;
     private int isDeleted;
 
+    public boolean isShowCheckbox() {
+        return showCheckbox;
+    }
+
+    public void setShowCheckbox(boolean showCheckbox) {
+        this.showCheckbox = showCheckbox;
+    }
+
+    public boolean showCheckbox = false;
+
 
 
     public String getPhotoOriginalPath() {

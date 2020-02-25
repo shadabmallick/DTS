@@ -72,6 +72,7 @@
         android:layout_marginLeft="50dp"
         android:gravity="center"
         android:layout_marginTop="20dp"
+        android:id="@+id/ll_mail"
         android:layout_below="@+id/rel_icon"
         android:background="@drawable/center_button"
         >

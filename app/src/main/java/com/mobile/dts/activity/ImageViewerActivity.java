@@ -135,6 +135,9 @@ public class ImageViewerActivity extends AppCompatActivity implements
     private long mLastClickTime = 0;
     private boolean isKeepToProcessing = false;
 
+    private ImageBean last_delete_item = null;
+    private int last_delete_position = 0;
+
 
     public static int getSoftButtonsBarSizePort(Activity activity) {
         // getRealMetrics is only available with API 17 and +
@@ -168,7 +171,7 @@ public class ImageViewerActivity extends AppCompatActivity implements
         if (isRightToLeft) {
             viewPager.setRotation(180);
         }
-        mToolTipFrameLayout = (ToolTipRelativeLayout) findViewById(R.id.activity_main_tooltipframelayout);
+        mToolTipFrameLayout = findViewById(R.id.activity_main_tooltipframelayout);
 
         oncreateData();
     }
@@ -206,9 +209,19 @@ public class ImageViewerActivity extends AppCompatActivity implements
                         }
                     }
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         };
+
+
+        isRestoredImages = getIntent().getBooleanExtra(Constants.KEY_IS_RESTORED_IMAGE, false);
+        isSavedImage = getIntent().getBooleanExtra(Constants.KEY_IS_SAVED_IMAGE, false);
+
+        Log.d("TAG", "isRestoredImages = "+isRestoredImages);
+        Log.d("TAG", "isSavedImage = "+isSavedImage);
+
+
 
         initObjects();
 
@@ -280,7 +293,8 @@ public class ImageViewerActivity extends AppCompatActivity implements
     /*Set indicator text for Media file*/
     private void setIndicatorText() {
         if (imageBeanArrayList.size() > 0) {
-            String text = String.format(getResources().getString(R.string.image_indication_text), (position + 1 + ""), imageBeanArrayList.size());
+            String text = String.format(getResources().getString(R.string.image_indication_text), (position + 1 + ""),
+                    imageBeanArrayList.size());
             tv_image_indication_text.setText(text);
             imageFile = new File(imageBeanArrayList.get(position).getImagePath());
             uri = Uri.fromFile(imageFile);
@@ -290,7 +304,8 @@ public class ImageViewerActivity extends AppCompatActivity implements
 
 
             tv_image_name.setText((imageBeanArrayList.get(position).getImageName()));
-            tv_date.setText(imageBeanArrayList.get(position).getCreatedDate()+ " "+imageBeanArrayList.get(position).getCreatedTime());
+            tv_date.setText(imageBeanArrayList.get(position).getCreatedDate()
+                    + " "+imageBeanArrayList.get(position).getCreatedTime());
             //  tv_time.setText(imageBeanArrayList.get(position).getCreatedTime());
             if (imageBeanArrayList.get(position).isNew() && !isShowBottomView) {
                 iv_new.setVisibility(View.GONE);
@@ -310,7 +325,6 @@ public class ImageViewerActivity extends AppCompatActivity implements
     }
     private void initViews() {
         viewPager = findViewById(R.id.viewPager);
-        saveImageBtn = findViewById(R.id.saveimage);
         tv_done = findViewById(R.id.done);
         img_undo = findViewById(R.id.img_undo);
         saveImageBtn = findViewById(R.id.saveimage);
@@ -411,14 +425,18 @@ public class ImageViewerActivity extends AppCompatActivity implements
                 rl_crop.setVisibility(View.GONE);
                 viewPager.setVisibility(View.VISIBLE);
                 viewpagerlayout.setVisibility(View.VISIBLE);
+                runTimer(false);
+                if (last_delete_item == null){
+                    return;
+                }
+                new UndoAsyncTask().execute();
             }
         });
 
         savekeepsafe = findViewById(R.id.savekeepsafe);
     }
     private void initObjects() {
-        isRestoredImages = getIntent().getBooleanExtra(Constants.KEY_IS_RESTORED_IMAGE, false);
-        isSavedImage = getIntent().getBooleanExtra(Constants.KEY_IS_SAVED_IMAGE, false);
+
         if (isSavedImage || isRestoredImages) {
             imageBeanArrayList = new ArrayList<ImageBean>();
             for (ImageBean imageBean : DtsGalleryActivity.imageArrayList) {
@@ -427,7 +445,8 @@ public class ImageViewerActivity extends AppCompatActivity implements
         } else {
             int deleteCount = 0;
             try {
-                if (Scheduler.newImages != null && Scheduler.newImages.size() != 0) {
+                if (Scheduler.newImages != null
+                        && Scheduler.newImages.size() != 0) {
                     ArrayList<ImageBean> imageBeanArrayListLocal = getImageArray(Scheduler.newImages);
                     imageBeanArrayList = new ArrayList<ImageBean>();
                     for (ImageBean imageBean : imageBeanArrayListLocal) {
@@ -457,7 +476,9 @@ public class ImageViewerActivity extends AppCompatActivity implements
             }
         }
 
-        if(imageBeanArrayList==null || imageBeanArrayList!=null &&  imageBeanArrayList.size()==0){
+        if(imageBeanArrayList==null
+                || imageBeanArrayList!=null
+                &&  imageBeanArrayList.size()==0){
 
             ImageViewerActivity.this.finish();
 
@@ -828,11 +849,20 @@ public class ImageViewerActivity extends AppCompatActivity implements
 
         else if (v.getId() == R.id.savekeepsafe){
 
+            //runTimer(false);
+           /* if (isRestoredImages) {
+                new SaveAsyncTask().execute();
+            } else {
+                crudButtonAction(R.id.saveimage, 0);
+            }*/
+            //runTimer(true);
+
 
             actionTime = imageBeanArrayList.get(position).getActionTime();
             keepTime = imageBeanArrayList.get(position).getKeepTime();
             isSaved24h = imageBeanArrayList.get(position).isSaved24();
-            selected_image = new File(imageBeanArrayList.get(position).getImagePath()).getAbsolutePath();
+            selected_image = imageBeanArrayList.get(position).getImagePath();
+
 
             setSelectedData();
             setFolderData();
@@ -862,9 +892,11 @@ public class ImageViewerActivity extends AppCompatActivity implements
 
                     FolderData folderData = new FolderData();
                     folderData.setFolderName(edt_folder_name.getText().toString());
-                    folderData.setCreationTime(System.currentTimeMillis());
+                    Calendar calendar = Calendar.getInstance();
+                    folderData.setCreationTime(calendar.getTimeInMillis());
 
                     dtsDataBase.insertFolder(folderData);
+
                 }
 
 
@@ -926,13 +958,16 @@ public class ImageViewerActivity extends AppCompatActivity implements
     
     private void crudButtonAction(int viewID, long keepTime) {
         boolean isSuccess;
-        if(imageBeanArrayList!=null && imageBeanArrayList.size()>0) {
+        if(imageBeanArrayList!=null
+                && imageBeanArrayList.size()>0) {
             PhotoDetailBean selectedImage = getSelectedImageDetail(viewID,
                     imageBeanArrayList.get(position), keepTime);
             isSuccess = dtsDataBase.insertOrUpdatePhotoDetail(selectedImage);
             if (isSuccess) {
                 if (viewID == R.id.deleteimage) {
                     if (imageBeanArrayList != null && imageBeanArrayList.size() > 0) {
+                        last_delete_item = imageBeanArrayList.get(position);
+                        last_delete_position = position;
                         imageBeanArrayList.remove(position);
                         slidingImageAdapter.notifyDataSetChanged();
                     }
@@ -942,7 +977,6 @@ public class ImageViewerActivity extends AppCompatActivity implements
                         }
                     } else {
                         if (isRestoredImages) {
-                            ;
                             super.finish();
                         } else if (isSavedImage) {
                             super.finish();
@@ -958,7 +992,9 @@ public class ImageViewerActivity extends AppCompatActivity implements
                             }
                         }
                     }
-                } else if (viewID == R.id.saveimage24) { // Need to remove code
+                }
+
+                else if (viewID == R.id.saveimage24) { // Need to remove code
                     if (isRestoredImages) {
                         if (imageBeanArrayList != null && imageBeanArrayList.size() > 0) {
                             imageBeanArrayList.remove(position);
@@ -988,7 +1024,9 @@ public class ImageViewerActivity extends AppCompatActivity implements
                     } else {
                         return;
                     }
-                } else if (viewID == R.id.saveimage) {
+                }
+
+                else if (viewID == R.id.saveimage) {
                     if (isSavedImage) {
                         imageBeanArrayList.get(position).setNew(false);
                         if (imageBeanArrayList != null && imageBeanArrayList.size() > 0) {
@@ -1023,6 +1061,7 @@ public class ImageViewerActivity extends AppCompatActivity implements
                         }
                     }
                 }
+
                 setIndicatorText();
             }
         }
@@ -1046,7 +1085,8 @@ public class ImageViewerActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
     /*Use to get selected image detail for DB operations*/
-    private PhotoDetailBean getSelectedImageDetail(int id, ImageBean imageBean, long keepTime) {
+    private PhotoDetailBean getSelectedImageDetail(int id, ImageBean imageBean,
+                                                   long keepTime) {
         PhotoDetailBean photoDetailBean = new PhotoDetailBean();
         photoDetailBean.setActionTime(Calendar.getInstance().getTimeInMillis());
         photoDetailBean.setPhotoPath(imageBean.getImagePath());
@@ -1058,7 +1098,8 @@ public class ImageViewerActivity extends AppCompatActivity implements
             photoDetailBean.setSaved(1);
             photoDetailBean.setSavedFor24Hours(0);
             photoDetailBean.setDeleted(0);
-        } else if (id == R.id.saveimage24) {
+        }
+        else if (id == R.id.saveimage24) {
             photoDetailBean.setSaved(0);
             photoDetailBean.setSavedFor24Hours(1);
             photoDetailBean.setDeleted(0);
@@ -1068,6 +1109,10 @@ public class ImageViewerActivity extends AppCompatActivity implements
             photoDetailBean.setSavedFor24Hours(0);
             photoDetailBean.setDeleted(1);
         } else if (id == R.id.ll_restore) {
+            photoDetailBean.setSaved(0);
+            photoDetailBean.setSavedFor24Hours(0);
+            photoDetailBean.setDeleted(0);
+        } else if (id == R.id.iv_undo) {
             photoDetailBean.setSaved(0);
             photoDetailBean.setSavedFor24Hours(0);
             photoDetailBean.setDeleted(0);
@@ -1319,6 +1364,7 @@ public class ImageViewerActivity extends AppCompatActivity implements
             }, 250);
         }
     }
+
     private void runTimer(boolean isStart) {
         if (isStart) {
             if (timer != null) {
@@ -1412,6 +1458,7 @@ public class ImageViewerActivity extends AppCompatActivity implements
             }
         }
     }
+
     /*Use to process save image*/
     class SaveAsyncTask extends AsyncTask<Void, Void, Boolean> {
         @Override
@@ -1442,14 +1489,54 @@ public class ImageViewerActivity extends AppCompatActivity implements
             }
         }
     }
+
+    /*Use to process undo image*/
+    class UndoAsyncTask extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                if (last_delete_item != null){
+                    PhotoDetailBean selectedImage = getSelectedImageDetail(R.id.iv_undo,
+                                    imageBeanArrayList.get(position), 0);
+                    boolean status = dtsDataBase.insertOrUpdatePhotoRestoreDetail(
+                            selectedImage);
+                    Log.d(TAG, "doInBackgroundUndo: "+status);
+                    return status;
+
+                }else
+                    return false;
+
+            }catch (Exception e){
+                e.printStackTrace();
+                return false;
+            }
+        }
+        @Override
+        protected void onPreExecute() {
+            progress_rl.setVisibility(View.VISIBLE);
+        }
+        @Override
+        protected void onPostExecute(Boolean status) {
+            progress_rl.setVisibility(View.GONE);
+            if (status) {
+
+                initObjects();
+                viewPager.setCurrentItem(last_delete_position);
+                last_delete_item = null;
+                last_delete_position = 0;
+            }
+        }
+    }
+
     /*Use to process restore image*/
     class RestoreAsyncTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
-                PhotoDetailBean selectedImage =
-                        getSelectedImageDetail(R.id.ll_restore, imageBeanArrayList.get(position), 0);
+                PhotoDetailBean selectedImage = getSelectedImageDetail(R.id.ll_restore,
+                                imageBeanArrayList.get(position), 0);
                 boolean status = dtsDataBase.insertOrUpdatePhotoRestoreDetail(selectedImage);
+                Log.d(TAG, "doInBackgroundRe: "+status);
                 return status;
             }catch (Exception e){
                 e.printStackTrace();
@@ -1474,7 +1561,8 @@ public class ImageViewerActivity extends AppCompatActivity implements
                     ImageViewerActivity.super.finish();
                 }
                 setIndicatorText();
-                if (imageBeanArrayList.size() > 0 && imageBeanArrayList.get(position).isSaved24()) {
+                if (imageBeanArrayList.size() > 0
+                        && imageBeanArrayList.get(position).isSaved24()) {
                     deleteBtn.setVisibility(View.VISIBLE);
                 }
             }
@@ -1487,6 +1575,7 @@ public class ImageViewerActivity extends AppCompatActivity implements
             runTimer(true);
         }
     }
+
     /*Use to process Keep to image*/
     class KeepImageAsyncTask extends AsyncTask<Long, Void, Boolean> {
         @Override
@@ -1538,7 +1627,6 @@ public class ImageViewerActivity extends AppCompatActivity implements
 
 
 
-
     ///// NEW WORK ....
 
     private FrameLayout mainlayout2;
@@ -1582,7 +1670,6 @@ public class ImageViewerActivity extends AppCompatActivity implements
         recycler_folder.setLayoutManager(new LinearLayoutManager(this));
 
 
-
         iv_new_folder.setOnClickListener(this);
         iv_back2.setOnClickListener(this);
         tv_cancel.setOnClickListener(this);
@@ -1597,13 +1684,6 @@ public class ImageViewerActivity extends AppCompatActivity implements
 
         tv_date2.setText(tv_date.getText().toString());
 
-/*
-        GlideApp.with(this).
-                load(new File(selected_image))
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(imageView);
-*/
     }
 
     private void setFolderData(){
@@ -1625,14 +1705,24 @@ public class ImageViewerActivity extends AppCompatActivity implements
 
             KeepSafeData keepSafeData = new KeepSafeData();
             keepSafeData.setFolderId(folderId);
-            keepSafeData.setEntryTime(System.currentTimeMillis());
+            Calendar calendar = Calendar.getInstance();
+
+            keepSafeData.setEntryTime(calendar.getTimeInMillis());
+
             keepSafeData.setPhotoOriginalPath(selected_image);
+            Log.d(TAG, "onImageClicked: "+selected_image);
 
-            keepSafeData.setPhotoByte(getByteArrayFromFile(selected_image));
+           // keepSafeData.setPhotoByte(getByteArrayFromFile(selected_image));
 
-            dtsDataBase.insertToKeepSafe(keepSafeData);
+            //dtsDataBase.insertToKeepSafe(keepSafeData);
+
+
+            dtsDataBase.updateFolderId(folderId, selected_image);
+
             Toast.makeText(getApplicationContext(),"Image saved",Toast.LENGTH_SHORT).show();
             linear_show_folder.setVisibility(View.GONE);
+            linear_create_folder.setVisibility(View.GONE);
+            finish();
 
         }else if (clickEvent == 1){
 

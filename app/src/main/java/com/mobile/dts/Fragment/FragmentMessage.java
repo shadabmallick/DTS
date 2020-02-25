@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.dts.R;
+import com.mobile.dts.activity.DtsGalleryActivity;
 import com.mobile.dts.activity.FingerScan;
 
 
@@ -47,7 +48,7 @@ public class FragmentMessage extends Fragment {
         tv_take_a_tour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent codeagain=new Intent(getActivity(), FingerScan.class);
+                Intent codeagain=new Intent(getActivity(), DtsGalleryActivity.class);
                 startActivity(codeagain);
             }
         });

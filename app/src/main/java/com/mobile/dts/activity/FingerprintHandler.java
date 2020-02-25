@@ -63,7 +63,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
             FingerprintManager.AuthenticationResult result) {
 
         FancyToast.makeText(getApplicationContext(), "", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, false).show();
-        Intent codeagain = new Intent(getApplicationContext(), DtsGalleryActivity.class);
+        Intent codeagain = new Intent(getApplicationContext(), KeepSafeMultiple.class);
         codeagain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         codeagain.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         codeagain.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

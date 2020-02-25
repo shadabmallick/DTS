@@ -25,7 +25,7 @@ public class SettingsActivity extends AppCompatActivity {
     private static final int OVERLAY_PERMISSION_REQ_CODE = 103;
     private ImageView icon_home,tell_friend;
     private FirebaseAnalytics mFirebaseAnalytics;
-   public RelativeLayout rl_main;
+   public RelativeLayout rl_main,rel_top;
 
 
     @Override
@@ -34,6 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
         icon_home = findViewById(R.id.icon_home);
         rl_main = findViewById(R.id.rl_main);
+        rel_top = findViewById(R.id.rel_top);
         tell_friend = findViewById(R.id.tell_friend);
         icon_home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +46,15 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SettingsActivity.this, TellFriend.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        rel_top.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SettingsActivity.this, IntroductionFromSetting.class);
                 startActivity(intent);
                 finish();
             }

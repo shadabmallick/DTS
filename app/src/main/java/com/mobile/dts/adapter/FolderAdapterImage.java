@@ -1,35 +1,46 @@
 package com.mobile.dts.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
+
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
+import android.widget.ImageView;
+
+import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.Glide;
 import com.mobile.dts.R;
-import com.mobile.dts.helper.GlideApp;
-import com.mobile.dts.model.FolderData;
+
+import com.mobile.dts.activity.ViewImageFromSafe;
+import com.mobile.dts.callbacks.ImageClickListner;
+
 import com.mobile.dts.model.KeepSafeData;
 
+
 import java.util.ArrayList;
+
+import static com.mobile.dts.activity.DtsGalleryActivity.TAG;
 
 public class FolderAdapterImage extends RecyclerView.Adapter<FolderAdapterImage.ViewHolder> {
     private Context context;
     private LayoutInflater mInflater;
     private ArrayList<KeepSafeData> dataArrayList;
+    private ImageClickListner imageClickListner;
+    private long mLastClickTime = 0;
+    private boolean isLongPressed;
 
-
-    public FolderAdapterImage(Context context, ArrayList<KeepSafeData> dataArrayList) {
+    public FolderAdapterImage(Context context, ArrayList<KeepSafeData> dataArrayList,ImageClickListner imageClickListner,boolean isLongPressed) {
         this.mInflater = LayoutInflater.from(context);
         this.dataArrayList = dataArrayList;
         this.context=context;
+        this.imageClickListner=imageClickListner;
+        this.isLongPressed=isLongPressed;
 
     }
 
@@ -41,21 +52,66 @@ public class FolderAdapterImage extends RecyclerView.Adapter<FolderAdapterImage.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+
 
         final KeepSafeData folderData = dataArrayList.get(position);
 
       //  holder.tv_folder_name.setText(folderData.getPhotoOriginalPath());
+        Log.d(TAG, "onBindViewHolder: "+folderData.getPhotoOriginalPath());
 
-        Bitmap bmp = BitmapFactory.decodeByteArray(folderData.getPhotoByte(), 0, folderData.getPhotoByte().length);
+      //  if (folderData.getPhotoByte() != null){
+
+            // Bitmap bmp = BitmapFactory.decodeByteArray(folderData.getPhotoByte(), 0, folderData.getPhotoByte().length);
+            Log.d(TAG, "onBindViewHolder: "+folderData.getPhotoOriginalPath());
+
+        Glide.with(context)
+                .load(folderData.getPhotoOriginalPath())
+                .into(holder.img_1);
+        if (isLongPressed && holder.checkbox.getVisibility() == View.GONE) {
+            holder.checkbox.setVisibility(View.VISIBLE);
+        } else if (!isLongPressed) {
+           holder.checkbox.setVisibility(View.GONE);
+        }
+        if (folderData.isShowCheckbox()) {
+           holder.checkbox.setChecked(true);
+        } else {
+            holder.checkbox.setChecked(false);
+        }
+
+       // }
+
+/*
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                isLongPressed = true;
+
+
+                //  mViewClickListener.onImageClicked(1, folderData.getFolderId());
+
+                return true;
+            }
+        });
+*/
+
+      /*  holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewImage=new Intent(context, ViewImageFromSafe.class);
+                viewImage.putExtra("entry_time",folderData.getEntryTime());
+                viewImage.putExtra("path",folderData.getPhotoOriginalPath());
+                viewImage.putExtra("Id",folderData.getId());
+                context.startActivity(viewImage);
+
+            }
+        });*/
 
 /*
         holder.img_1.setImageBitmap(Bitmap.createScaledBitmap(bmp,400,
                 400, false));
 */
-        GlideApp.with(context).load(bmp)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(((FolderAdapterImage.ViewHolder) holder).img_1);
 
 /*
         holder.rel_main.setOnClickListener(new View.OnClickListener() {
@@ -67,17 +123,6 @@ public class FolderAdapterImage extends RecyclerView.Adapter<FolderAdapterImage.
         });
 */
 
-/*
-        holder.rel_main.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                mViewClickListener.onImageClicked(1, folderData.getFolderId());
-
-                return true;
-            }
-        });
-*/
 
     }
 
@@ -89,11 +134,39 @@ public class FolderAdapterImage extends RecyclerView.Adapter<FolderAdapterImage.
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView img_1;
+       private AppCompatCheckBox checkbox;
 
         public ViewHolder(View itemView) {
             super(itemView);
             img_1 =  itemView.findViewById(R.id.img_1);
+            checkbox =  itemView.findViewById(R.id.checkbox);
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    isLongPressed = true;
+                    int position = getLayoutPosition();
+                    imageClickListner.onImageLongPressListner(position, isLongPressed);
+                    return true;
+                }
+            });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 50){
+                        return;
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime();
+
+                    int position = getLayoutPosition();
+                    imageClickListner.onImageClickListner(position, isLongPressed);
+
+
+                }
+            });
+
         }
+
 
     }
 
@@ -106,6 +179,10 @@ public class FolderAdapterImage extends RecyclerView.Adapter<FolderAdapterImage.
         mViewClickListener = viewClickListener;
     }
 
+    public void setIsLongPressed(boolean isLongPressed) {
+        this.isLongPressed = isLongPressed;
+        notifyDataSetChanged();
+    }
 
 
 }

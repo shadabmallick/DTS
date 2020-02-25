@@ -98,4 +98,9 @@
     <style name="ThemeWithCorners" parent="android:Theme.Dialog">
         <item name="android:windowBackground">@drawable/theme_draw</item>
     </style>
+
+    <style name="MyTheme" >
+        <!-- Customize your theme here. -->
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

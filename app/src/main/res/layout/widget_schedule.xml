@@ -55,7 +55,7 @@
     android:layout_height="wrap_content">
     <TimePicker
         android:id="@+id/time1"
-        
+        android:theme="@style/MyTheme"
         android:layout_width="match_parent"
         android:layout_height="350dp">
 

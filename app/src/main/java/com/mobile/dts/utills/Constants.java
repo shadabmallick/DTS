@@ -52,6 +52,7 @@ public class Constants {
     public static final String isRealTimeNotification = "isrealtimenotification";
     public static final String everyThirdDaytime = "everythirddaytime";
     public static final String isDisbledNotification = "isdisblednotification";
+    public static final String saved_time = "saved_time";
     public static final int HEADER = 0;
     public static final int CHILD = 1;
     public static final String defaultDeleteTimeInterval = "180";

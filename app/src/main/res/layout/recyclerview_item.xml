@@ -6,21 +6,44 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         app:cardElevation="8dp"
-
+         android:id="@+id/cardVIew"
         app:cardCornerRadius="8dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+            <ImageView
+                android:id="@+id/img_1"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                ></ImageView>
 
-        <ImageView
-            android:id="@+id/img_1"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/device"></ImageView>
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_alignParentRight="true"
+                android:visibility="visible"
+                android:layout_alignParentBottom="true"
+                android:button="@drawable/selector_check"
+                android:clickable="false" />
+
+
+        </RelativeLayout>
+
+
+
+
+
+
 
     </androidx.cardview.widget.CardView>
+
 
 
 </LinearLayout>
