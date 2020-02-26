@@ -53,8 +53,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         /// for debugg
         if (BuildConfig.DEBUG){
-            dtsPreferences.addBoolean(KEY_IS_LOGIN, true);
-            startHomescreen();
+           // dtsPreferences.addBoolean(KEY_IS_LOGIN, true);
+           // startHomescreen();
         }
 
     }
