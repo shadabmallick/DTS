@@ -274,26 +274,32 @@ public class KeepSafeMultiple extends AppCompatActivity
     }
     @Override
     public void onImageLongPressListner(int position, boolean isLongPressed) {
-        this.isLongPressed = isLongPressed;
-        Log.d(TAG, "onImageLongPressListner: "+isLongPressed);
-        Log.d(TAG, "onImageLongPressListner: "+position);
-        rel_bottom.setVisibility(View.GONE);
-        rl_plus.setVisibility(View.GONE);
-        ll_edit_bottom.setVisibility(View.VISIBLE);
-        keepSafeDataArrayList.get(position).isShowCheckbox();
 
-        selectedPhotoList.add(keepSafeDataArrayList.get(position).getPhotoOriginalPath());
-        Log.d(TAG, "onImageLongPressListner: "+ keepSafeDataArrayList.get(position).getPhotoOriginalPath());
-        Log.d(TAG, "onImageLongPressListner: "+  keepSafeDataArrayList.get(position).isShowCheckbox());
+        try {
+            this.isLongPressed = isLongPressed;
+            Log.d(TAG, "onImageLongPressListner: "+isLongPressed);
+            Log.d(TAG, "onImageLongPressListner: "+position);
+            rel_bottom.setVisibility(View.GONE);
+            rl_plus.setVisibility(View.GONE);
+            ll_edit_bottom.setVisibility(View.VISIBLE);
+            keepSafeDataArrayList.get(position).isShowCheckbox();
 
-      //  showHideActionButton(true);
-        keepSafeDataArrayList.get(position).setShowCheckbox(!keepSafeDataArrayList.get(position).isShowCheckbox());
-        if (keepSafeDataArrayList.get(position).isShowCheckbox()) {
             selectedPhotoList.add(keepSafeDataArrayList.get(position).getPhotoOriginalPath());
-        } else {
-            selectedPhotoList.remove(keepSafeDataArrayList.get(position).getPhotoOriginalPath());
+            Log.d(TAG, "onImageLongPressListner: "+ keepSafeDataArrayList.get(position).getPhotoOriginalPath());
+            Log.d(TAG, "onImageLongPressListner: "+  keepSafeDataArrayList.get(position).isShowCheckbox());
+
+            //  showHideActionButton(true);
+            keepSafeDataArrayList.get(position).setShowCheckbox(!keepSafeDataArrayList.get(position).isShowCheckbox());
+            if (keepSafeDataArrayList.get(position).isShowCheckbox()) {
+                selectedPhotoList.add(keepSafeDataArrayList.get(position).getPhotoOriginalPath());
+            } else {
+                selectedPhotoList.remove(keepSafeDataArrayList.get(position).getPhotoOriginalPath());
+            }
+            folderAdapter.notifyDataSetChanged();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        folderAdapter.notifyDataSetChanged();
+
     }
     @Override
     public void onImageClickListner(int position, boolean isLongPressed) {

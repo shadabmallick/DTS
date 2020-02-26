@@ -1,6 +1,7 @@
 package com.mobile.dts.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.mobile.dts.BuildConfig;
 import com.mobile.dts.R;
 import com.mobile.dts.database.DTSPreferences;
 import com.mobile.dts.dialogs.AlertDialogMessage;
@@ -48,6 +50,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initClickListner();
         setScreenNameFirebaseAnalytics("Login Screen", null);
 
+
+        /// for debugg
+        if (BuildConfig.DEBUG){
+            dtsPreferences.addBoolean(KEY_IS_LOGIN, true);
+            startHomescreen();
+        }
+
     }
 
 
@@ -83,9 +92,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (v.getId() == R.id.ll_LoginGoogle) {
             if (isTermChecked()) {
                 mGooglePlusLogin.signIn();
-
-
-
 
             }
         } else if (v.getId() == R.id.ll_login_fb) {

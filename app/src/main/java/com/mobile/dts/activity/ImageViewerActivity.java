@@ -221,10 +221,7 @@ public class ImageViewerActivity extends AppCompatActivity implements
         Log.d("TAG", "isRestoredImages = "+isRestoredImages);
         Log.d("TAG", "isSavedImage = "+isSavedImage);
 
-
-
         initObjects();
-
 
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -1104,15 +1101,18 @@ public class ImageViewerActivity extends AppCompatActivity implements
             photoDetailBean.setSavedFor24Hours(1);
             photoDetailBean.setDeleted(0);
             photoDetailBean.setKeepTime(keepTime);
-        } else if (id == R.id.deleteimage) {
+        }
+        else if (id == R.id.deleteimage) {
             photoDetailBean.setSaved(0);
             photoDetailBean.setSavedFor24Hours(0);
             photoDetailBean.setDeleted(1);
-        } else if (id == R.id.ll_restore) {
+        }
+        else if (id == R.id.ll_restore) {
             photoDetailBean.setSaved(0);
             photoDetailBean.setSavedFor24Hours(0);
             photoDetailBean.setDeleted(0);
-        } else if (id == R.id.iv_undo) {
+        }
+        else if (id == R.id.iv_undo) {
             photoDetailBean.setSaved(0);
             photoDetailBean.setSavedFor24Hours(0);
             photoDetailBean.setDeleted(0);
@@ -1497,9 +1497,8 @@ public class ImageViewerActivity extends AppCompatActivity implements
             try {
                 if (last_delete_item != null){
                     PhotoDetailBean selectedImage = getSelectedImageDetail(R.id.iv_undo,
-                                    imageBeanArrayList.get(position), 0);
-                    boolean status = dtsDataBase.insertOrUpdatePhotoRestoreDetail(
-                            selectedImage);
+                            last_delete_item, 0);
+                    boolean status = dtsDataBase.updateForUndoImage(selectedImage);
                     Log.d(TAG, "doInBackgroundUndo: "+status);
                     return status;
 
@@ -1519,7 +1518,6 @@ public class ImageViewerActivity extends AppCompatActivity implements
         protected void onPostExecute(Boolean status) {
             progress_rl.setVisibility(View.GONE);
             if (status) {
-
                 initObjects();
                 viewPager.setCurrentItem(last_delete_position);
                 last_delete_item = null;

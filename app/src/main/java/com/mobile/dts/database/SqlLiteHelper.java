@@ -122,12 +122,14 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             status = Utils.moveFile(context, existingFileDirrectory, existingFileName, destinationDirectory, photoDetailBean.getTakenTime());
 
         }
+
         ContentValues contentValues = new ContentValues();
         if (photoDetailBean.isDeleted() == 1 && photoDetailBean.getPhotoPath().contains(KEEPTODIRECTORYPATH)
                 && photoDetailBean.getPhotoOriginalPath() != null) {
             photoDetailBean.setPhotoPath(photoDetailBean.getPhotoOriginalPath());
 
         }
+
         if (!isImageExists(photoDetailBean.getPhotoPath())
                 && photoDetailBean.getPhotoPath() != null &&
                 !photoDetailBean.getPhotoPath().contains(KEEPTODIRECTORYPATH)) {
@@ -145,7 +147,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
             long id = database.insert(TABLE_MEDIA_LIST, null, contentValues);
             contentValues.clear();
 
-            Log.d("TAG", "insert = "+status);
+            Log.d("TAG", "insert = "+status + "***" + photoDetailBean.getPhotoPath());
 
         } else {
             if (photoDetailBean.isSaved() == 1) {
@@ -316,8 +318,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         } else {
             status = true;
         }
-        Log.d(TAG, "insertOrUpdatePhotoRestoreDetail: "+isImageExists(photoDetailBean.getPhotoOriginalPath()));
-        // if media not exists then execute
+
         if (!isImageExists(photoDetailBean.getPhotoOriginalPath())) {
             contentValues.put(MDL_PHOTO_PATH, photoDetailBean.getPhotoPath());
             contentValues.put(MDL_ACTION_TIME, photoDetailBean.getActionTime());
@@ -382,6 +383,113 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         return true;
 
     }
+
+    public boolean updateForUndoImage(PhotoDetailBean photoDetailBean) {
+        database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        boolean status = false;
+        String destinationDirectory = null;
+        String existingFileName = null;
+        if (photoDetailBean.getPhotoLocalPath() != null &&
+                !photoDetailBean.getPhotoLocalPath().isEmpty()) {
+            existingFileName = photoDetailBean.getPhotoPath()
+                    .substring(photoDetailBean.getPhotoPath().lastIndexOf("/") + 1);
+            String existingFileDirrectory = KEEPTODIRECTORYPATH;
+            destinationDirectory = photoDetailBean.getPhotoOriginalPath().substring(0, photoDetailBean.getPhotoOriginalPath().lastIndexOf("/") + 1);
+            if (destinationDirectory.contains(Environment.getExternalStorageDirectory().getAbsolutePath())) {
+                existingFileDirrectory = KEEPTODIRECTORYPATH;
+
+            } else {
+                File directory = new File(FileUtils.getExternalStorageRoot(new File(photoDetailBean.getPhotoPath()), context) + "/.dir/");
+                if (directory != null) {
+                    existingFileDirrectory = directory.getAbsolutePath() + "/";
+                }
+
+            }
+            status = Utils.moveFile(context, existingFileDirrectory, existingFileName, destinationDirectory, photoDetailBean.getTakenTime());
+
+        } else {
+            status = true;
+        }
+        Log.d(TAG, "undo : "+isImageExists(photoDetailBean.getPhotoPath()));
+        // if media not exists then execute
+        Log.d("TAG", "insert = "+status + "***" + photoDetailBean.getPhotoPath());
+
+        if (!isImageExists(photoDetailBean.getPhotoPath())) {
+            contentValues.put(MDL_PHOTO_PATH, photoDetailBean.getPhotoPath());
+            contentValues.put(MDL_ACTION_TIME, photoDetailBean.getActionTime());
+            contentValues.put(MDL_TIME_TAKEN, photoDetailBean.getTakenTime());
+            contentValues.put(MDL_IS_SAVED, photoDetailBean.isSaved());
+            contentValues.put(MDL_IS_SAVED_24_HOURS, photoDetailBean.isSavedFor24Hours());
+            contentValues.put(MDL_IS_DELETED, photoDetailBean.isDeleted());
+            contentValues.put(MDL_KEEP_TIME, photoDetailBean.getKeepTime());
+            long id = database.insert(TABLE_MEDIA_LIST, null, contentValues);
+            contentValues.clear();
+
+            Log.d("TAG", "isImageExists = "+status);
+
+        } else {
+
+            if (photoDetailBean.isSaved() == 1) {
+                contentValues.put(MDL_IS_SAVED, photoDetailBean.isSaved());
+                contentValues.put(MDL_ACTION_TIME, 0);
+                contentValues.put(MDL_IS_SAVED_24_HOURS, 0);
+                contentValues.put(MDL_IS_DELETED, 0);
+                contentValues.put(MDL_KEEPTO_URL, "");
+
+                Log.d("TAG", "update 1 = "+status);
+            }
+
+            else if (photoDetailBean.isSavedFor24Hours() == 1) {
+                contentValues.put(MDL_IS_SAVED_24_HOURS, photoDetailBean.isSavedFor24Hours());
+                contentValues.put(MDL_KEEP_TIME, photoDetailBean.getKeepTime());
+                contentValues.put(MDL_ACTION_TIME, photoDetailBean.getActionTime());
+                if (notification
+                        && status && destinationDirectory != null) {
+                    contentValues.put(MDL_KEEPTO_URL, destinationDirectory + existingFileName);
+                }
+                contentValues.put(MDL_IS_DELETED, 0);
+                contentValues.put(MDL_IS_SAVED, 0);
+
+                Log.d("TAG", "update 2 = "+status);
+            }
+
+            else if (photoDetailBean.isDeleted() == 1) {
+                contentValues.put(MDL_IS_DELETED, photoDetailBean.isDeleted());
+                contentValues.put(MDL_IS_SAVED, 0);
+                contentValues.put(MDL_IS_SAVED_24_HOURS, 0);
+                contentValues.put(MDL_ACTION_TIME, photoDetailBean.getActionTime());
+
+                Log.d("TAG", "update 3 = "+status);
+            }
+
+            else if (photoDetailBean.isSaved() == 0
+                    && photoDetailBean.isSavedFor24Hours() == 0
+                    && photoDetailBean.isDeleted() == 0) {
+                contentValues.put(MDL_IS_DELETED, 0);
+                contentValues.put(MDL_IS_SAVED, 1);
+                contentValues.put(MDL_IS_SAVED_24_HOURS, 0);
+                contentValues.put(MDL_ACTION_TIME, 0);
+                contentValues.put(MDL_KEEPTO_URL, "");
+
+                Log.d("TAG", "update 4 = "+status);
+            }
+
+            Log.d("TAG", "db update status = "+status);
+            if (status) {
+                database.update(TABLE_MEDIA_LIST, contentValues,
+                        MDL_PHOTO_PATH + " ="
+                                + "'" + photoDetailBean.getPhotoPath()
+                                + "'", null);
+            }
+            contentValues.clear();
+        }
+        return true;
+
+    }
+
+
 
 
     /*Use to insert or Keep To media file data(Restore)*/

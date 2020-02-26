@@ -4,6 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DTS.iml" filepath="$PROJECT_DIR$/DTS.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/DTS-app.iml" filepath="$PROJECT_DIR$/app/DTS-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DTSNew.iml" filepath="$PROJECT_DIR$/DTSNew.iml" group="DTSNew" />
+      <module fileurl="file://$PROJECT_DIR$/app/DTSNew-app.iml" filepath="$PROJECT_DIR$/app/DTSNew-app.iml" group="DTSNew/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/keepToo.iml" filepath="$PROJECT_DIR$/keepToo.iml" />
     </modules>

@@ -1684,7 +1684,6 @@ public class DtsGalleryActivity extends AppCompatActivity implements
         }
     }
 
-
     /*Use to process Keep To media files*/
     class KeepToAsyncTask extends AsyncTask<Long, Void, ArrayList<PhotoDetailBean>> {
         @Override
@@ -1740,7 +1739,6 @@ public class DtsGalleryActivity extends AppCompatActivity implements
                 mTipView.remove();
                 mTipView = null;
             }
-
         }
     }
 
